@@ -9,7 +9,9 @@
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
     "start:prod": "npm run build && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
@@ -24,7 +26,8 @@
     "@types/express": "^5.0.3",
     "@types/node": "^24.6.0",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "express": "^5.1.0"

@@ -1,3 +1,7 @@
+[![Code Quality](https://github.com/ChrisThompsonK/team4-job-app-frontend/actions/workflows/code-quality.yml/badge.svg)](https://github.com/ChrisThompsonK/team4-job-app-frontend/actions/workflows/code-quality.yml)
+
+[![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
+
 # Team 4 Job Application Project
 
 A modern Node.js application built with TypeScript and Express.js using ES modules. This project includes modern development tooling with Biome for linting and formatting.

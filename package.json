@@ -9,12 +9,18 @@
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
     "start:prod": "npm run build && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "check": "biome check ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@biomejs/biome": "2.2.4",
     "@types/express": "^5.0.3",
     "@types/node": "^24.6.0",
     "tsx": "^4.20.6",

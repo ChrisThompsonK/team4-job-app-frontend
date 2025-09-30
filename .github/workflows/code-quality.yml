@@ -1,4 +1,4 @@
-name: CI
+name: Code Quality
 
 on:
   push:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Code quality checks
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -36,7 +36,7 @@ jobs:
     needs: biome-check
 
     steps:
-      - name: Checkout code
+      - name: Code quality checks
         uses: actions/checkout@v4
 
       - name: Setup Node.js

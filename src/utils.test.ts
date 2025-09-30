@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
-import { isAdult } from './utils'; 
+import { describe, expect, it } from "vitest";
+import { isAdult } from "./utils";
 
-describe('isAdult', () => {
+describe("isAdult", () => {
   it("should return true for age 18", () => {
     expect(isAdult(18)).toBe(true);
   });

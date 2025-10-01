@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav style="text-align: center; margin-bottom: 2rem;">
+            <a href="/" style="color: #007bff; text-decoration: none; margin: 0 1rem;">Home</a>
+            <a href="/jobs" style="color: #007bff; text-decoration: none; margin: 0 1rem;">Jobs</a>
+        </nav>
+        
+        <h1>{{ title }}</h1>
+        <div class="message">{{ message }}</div>
+    </div>
+</body>
+</html>

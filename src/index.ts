@@ -1,6 +1,6 @@
+import path from "node:path";
 import express from "express";
 import nunjucks from "nunjucks";
-import path from "path";
 
 const app = express();
 const PORT = process.env.PORT || 3000;

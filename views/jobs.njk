@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/common.css">
+    <link rel="stylesheet" href="/jobs.css">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="/">Home</a>
+            <a href="/jobs">Jobs</a>
+        </nav>
+        
+        <h1>{{ title }}</h1>
+        
+        {% if jobs %}
+            <div class="jobs-list">
+                {% for job in jobs %}
+                    <div class="job-item">
+                        <div class="job-title">{{ job.title }}</div>
+                        <div class="job-company">{{ job.company }} - {{ job.location }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No jobs available at the moment.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

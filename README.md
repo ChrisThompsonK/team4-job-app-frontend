@@ -4,15 +4,17 @@
 
 # Team 4 Job Application Project
 
-A modern Node.js application built with TypeScript and Express.js using ES modules. This project includes modern development tooling with Biome for linting and formatting.
+A modern Node.js web application built with TypeScript, Express.js, and Nunjucks templating engine using ES modules. This project includes modern development tooling with Biome for linting and formatting.
 
 ## Features
 
 - **TypeScript** - Type-safe JavaScript development
 - **Express.js** - Fast, unopinionated web framework
+- **Nunjucks** - Powerful templating engine for dynamic HTML rendering
 - **ES Modules** - Modern JavaScript module system
 - **Biome** - Fast linter and formatter for consistent code quality
 - **Hot Reloading** - Automatic server restart during development
+- **Responsive Design** - Clean, modern web interface
 
 ## Prerequisites
 
@@ -91,12 +93,21 @@ npm run start:prod    # Build and run in production mode
 
 ## API Endpoints
 
-- `GET /` - Returns a "Hello World" message
+- `GET /` - Renders the home page with welcome message
+- `GET /jobs` - Displays a list of available job positions
+
+### Web Interface
+
+The application now serves HTML pages using Nunjucks templates instead of JSON responses:
+
+- **Home Page** (`/`): Welcome page with navigation
+- **Jobs Page** (`/jobs`): Sample job listings with company information
 
 Example:
 ```bash
-curl http://localhost:3000
-# Response: {"message":"Hello World!"}
+# Visit in browser
+http://localhost:3000      # Home page
+http://localhost:3000/jobs # Jobs listing page
 ```
 
 ## Project Structure
@@ -105,6 +116,9 @@ curl http://localhost:3000
 team4-job-app-frontend/
 ├── src/
 │   └── index.ts          # Main application entry point
+├── views/                # Nunjucks templates
+│   ├── index.njk        # Home page template
+│   └── jobs.njk         # Jobs listing template
 ├── dist/                 # Compiled JavaScript output (generated)
 ├── docs/                 # Project documentation
 │   └── biome-setup.md   # Biome configuration guide
@@ -121,19 +135,56 @@ team4-job-app-frontend/
 ## Development Workflow
 
 1. **Start development**: `npm run dev`
-2. **Make changes**: Edit files in the `src/` directory
+2. **Make changes**: Edit files in the `src/` directory or `views/` templates
 3. **Check code quality**: `npm run check`
 4. **Fix issues**: `npm run lint:fix`
 5. **Build for production**: `npm run build`
+
+## Templating with Nunjucks
+
+This project uses Nunjucks as the templating engine to render dynamic HTML pages.
+
+### Template Features
+
+- **Auto-reloading**: Templates automatically reload during development
+- **Template inheritance**: Consistent styling and layout across pages
+- **Dynamic content**: Data can be passed from routes to templates
+- **Conditional rendering**: Show/hide content based on data availability
+- **Loops and filters**: Render lists and format data
+
+### Template Structure
+
+Templates are located in the `views/` directory:
+
+- `index.njk` - Home page with welcome message and navigation
+- `jobs.njk` - Job listings page with sample job data
+
+### Adding New Templates
+
+1. Create a new `.njk` file in the `views/` directory
+2. Add a new route in `src/index.ts` using `res.render()`
+3. Pass data to the template as the second parameter
+
+Example:
+```typescript
+app.get('/about', (_req, res) => {
+  res.render('about', {
+    title: 'About Us',
+    description: 'Learn more about our company'
+  });
+});
+```
 
 ## Technology Stack
 
 - **Runtime**: Node.js
 - **Language**: TypeScript
 - **Framework**: Express.js
+- **Templating**: Nunjucks
 - **Module System**: ES Modules
 - **Code Quality**: Biome (linting + formatting)
 - **Development**: tsx (TypeScript execution with hot reloading)
+- **File Watching**: chokidar (for template auto-reloading)
 
 ## Contributing
 

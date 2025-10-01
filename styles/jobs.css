@@ -1,0 +1,22 @@
+/* Styles specific to the jobs page */
+.jobs-list {
+  margin-top: 2rem;
+}
+
+.job-item {
+  background: #f8f9fa;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  border-left: 4px solid #007bff;
+}
+
+.job-title {
+  font-weight: bold;
+  color: #333;
+}
+
+.job-company {
+  color: #666;
+  margin-top: 0.5rem;
+}

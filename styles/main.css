@@ -5,58 +5,58 @@
 
 /* Custom component styles */
 @layer components {
-    .btn-custom {
-        @apply px-4 py-2 rounded-lg font-semibold transition-colors duration-200;
-    }
+  .btn-custom {
+    @apply px-4 py-2 rounded-lg font-semibold transition-colors duration-200;
+  }
 
-    .card-custom {
-        @apply bg-white shadow-lg rounded-lg p-6 border border-gray-200;
-    }
+  .card-custom {
+    @apply bg-white shadow-lg rounded-lg p-6 border border-gray-200;
+  }
 }
 
 /* Custom utility styles */
 @layer utilities {
-    .text-gradient {
-        @apply bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent;
-    }
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent;
+  }
 
-    .glass-effect {
-        @apply bg-white/20 backdrop-blur-md border border-white/30;
-    }
+  .glass-effect {
+    @apply bg-white/20 backdrop-blur-md border border-white/30;
+  }
 }
 
 /* Base styles and typography improvements */
 @layer base {
-    html {
-        @apply scroll-smooth;
-    }
+  html {
+    @apply scroll-smooth;
+  }
 
-    body {
-        @apply font-sans antialiased;
-    }
+  body {
+    @apply font-sans antialiased;
+  }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @apply font-bold;
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+  }
 
-    h1 {
-        @apply text-4xl;
-    }
+  h1 {
+    @apply text-4xl;
+  }
 
-    h2 {
-        @apply text-3xl;
-    }
+  h2 {
+    @apply text-3xl;
+  }
 
-    h3 {
-        @apply text-2xl;
-    }
+  h3 {
+    @apply text-2xl;
+  }
 
-    h4 {
-        @apply text-xl;
-    }
+  h4 {
+    @apply text-xl;
+  }
 }

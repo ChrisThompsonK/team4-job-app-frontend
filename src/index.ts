@@ -1,7 +1,8 @@
 import path from "node:path";
 import express from "express";
 import nunjucks from "nunjucks";
-import { InMemoryJobRoleService } from "./services/job-role-service.js";
+import type { JobRole } from "./models/job-role.js";
+import { InMemoryJobRoleService } from "./services/in-memory-job-role-service.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -40,7 +41,7 @@ app.get("/jobs", (_req, res) => {
   const jobRoles = jobRoleService.getJobRoles();
 
   // Format the dates for display
-  const formattedJobRoles = jobRoles.map((job) => ({
+  const formattedJobRoles = jobRoles.map((job: JobRole) => ({
     ...job,
     closingDate: job.closingDate.toLocaleDateString("en-GB"),
   }));

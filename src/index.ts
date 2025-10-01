@@ -1,13 +1,13 @@
 import path from "node:path";
 import express from "express";
 import nunjucks from "nunjucks";
-import { JobRoleServiceImpl } from "./services/job-role-service.js";
+import { InMemoryJobRoleService } from "./services/job-role-service.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Initialize the job role service
-const jobRoleService = new JobRoleServiceImpl();
+const jobRoleService = new InMemoryJobRoleService();
 
 // Configure Nunjucks
 const env = nunjucks.configure(path.join(process.cwd(), "views"), {

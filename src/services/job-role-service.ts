@@ -1,7 +1,7 @@
 import type { JobRole } from "../models/job-role.js";
 import type { JobRoleService } from "./interfaces.js";
 
-export class JobRoleServiceImpl implements JobRoleService {
+export class InMemoryJobRoleService implements JobRoleService {
   private jobRoles: JobRole[];
 
   constructor() {

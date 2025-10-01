@@ -20,13 +20,18 @@
             <div class="jobs-list">
                 {% for job in jobs %}
                     <div class="job-item">
-                        <div class="job-title">{{ job.title }}</div>
-                        <div class="job-company">{{ job.company }} - {{ job.location }}</div>
+                        <div class="job-title">{{ job.name }}</div>
+                        <div class="job-details">
+                            <div class="job-location">📍 {{ job.location }}</div>
+                            <div class="job-capability">🏢 {{ job.capability }}</div>
+                            <div class="job-band">🎯 {{ job.band }}</div>
+                            <div class="job-closing">📅 Closing: {{ job.closingDate }}</div>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
         {% else %}
-            <p>No jobs available at the moment.</p>
+            <p>No job roles available at the moment.</p>
         {% endif %}
     </div>
 </body>

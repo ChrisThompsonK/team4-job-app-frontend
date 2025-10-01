@@ -3,13 +3,6 @@ import express from "express";
 import nunjucks from "nunjucks";
 import { JobRoleServiceImpl } from "./services/job-role-service.js";
 
-// Type definitions
-interface Job {
-  title: string;
-  company: string;
-  location: string;
-}
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -45,11 +38,11 @@ app.get("/", (_req, res) => {
 app.get("/jobs", (_req, res) => {
   // Get job roles from our service
   const jobRoles = jobRoleService.getJobRoles();
-  
+
   // Format the dates for display
-  const formattedJobRoles = jobRoles.map(job => ({
+  const formattedJobRoles = jobRoles.map((job) => ({
     ...job,
-    closingDate: job.closingDate.toLocaleDateString('en-GB')
+    closingDate: job.closingDate.toLocaleDateString("en-GB"),
   }));
 
   res.render("jobs", {

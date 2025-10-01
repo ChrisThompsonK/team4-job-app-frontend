@@ -5,8 +5,11 @@
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsx watch src/index.ts",
+    "build": "npm run build:css && tsc",
+    "build:css": "npx tailwindcss -i ./styles/main.css -o ./dist/styles.css --watch=false",
+    "build:css:watch": "npx tailwindcss -i ./styles/main.css -o ./dist/styles.css --watch",
+    "dev": "npm run build:css && concurrently \"npm run build:css:watch\" \"tsx watch src/index.ts\"",
+    "dev:css": "npm run build:css:watch",
     "start": "node dist/index.js",
     "start:prod": "npm run build && npm start",
     "test": "vitest",
@@ -16,7 +19,8 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "format:check": "biome format .",
-    "check": "biome check ."
+    "check": "biome check .",
+    "preview": "npm run build:css && open index.html"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +29,10 @@
     "@biomejs/biome": "2.2.4",
     "@types/express": "^5.0.3",
     "@types/node": "^24.6.0",
+    "autoprefixer": "^10.4.21",
+    "daisyui": "^5.1.26",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17",
     "tsx": "^4.20.6",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"

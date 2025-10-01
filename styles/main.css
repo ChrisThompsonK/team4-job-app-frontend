@@ -1,62 +1,74 @@
-/* Tailwind CSS base styles */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind CSS v4 import */
+@import "tailwindcss";
 
-/* Custom component styles */
-@layer components {
-  .btn-custom {
-    @apply px-4 py-2 rounded-lg font-semibold transition-colors duration-200;
-  }
-
-  .card-custom {
-    @apply bg-white shadow-lg rounded-lg p-6 border border-gray-200;
-  }
+/* Custom utility styles using v4 @utility API */
+@utility btn-custom {
+  padding: 1rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
 }
 
-/* Custom utility styles */
-@layer utilities {
-  .text-gradient {
-    @apply bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent;
-  }
-
-  .glass-effect {
-    @apply bg-white/20 backdrop-blur-md border border-white/30;
-  }
+@utility card-custom {
+  background-color: rgb(255 255 255);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border-width: 1px;
+  border-color: rgb(229 231 235);
 }
 
-/* Base styles and typography improvements */
-@layer base {
-  html {
-    @apply scroll-smooth;
-  }
+@utility text-gradient {
+  background-image: linear-gradient(to right, rgb(37 99 235), rgb(147 51 234));
+  background-clip: text;
+  color: transparent;
+}
 
-  body {
-    @apply font-sans antialiased;
-  }
+@utility glass-effect {
+  background-color: rgb(255 255 255 / 0.2);
+  backdrop-filter: blur(12px);
+  border-width: 1px;
+  border-color: rgb(255 255 255 / 0.3);
+}
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-bold;
-  }
+/* Base styles and typography improvements using standard CSS */
+html {
+  scroll-behavior: smooth;
+}
 
-  h1 {
-    @apply text-4xl;
-  }
+body {
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  h2 {
-    @apply text-3xl;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+}
 
-  h3 {
-    @apply text-2xl;
-  }
+h1 {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
 
-  h4 {
-    @apply text-xl;
-  }
+h2 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }

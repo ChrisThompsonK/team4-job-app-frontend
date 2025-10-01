@@ -21,6 +21,9 @@
       "style": {
         "useNodejsImportProtocol": "error",
         "useTemplate": "error"
+      },
+      "suspicious": {
+        "noUnknownAtRules": "off"
       }
     }
   },

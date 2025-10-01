@@ -1,16 +1,14 @@
 import path from "node:path";
 import express from "express";
 import nunjucks from "nunjucks";
-
-// Type definitions
-interface Job {
-  title: string;
-  company: string;
-  location: string;
-}
+import type { JobRole } from "./models/job-role.js";
+import { InMemoryJobRoleService } from "./services/in-memory-job-role-service.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Initialize the job role service
+const jobRoleService = new InMemoryJobRoleService();
 
 // Configure Nunjucks
 const env = nunjucks.configure(path.join(process.cwd(), "views"), {
@@ -39,28 +37,18 @@ app.get("/", (_req, res) => {
 
 // Jobs listing endpoint
 app.get("/jobs", (_req, res) => {
-  // Sample job data (in a real app, this would come from a database)
-  const sampleJobs: Job[] = [
-    {
-      title: "Frontend Developer",
-      company: "Tech Corp",
-      location: "San Francisco, CA",
-    },
-    {
-      title: "Backend Engineer",
-      company: "Data Systems Inc",
-      location: "New York, NY",
-    },
-    {
-      title: "Full Stack Developer",
-      company: "Startup Hub",
-      location: "Austin, TX",
-    },
-  ];
+  // Get job roles from our service
+  const jobRoles = jobRoleService.getJobRoles();
+
+  // Format the dates for display
+  const formattedJobRoles = jobRoles.map((job: JobRole) => ({
+    ...job,
+    closingDate: job.closingDate.toLocaleDateString("en-GB"),
+  }));
 
   res.render("jobs", {
-    title: "Available Jobs",
-    jobs: sampleJobs,
+    title: "Available Job Roles",
+    jobs: formattedJobRoles,
   });
 });
 

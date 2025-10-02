@@ -1,6 +1,6 @@
+import { type JobDescription, jobDescriptions } from "../models/job-description.js";
 import type { JobRole } from "../models/job-role.js";
 import type { JobRoleService } from "./interfaces.js";
-import { jobDescriptions, type JobDescription } from "../models/job-description.js";
 
 export class InMemoryJobRoleService implements JobRoleService {
   private jobRoles: JobRole[];

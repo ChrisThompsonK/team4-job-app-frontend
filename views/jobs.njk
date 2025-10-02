@@ -45,10 +45,29 @@
                                 <i data-lucide="calendar" class="h-5 w-5 mr-2"></i>
                                 Closing: {{ job.closingDate }}
                             </div>
+                            <div class="flex items-center">
+                                {% if job.status == 'open' %}
+                                    <i data-lucide="circle-check" class="h-5 w-5 mr-2 text-green-600"></i>
+                                    <span class="text-green-600 font-medium">Open</span>
+                                {% else %}
+                                    <i data-lucide="circle-x" class="h-5 w-5 mr-2 text-red-600"></i>
+                                    <span class="text-red-600 font-medium">Closed</span>
+                                {% endif %}
+                            </div>
+                            <div class="text-gray-600 flex items-center">
+                                <i data-lucide="users" class="h-5 w-5 mr-2 text-orange-600"></i>
+                                {{ job.numberOfOpenPositions }} position{% if job.numberOfOpenPositions != 1 %}s{% endif %} available
+                            </div>
                         </div>
                         <div class="flex justify-between items-center">
                             <a href="/jobs/{{ job.id }}" class="text-blue-600 hover:text-blue-800 font-medium">View Details</a>
-                            <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none">Apply Now</button>
+                            {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
+                                <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none">Apply Now</button>
+                            {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
+                                <button class="btn bg-gray-400 text-white border-none cursor-not-allowed" disabled>No Positions</button>
+                            {% else %}
+                                <button class="btn bg-gray-400 text-white border-none cursor-not-allowed" disabled>Closed</button>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

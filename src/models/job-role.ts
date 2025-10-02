@@ -7,4 +7,6 @@ export interface JobRole {
   closingDate: Date;
   summary: string;
   keyResponsibilities: string;
+  status: "open" | "closed";
+  numberOfOpenPositions: number;
 }

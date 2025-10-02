@@ -50,9 +50,41 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Status and Open Positions Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="flex items-center">
+                    {% if job.status == 'open' %}
+                        <i data-lucide="circle-check" class="h-5 w-5 mr-3 text-green-600"></i>
+                        <div>
+                            <div class="text-sm text-gray-500">Status</div>
+                            <div class="font-medium text-green-600">Open</div>
+                        </div>
+                    {% else %}
+                        <i data-lucide="circle-x" class="h-5 w-5 mr-3 text-red-600"></i>
+                        <div>
+                            <div class="text-sm text-gray-500">Status</div>
+                            <div class="font-medium text-red-600">Closed</div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="flex items-center">
+                    <i data-lucide="users" class="h-5 w-5 mr-3 text-orange-600"></i>
+                    <div>
+                        <div class="text-sm text-gray-500">Open Positions</div>
+                        <div class="font-medium text-gray-800">{{ job.numberOfOpenPositions }} position{% if job.numberOfOpenPositions != 1 %}s{% endif %}</div>
+                    </div>
+                </div>
+            </div>
 
             <div class="flex justify-end">
-                <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 text-lg">Apply Now</button>
+                {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
+                    <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 text-lg">Apply Now</button>
+                {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
+                    <button class="btn bg-gray-400 text-white border-none px-8 py-3 text-lg cursor-not-allowed" disabled>No Positions Available</button>
+                {% else %}
+                    <button class="btn bg-gray-400 text-white border-none px-8 py-3 text-lg cursor-not-allowed" disabled>Applications Closed</button>
+                {% endif %}
             </div>
         </div>
 
@@ -87,8 +119,16 @@
                 <!-- Apply Section -->
                 <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 mb-6">
                     <h3 class="text-xl font-bold text-blue-800 mb-4">Ready to Apply?</h3>
-                    <p class="text-blue-700 mb-4">Join our team and make a difference in the technology industry.</p>
-                    <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full">Apply Now</button>
+                    {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
+                        <p class="text-blue-700 mb-4">Join our team and make a difference in the technology industry.</p>
+                        <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full">Apply Now</button>
+                    {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
+                        <p class="text-gray-600 mb-4">All positions for this role have been filled.</p>
+                        <button class="btn bg-gray-400 text-white border-none w-full cursor-not-allowed" disabled>No Positions Available</button>
+                    {% else %}
+                        <p class="text-gray-600 mb-4">Applications for this position are currently closed.</p>
+                        <button class="btn bg-gray-400 text-white border-none w-full cursor-not-allowed" disabled>Applications Closed</button>
+                    {% endif %}
                 </div>
 
                 <!-- Additional Info -->

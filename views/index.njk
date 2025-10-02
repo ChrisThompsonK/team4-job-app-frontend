@@ -41,9 +41,28 @@
                                     <i data-lucide="calendar" class="h-5 w-5 mr-3"></i>
                                     <span class="text-sm">Closes: {{ job.closingDate }}</span>
                                 </div>
+                                <div class="flex items-center">
+                                    {% if job.status == 'open' %}
+                                        <i data-lucide="circle-check" class="h-5 w-5 mr-3 text-green-600"></i>
+                                        <span class="text-sm text-green-600 font-medium">Open</span>
+                                    {% else %}
+                                        <i data-lucide="circle-x" class="h-5 w-5 mr-3 text-red-600"></i>
+                                        <span class="text-sm text-red-600 font-medium">Closed</span>
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i data-lucide="users" class="h-5 w-5 mr-3 text-orange-600"></i>
+                                    <span class="text-sm">{{ job.numberOfOpenPositions }} position{% if job.numberOfOpenPositions != 1 %}s{% endif %}</span>
+                                </div>
                             </div>
                             <div class="card-actions justify-center">
-                                <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full">Apply Now</button>
+                                {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
+                                    <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full">Apply Now</button>
+                                {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
+                                    <button class="btn bg-gray-400 text-white border-none w-full cursor-not-allowed" disabled>No Positions</button>
+                                {% else %}
+                                    <button class="btn bg-gray-400 text-white border-none w-full cursor-not-allowed" disabled>Closed</button>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

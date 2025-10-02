@@ -6,5 +6,5 @@ export interface JobRole {
   band: string;
   closingDate: Date;
   summary: string;
-  keyResponsibilities: string[];
+  keyResponsibilities: string;
 }

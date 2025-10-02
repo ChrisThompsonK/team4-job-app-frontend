@@ -75,14 +75,10 @@
                         <i data-lucide="list-checks" class="h-6 w-6 mr-3 text-green-600"></i>
                         Key Responsibilities
                     </h2>
-                    <ul class="space-y-4">
-                        {% for responsibility in job.keyResponsibilities %}
-                            <li class="flex items-start">
-                                <i data-lucide="check-circle" class="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0"></i>
-                                <span class="text-gray-700">{{ responsibility }}</span>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    <div class="flex items-start">
+                        <i data-lucide="check-circle" class="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0"></i>
+                        <p class="text-gray-700 leading-relaxed">{{ job.keyResponsibilities }}</p>
+                    </div>
                 </div>
             </div>
 

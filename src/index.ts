@@ -30,9 +30,20 @@ app.use(express.json());
 
 // Hello World endpoint - now renders a view
 app.get("/", (_req, res) => {
+  // Get the 3 most recent jobs for the homepage
+  const allJobs = jobRoleService.getJobRoles();
+  const latestJobs = allJobs
+    .sort((a, b) => b.closingDate.getTime() - a.closingDate.getTime())
+    .slice(0, 3)
+    .map((job: JobRole) => ({
+      ...job,
+      closingDate: job.closingDate.toLocaleDateString("en-GB"),
+    }));
+
   res.render("index", {
-    title: "Welcome to Job App Frontend",
-    message: "Hello World! This page is rendered with Nunjucks.",
+    title: "Kainos Jobs",
+    message: "Find your next career opportunity with Belfast's leading software company",
+    latestJobs: latestJobs,
   });
 });
 

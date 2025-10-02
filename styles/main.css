@@ -16,47 +16,49 @@
  * Custom button utility with consistent styling
  * Usage: Apply 'btn-custom' class to any button element
  */
-@utility btn-custom {
-  padding: 1rem 1.25rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-}
+@layer utilities {
+  .btn-custom {
+    padding: 1rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-/**
- * Custom card utility with professional shadow and borders
- * Usage: Apply 'card-custom' class for consistent card styling
- */
-@utility card-custom {
-  background-color: rgb(255 255 255);
-  box-shadow:
-    0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  border: 1px solid rgb(229 231 235);
-}
+  /**
+   * Custom card utility with professional shadow and borders
+   * Usage: Apply 'card-custom' class for consistent card styling
+   */
+  .card-custom {
+    background-color: rgb(255 255 255);
+    box-shadow:
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid rgb(229 231 235);
+  }
 
-/**
- * Gradient text utility for modern text effects
- * Usage: Apply 'text-gradient' class for blue-to-purple gradient text
- */
-@utility text-gradient {
-  background-image: linear-gradient(to right, rgb(37 99 235), rgb(147 51 234));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
+  /**
+   * Gradient text utility for modern text effects
+   * Usage: Apply 'text-gradient' class for blue-to-purple gradient text
+   */
+  .text-gradient {
+    background-image: linear-gradient(to right, rgb(37 99 235), rgb(147 51 234));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
 
-/**
- * Glass morphism effect utility
- * Usage: Apply 'glass-effect' class for modern glassmorphism styling
- */
-@utility glass-effect {
-  background-color: rgb(255 255 255 / 0.2);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgb(255 255 255 / 0.3);
+  /**
+   * Glass morphism effect utility
+   * Usage: Apply 'glass-effect' class for modern glassmorphism styling
+   */
+  .glass-effect {
+    background-color: rgb(255 255 255 / 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgb(255 255 255 / 0.3);
+  }
 }
 
 /* ========================================

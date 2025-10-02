@@ -27,14 +27,16 @@
   "license": "ISC",
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
+    "@tailwindcss/cli": "^4.1.0",
     "@types/express": "^5.0.3",
     "@types/node": "^24.6.0",
     "@types/nunjucks": "^3.2.6",
-    "@tailwindcss/cli": "^4.1.0",
+    "autoprefixer": "^10.4.21",
     "chokidar": "^3.6.0",
     "concurrently": "^9.1.0",
     "daisyui": "^5.1.26",
-    "tailwindcss": "^4.1.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.14",
     "tsx": "^4.20.6",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"

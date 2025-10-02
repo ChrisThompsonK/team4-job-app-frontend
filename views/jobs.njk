@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en" data-theme="winter">
 <head>
@@ -130,3 +131,55 @@
     <script src="/js/index.js"></script>
 </body>
 </html>
+=======
+{% extends "layout.njk" %}
+
+{% block title %}{{ title }} - Kainos Job Portal{% endblock %}
+
+{% block content %}
+    <!-- Jobs Content Section -->
+    <div class="container mx-auto px-6 py-12">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ title }}</h1>
+            <p class="text-xl text-gray-600">Discover exciting career opportunities at Kainos</p>
+        </div>
+        
+        {% if jobs %}
+            <div class="max-w-4xl mx-auto space-y-6">
+                {% for job in jobs %}
+                    <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+                        <div class="text-2xl font-bold text-gray-800 mb-4">{{ job.name }}</div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="text-gray-600 flex items-center">
+                                <i data-lucide="map-pin" class="h-5 w-5 mr-2 text-blue-600"></i>
+                                {{ job.location }}
+                            </div>
+                            <div class="text-gray-600 flex items-center">
+                                <i data-lucide="building" class="h-5 w-5 mr-2 text-purple-600"></i>
+                                {{ job.capability }}
+                            </div>
+                            <div class="text-gray-600 flex items-center">
+                                <i data-lucide="badge" class="h-5 w-5 mr-2 text-green-600"></i>
+                                {{ job.band }}
+                            </div>
+                            <div class="text-red-600 font-medium flex items-center">
+                                <i data-lucide="calendar" class="h-5 w-5 mr-2"></i>
+                                Closing: {{ job.closingDate }}
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none">Apply Now</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center py-16">
+                <i data-lucide="briefcase" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">No Job Opportunities Available</h3>
+                <p class="text-gray-600">Check back soon for new career opportunities at Kainos!</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+>>>>>>> refs/remotes/origin/main

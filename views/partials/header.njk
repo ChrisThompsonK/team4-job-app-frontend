@@ -1,0 +1,44 @@
+<!-- Navigation with Kainos Branding -->
+<header class="bg-white shadow-lg border-b border-gray-200">
+    <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between h-16">
+            <!-- Mobile menu button -->
+            <div class="lg:hidden">
+                <div class="dropdown">
+                    <div tabindex="0" role="button" class="btn btn-ghost">
+                        <i data-lucide="menu" class="h-5 w-5"></i>
+                    </div>
+                    <ul tabindex="0"
+                        class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-white rounded-box w-52">
+                        <li><a href="/" class="text-gray-700 hover:text-blue-600">Home</a></li>
+                        <li><a href="/jobs" class="text-gray-700 hover:text-blue-600">Jobs</a></li>
+                        <li><a href="#" class="text-gray-700 hover:text-blue-600">About</a></li>
+                        <li><a href="#" class="text-gray-700 hover:text-blue-600">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Centered Kainos Logo and Brand -->
+            <div class="flex items-center justify-center flex-1 lg:justify-start">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">K</span>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold text-gray-800">Kainos</span>
+                        <span class="text-xs text-gray-500">Job Portal</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden lg:flex lg:items-center lg:space-x-8">
+                <a href="/" class="text-gray-700 hover:text-blue-600 font-medium">Home</a>
+                <a href="/jobs" class="text-gray-700 hover:text-blue-600 font-medium">Jobs</a>
+                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">About</a>
+                <a href="#" class="text-gray-700 hover:text-blue-600 font-medium">Contact</a>
+                <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none ml-4">Get Started</button>
+            </div>
+        </div>
+    </div>
+</header>

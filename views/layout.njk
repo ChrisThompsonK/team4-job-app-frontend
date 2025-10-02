@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Kainos Job Portal{% endblock %}</title>
+    <link href="/styles.css" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    {% block head %}{% endblock %}
+</head>
+
+<body class="bg-base-100 min-h-screen">
+    {% include "partials/header.njk" %}
+
+    {% block content %}{% endblock %}
+
+    {% include "partials/footer.njk" %}
+    
+    <!-- Include main JavaScript functionality -->
+    <script src="/js/index.js"></script>
+    <!-- Initialize Lucide Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            lucide.createIcons();
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

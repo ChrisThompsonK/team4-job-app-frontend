@@ -1,0 +1,101 @@
+{% extends "layout.njk" %}
+
+{% block title %}{{ jobRole.name }} - Job Description{% endblock %}
+
+{% block content %}
+    <!-- Job Description Content Section -->
+    <div class="container mx-auto px-6 py-12">
+        <!-- Back Button -->
+        <div class="mb-8">
+            <a href="/jobs" class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+                <i data-lucide="arrow-left" class="h-5 w-5 mr-2"></i>
+                Back to Job Listings
+            </a>
+        </div>
+
+        <!-- Job Header -->
+        <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-6">{{ jobRole.name }}</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="text-gray-600 flex items-center">
+                    <i data-lucide="map-pin" class="h-5 w-5 mr-3 text-blue-600"></i>
+                    <span class="font-medium">Location:</span>
+                    <span class="ml-2">{{ jobRole.location }}</span>
+                </div>
+                <div class="text-gray-600 flex items-center">
+                    <i data-lucide="building" class="h-5 w-5 mr-3 text-purple-600"></i>
+                    <span class="font-medium">Capability:</span>
+                    <span class="ml-2">{{ jobRole.capability }}</span>
+                </div>
+                <div class="text-gray-600 flex items-center">
+                    <i data-lucide="badge" class="h-5 w-5 mr-3 text-green-600"></i>
+                    <span class="font-medium">Band:</span>
+                    <span class="ml-2">{{ jobRole.band }}</span>
+                </div>
+                <div class="text-red-600 font-medium flex items-center">
+                    <i data-lucide="calendar" class="h-5 w-5 mr-3"></i>
+                    <span class="font-medium">Closing Date:</span>
+                    <span class="ml-2">{{ jobRole.closingDate }}</span>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 text-lg">
+                    Apply Now
+                </button>
+            </div>
+        </div>
+
+        {% if jobDescription %}
+            <!-- Job Description Content -->
+            <div class="max-w-4xl mx-auto">
+                <!-- Job Summary -->
+                <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i data-lucide="info" class="h-6 w-6 mr-3 text-blue-600"></i>
+                        Job Summary
+                    </h2>
+                    <p class="text-gray-700 text-lg leading-relaxed">{{ jobDescription.summary }}</p>
+                </div>
+
+                <!-- Key Responsibilities -->
+                <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i data-lucide="check-circle" class="h-6 w-6 mr-3 text-green-600"></i>
+                        Key Responsibilities
+                    </h2>
+                    <ul class="space-y-4">
+                        {% for responsibility in jobDescription.responsibilities %}
+                            <li class="flex items-start">
+                                <i data-lucide="chevron-right" class="h-5 w-5 mr-3 text-blue-600 mt-0.5 flex-shrink-0"></i>
+                                <span class="text-gray-700 text-lg">{{ responsibility }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% else %}
+            <!-- No Description Available -->
+            <div class="text-center py-16">
+                <i data-lucide="file-text" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">Job Description Not Available</h3>
+                <p class="text-gray-600">Please contact HR for more information about this position.</p>
+            </div>
+        {% endif %}
+
+        <!-- Call to Action -->
+        <div class="text-center mt-12">
+            <div class="bg-blue-50 p-8 rounded-lg border border-blue-200">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Ready to Apply?</h3>
+                <p class="text-gray-600 mb-6">Join our team and make a difference with innovative technology solutions.</p>
+                <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 text-lg mr-4">
+                    Apply Now
+                </button>
+                <a href="/jobs" class="btn bg-gray-200 hover:bg-gray-300 text-gray-800 border-none px-8 py-3 text-lg">
+                    View More Jobs
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

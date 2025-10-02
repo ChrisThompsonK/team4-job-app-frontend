@@ -64,6 +64,34 @@ app.get("/jobs", (_req, res) => {
   });
 });
 
+// Individual job description endpoint
+app.get("/jobs/:id", (req, res) => {
+  const jobId = req.params.id;
+
+  // Get the job role and description
+  const jobRole = jobRoleService.getJobRoleById(jobId);
+  const jobDescription = jobRoleService.getJobDescriptionById(jobId);
+
+  if (!jobRole) {
+    return res.status(404).render("index", {
+      title: "Job Not Found",
+      message: "The job you're looking for could not be found.",
+    });
+  }
+
+  // Format the date for display
+  const formattedJobRole = {
+    ...jobRole,
+    closingDate: jobRole.closingDate.toLocaleDateString("en-GB"),
+  };
+
+  res.render("job-description", {
+    title: `${jobRole.name} - Job Description`,
+    jobRole: formattedJobRole,
+    jobDescription: jobDescription,
+  });
+});
+
 // Start the server
 const main = async (): Promise<void> => {
   try {

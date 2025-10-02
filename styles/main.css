@@ -1,16 +1,32 @@
-/* Tailwind CSS v4 import */
+/**
+ * Main CSS file for Job Application Frontend
+ * Includes Tailwind CSS utilities and custom components
+ */
+
+/* ========================================
+   Tailwind CSS Framework
+   ======================================== */
 @import "tailwindcss";
 
-/* Custom utility styles using v4 @utility API */
+/* ========================================
+   Custom Utility Classes
+   ======================================== */
+
+/**
+ * Custom button utility with consistent styling
+ * Usage: Apply 'btn-custom' class to any button element
+ */
 @utility btn-custom {
   padding: 1rem 1.25rem;
   border-radius: 0.5rem;
   font-weight: 600;
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 200ms;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/**
+ * Custom card utility with professional shadow and borders
+ * Usage: Apply 'card-custom' class for consistent card styling
+ */
 @utility card-custom {
   background-color: rgb(255 255 255);
   box-shadow:
@@ -18,61 +34,195 @@
     0 4px 6px -4px rgb(0 0 0 / 0.1);
   border-radius: 0.5rem;
   padding: 1.5rem;
-  border-width: 1px;
-  border-color: rgb(229 231 235);
+  border: 1px solid rgb(229 231 235);
 }
 
+/**
+ * Gradient text utility for modern text effects
+ * Usage: Apply 'text-gradient' class for blue-to-purple gradient text
+ */
 @utility text-gradient {
   background-image: linear-gradient(to right, rgb(37 99 235), rgb(147 51 234));
   background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
 }
 
+/**
+ * Glass morphism effect utility
+ * Usage: Apply 'glass-effect' class for modern glassmorphism styling
+ */
 @utility glass-effect {
   background-color: rgb(255 255 255 / 0.2);
   backdrop-filter: blur(12px);
-  border-width: 1px;
-  border-color: rgb(255 255 255 / 0.3);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgb(255 255 255 / 0.3);
 }
 
-/* Base styles and typography improvements using standard CSS */
+/* ========================================
+   Base Styles & Typography
+   ======================================== */
+
+/**
+ * Root HTML element styling
+ * Enables smooth scrolling for better UX
+ */
 html {
   scroll-behavior: smooth;
 }
 
+/**
+ * Global body styling with system font stack
+ * Includes font smoothing for better text rendering
+ */
 body {
   font-family:
-    ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    "Noto Sans",
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol",
     "Noto Color Emoji";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
 }
 
+/**
+ * Consistent heading styles
+ * All headings use semibold weight for professional appearance
+ */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-weight: 700;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
+  color: rgb(17 24 39); /* gray-900 equivalent */
 }
 
 h1 {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
+  font-size: 2.25rem; /* 36px */
+  line-height: 1.1;
 }
 
 h2 {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
+  font-size: 1.875rem; /* 30px */
+  line-height: 1.15;
 }
 
 h3 {
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.2;
 }
 
 h4 {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.25;
+}
+
+h5 {
+  font-size: 1.125rem; /* 18px */
+}
+
+h6 {
+  font-size: 1rem; /* 16px */
+}
+
+/**
+ * Improved paragraph spacing and readability
+ */
+p {
+  margin-bottom: 1rem;
+  color: rgb(75 85 99); /* gray-600 equivalent */
+}
+
+/**
+ * Link styling for better accessibility and UX
+ */
+a {
+  color: rgb(37 99 235); /* blue-600 equivalent */
+  text-decoration: none;
+  transition: color 150ms ease-in-out;
+}
+
+a:hover {
+  color: rgb(29 78 216); /* blue-700 equivalent */
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: 2px solid rgb(37 99 235);
+  outline-offset: 2px;
+}
+
+/**
+ * Professional focus styles for better accessibility
+ */
+*:focus {
+  outline: 2px solid rgb(37 99 235);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   Kainos Brand Specific Styles
+   ======================================== */
+
+/**
+ * Kainos brand colors and utilities
+ */
+.kainos-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #9333ea 100%);
+}
+
+.kainos-text-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #9333ea 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.kainos-shadow {
+  box-shadow:
+    0 10px 25px -5px rgb(37 99 235 / 0.1),
+    0 10px 10px -5px rgb(37 99 235 / 0.04);
+}
+
+/**
+ * Enhanced navigation styles for professional appearance
+ */
+.navbar {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/**
+ * Professional button hover effects
+ */
+.btn:hover {
+  transform: translateY(-1px);
+  transition: all 0.2s ease-in-out;
+}
+
+/**
+ * Footer link hover animations
+ */
+footer a {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+footer a:hover {
+  transform: translateX(4px);
 }

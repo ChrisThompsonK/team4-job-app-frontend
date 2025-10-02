@@ -48,7 +48,7 @@ app.get("/", (_req, res) => {
 });
 
 // Jobs listing endpoint
-app.get("/jobs", (_req, res) => {
+app.get("/jobs", (req, res) => {
   // Get job roles from our service
   const jobRoles = jobRoleService.getJobRoles();
 
@@ -58,9 +58,47 @@ app.get("/jobs", (_req, res) => {
     closingDate: job.closingDate.toLocaleDateString("en-GB"),
   }));
 
+  // Handle error messages from redirects
+  let errorMessage = "";
+  if (req.query.error === "invalid-id") {
+    errorMessage = "Invalid job ID provided.";
+  } else if (req.query.error === "not-found") {
+    errorMessage = "The job you're looking for doesn't exist or has been removed.";
+  }
+
   res.render("jobs", {
     title: "Available Job Roles",
     jobs: formattedJobRoles,
+    errorMessage: errorMessage,
+  });
+});
+
+// Job detail endpoint
+app.get("/jobs/:id", (req, res) => {
+  const jobId = parseInt(req.params.id, 10);
+
+  // Check if the ID is a valid number
+  if (Number.isNaN(jobId)) {
+    res.redirect("/jobs?error=invalid-id");
+    return;
+  }
+
+  const job = jobRoleService.getJobRoleById(jobId);
+
+  if (!job) {
+    res.redirect("/jobs?error=not-found");
+    return;
+  }
+
+  // Format the date for display
+  const formattedJob = {
+    ...job,
+    closingDate: job.closingDate.toLocaleDateString("en-GB"),
+  };
+
+  res.render("job-detail", {
+    title: job.name,
+    job: formattedJob,
   });
 });
 

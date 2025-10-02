@@ -1,0 +1,123 @@
+{% extends "layout.njk" %}
+
+{% block title %}{{ job.name }} - Kainos Job Portal{% endblock %}
+
+{% block content %}
+    <!-- Job Detail Content Section -->
+    <div class="container mx-auto px-6 py-12">
+        <!-- Breadcrumb -->
+        <nav class="mb-8">
+            <div class="flex items-center space-x-2 text-sm text-gray-600">
+                <a href="/" class="hover:text-blue-600">Home</a>
+                <span>/</span>
+                <a href="/jobs" class="hover:text-blue-600">Jobs</a>
+                <span>/</span>
+                <span class="text-gray-400">{{ job.name }}</span>
+            </div>
+        </nav>
+
+        <!-- Job Header -->
+        <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-6">{{ job.name }}</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div class="flex items-center">
+                    <i data-lucide="map-pin" class="h-5 w-5 mr-3 text-blue-600"></i>
+                    <div>
+                        <div class="text-sm text-gray-500">Location</div>
+                        <div class="font-medium text-gray-800">{{ job.location }}</div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <i data-lucide="building" class="h-5 w-5 mr-3 text-purple-600"></i>
+                    <div>
+                        <div class="text-sm text-gray-500">Capability</div>
+                        <div class="font-medium text-gray-800">{{ job.capability }}</div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <i data-lucide="badge" class="h-5 w-5 mr-3 text-green-600"></i>
+                    <div>
+                        <div class="text-sm text-gray-500">Band</div>
+                        <div class="font-medium text-gray-800">{{ job.band }}</div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <i data-lucide="calendar" class="h-5 w-5 mr-3 text-red-600"></i>
+                    <div>
+                        <div class="text-sm text-gray-500">Closing Date</div>
+                        <div class="font-medium text-red-600">{{ job.closingDate }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 text-lg">Apply Now</button>
+            </div>
+        </div>
+
+        <!-- Job Details -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Job Summary -->
+                <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <i data-lucide="file-text" class="h-6 w-6 mr-3 text-blue-600"></i>
+                        Job Summary
+                    </h2>
+                    <p class="text-gray-700 leading-relaxed">{{ job.summary }}</p>
+                </div>
+
+                <!-- Key Responsibilities -->
+                <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i data-lucide="list-checks" class="h-6 w-6 mr-3 text-green-600"></i>
+                        Key Responsibilities
+                    </h2>
+                    <div class="flex items-start">
+                        <i data-lucide="check-circle" class="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0"></i>
+                        <p class="text-gray-700 leading-relaxed">{{ job.keyResponsibilities }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Apply Section -->
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 mb-6">
+                    <h3 class="text-xl font-bold text-blue-800 mb-4">Ready to Apply?</h3>
+                    <p class="text-blue-700 mb-4">Join our team and make a difference in the technology industry.</p>
+                    <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full">Apply Now</button>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">About This Role</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Job Type:</span>
+                            <span class="font-medium">Full-time</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Contract:</span>
+                            <span class="font-medium">Permanent</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Remote Work:</span>
+                            <span class="font-medium">Hybrid</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Back to Jobs -->
+                <div class="mt-6">
+                    <a href="/jobs" class="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-300 w-full flex items-center justify-center">
+                        <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                        Back to All Jobs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

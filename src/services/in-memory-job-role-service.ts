@@ -16,6 +16,38 @@ export class InMemoryJobRoleService implements JobRoleService {
     return this.jobRoles.find((job) => job.id === id);
   }
 
+  /**
+   * Async version of getJobRoles() for interface compatibility
+   */
+  async getAllJobs(): Promise<JobRole[]> {
+    return Promise.resolve(this.getJobRoles());
+  }
+
+  /**
+   * Async version of getJobRoleById() for interface compatibility
+   */
+  async getJobById(id: number): Promise<JobRole> {
+    const job = this.getJobRoleById(id);
+    if (!job) {
+      throw new Error(`Job with ID ${id} not found`);
+    }
+    return Promise.resolve(job);
+  }
+
+  /**
+   * Set base URL - not used by in-memory service but required by interface
+   */
+  setBaseURL(_baseURL: string): void {
+    // No-op for in-memory service
+  }
+
+  /**
+   * Get base URL - not used by in-memory service but required by interface
+   */
+  getBaseURL(): string | undefined {
+    return undefined;
+  }
+
   private createSampleJobRoles(): JobRole[] {
     return [
       {

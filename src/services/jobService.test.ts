@@ -1,39 +1,33 @@
-import axios from "axios";
-import { beforeEach, describe, expect, it, type MockedFunction, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { JobRole } from "../models/job-role.js";
-import { JobService } from "./jobService.js";
 
-// Mock axios
-vi.mock("axios");
-const mockedAxios = vi.mocked(axios);
+// Mock axios with hoisting to ensure it's available before imports
+const mockAxiosInstance = vi.hoisted(() => ({
+  get: vi.fn(),
+  interceptors: {
+    request: { use: vi.fn() },
+    response: { use: vi.fn() },
+  },
+  defaults: { baseURL: "/api" },
+}));
+
+vi.mock("axios", () => ({
+  default: {
+    create: vi.fn(() => mockAxiosInstance),
+    isAxiosError: vi.fn(),
+  },
+  isAxiosError: vi.fn(),
+}));
+
+import axios from "axios";
+import { JobService } from "./jobService.js";
 
 describe("JobService", () => {
   let jobService: JobService;
-  let mockAxiosInstance: {
-    get: MockedFunction<(...args: unknown[]) => Promise<unknown>>;
-    interceptors: {
-      request: { use: MockedFunction<(...args: unknown[]) => unknown> };
-      response: { use: MockedFunction<(...args: unknown[]) => unknown> };
-    };
-    defaults: { baseURL?: string };
-  };
 
   beforeEach(() => {
     // Reset all mocks
     vi.clearAllMocks();
-
-    // Create mock axios instance
-    mockAxiosInstance = {
-      get: vi.fn(),
-      interceptors: {
-        request: { use: vi.fn() },
-        response: { use: vi.fn() },
-      },
-      defaults: { baseURL: "/api" },
-    };
-
-    // Mock axios.create to return our mock instance
-    vi.mocked(axios.create).mockReturnValue(mockAxiosInstance as any);
 
     // Create new service instance
     jobService = new JobService();

@@ -17,7 +17,7 @@ export class JobService implements JobRoleService {
    */
   async getAllJobs(): Promise<JobRole[]> {
     const response = await axios.get(`${this.baseURL}/jobs`);
-    
+
     // Convert date strings to Date objects
     return response.data.map((job: JobRole) => ({
       ...job,
@@ -30,7 +30,7 @@ export class JobService implements JobRoleService {
    */
   async getJobById(id: number): Promise<JobRole> {
     const response = await axios.get(`${this.baseURL}/jobs/${id}`);
-    
+
     // Convert date string to Date object
     return {
       ...response.data,
@@ -59,7 +59,7 @@ export class JobService implements JobRoleService {
     throw new Error("Use getAllJobs() instead");
   }
 
-  getJobRoleById(id: number): JobRole | undefined {
+  getJobRoleById(_id: number): JobRole | undefined {
     throw new Error("Use getJobById() instead");
   }
 }

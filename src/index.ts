@@ -23,6 +23,7 @@ app.engine("njk", env.render.bind(env));
 
 // Serve static files (CSS, JS, images, etc.)
 app.use(express.static(path.join(process.cwd(), "dist")));
+app.use(express.static(path.join(process.cwd(), "public")));
 app.use("/js", express.static(path.join(process.cwd(), "js")));
 
 // Middleware to parse JSON

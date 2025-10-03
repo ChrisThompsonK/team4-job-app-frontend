@@ -5,6 +5,4 @@ export interface JobRoleService {
   getJobRoleById(id: number): JobRole | undefined;
   getAllJobs(): Promise<JobRole[]>;
   getJobById(id: number): Promise<JobRole>;
-  setBaseURL(baseURL: string): void;
-  getBaseURL(): string | undefined;
 }

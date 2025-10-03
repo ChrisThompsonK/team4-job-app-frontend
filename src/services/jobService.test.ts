@@ -33,9 +33,7 @@ describe("JobService", () => {
     };
 
     // Mock axios.create to return our mock instance
-    (mockedAxios.create as MockedFunction<typeof axios.create>).mockReturnValue(
-      mockAxiosInstance as never
-    );
+    vi.mocked(axios.create).mockReturnValue(mockAxiosInstance as any);
 
     // Create new service instance
     jobService = new JobService();

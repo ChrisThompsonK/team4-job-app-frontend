@@ -1,0 +1,121 @@
+import { describe, it, expect, vi, beforeEach, type MockedFunction } from "vitest";
+import axios from "axios";
+import { JobService } from "./jobService.js";
+import type { JobRole } from "../models/job-role.js";
+
+// Mock axios
+vi.mock("axios");
+const mockedAxios = vi.mocked(axios);
+
+describe("JobService", () => {
+  let jobService: JobService;
+  let mockAxiosInstance: {
+    get: MockedFunction<any>;
+    interceptors: {
+      request: { use: MockedFunction<any> };
+      response: { use: MockedFunction<any> };
+    };
+    defaults: { baseURL?: string };
+  };
+
+  beforeEach(() => {
+    // Reset all mocks
+    vi.clearAllMocks();
+    
+    // Create mock axios instance
+    mockAxiosInstance = {
+      get: vi.fn(),
+      interceptors: {
+        request: { use: vi.fn() },
+        response: { use: vi.fn() }
+      },
+      defaults: { baseURL: "/api" }
+    };
+    
+    // Mock axios.create to return our mock instance
+    mockedAxios.create.mockReturnValue(mockAxiosInstance as any);
+    
+    // Create new service instance
+    jobService = new JobService();
+  });
+
+  describe("getAllJobs", () => {
+    it("should fetch all jobs successfully", async () => {
+      const mockJobs: JobRole[] = [
+        {
+          id: 1,
+          name: "Software Engineer",
+          location: "London",
+          capability: "Engineering",
+          band: "Consultant",
+          closingDate: "2024-11-15T00:00:00.000Z" as any,
+          summary: "Test summary",
+          keyResponsibilities: "Test responsibilities",
+          status: "open",
+          numberOfOpenPositions: 3,
+        },
+      ];
+
+      mockAxiosInstance.get.mockResolvedValue({ data: mockJobs });
+
+      const result = await jobService.getAllJobs();
+
+      expect(mockAxiosInstance.get).toHaveBeenCalledWith("/jobs");
+      expect(result).toHaveLength(1);
+      expect(result[0].closingDate).toBeInstanceOf(Date);
+    });
+
+    it("should handle 404 error", async () => {
+      const error = {
+        response: { status: 404 }
+      };
+      mockAxiosInstance.get.mockRejectedValue(error);
+      mockedAxios.isAxiosError.mockReturnValue(true);
+
+      await expect(jobService.getAllJobs()).rejects.toThrow("Jobs endpoint not found");
+    });
+  });
+
+  describe("getJobById", () => {
+    it("should fetch job by id successfully", async () => {
+      const mockJob: JobRole = {
+        id: 1,
+        name: "Software Engineer",
+        location: "London",
+        capability: "Engineering",
+        band: "Consultant",
+        closingDate: "2024-11-15T00:00:00.000Z" as any,
+        summary: "Test summary",
+        keyResponsibilities: "Test responsibilities",
+        status: "open",
+        numberOfOpenPositions: 3,
+      };
+
+      mockAxiosInstance.get.mockResolvedValue({ data: mockJob });
+
+      const result = await jobService.getJobById(1);
+
+      expect(mockAxiosInstance.get).toHaveBeenCalledWith("/jobs/1");
+      expect(result.id).toBe(1);
+      expect(result.closingDate).toBeInstanceOf(Date);
+    });
+
+    it("should handle 404 error for specific job", async () => {
+      const error = {
+        response: { status: 404 }
+      };
+      mockAxiosInstance.get.mockRejectedValue(error);
+      mockedAxios.isAxiosError.mockReturnValue(true);
+
+      await expect(jobService.getJobById(999)).rejects.toThrow("Job with ID 999 not found");
+    });
+  });
+
+  describe("configuration methods", () => {
+    it("should set and get base URL", () => {
+      jobService.setBaseURL("/new-api");
+      expect(mockAxiosInstance.defaults.baseURL).toBe("/new-api");
+      expect(jobService.getBaseURL()).toBe("/new-api");
+    });
+  });
+});

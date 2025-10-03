@@ -55,13 +55,13 @@ export class JobService {
   async getAllJobs(): Promise<JobRole[]> {
     try {
       const response: AxiosResponse<JobRole[]> = await this.apiClient.get("/jobs");
-      
+
       // Transform dates from strings to Date objects
-      const jobsWithDates = response.data.map(job => ({
+      const jobsWithDates = response.data.map((job) => ({
         ...job,
         closingDate: new Date(job.closingDate),
       }));
-      
+
       return jobsWithDates;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -75,7 +75,9 @@ export class JobService {
           throw new Error("Request timeout while fetching jobs");
         }
       }
-      throw new Error(`Failed to fetch jobs: ${error instanceof Error ? error.message : "Unknown error"}`);
+      throw new Error(
+        `Failed to fetch jobs: ${error instanceof Error ? error.message : "Unknown error"}`
+      );
     }
   }
 
@@ -88,13 +90,13 @@ export class JobService {
   async getJobById(id: number): Promise<JobRole> {
     try {
       const response: AxiosResponse<JobRole> = await this.apiClient.get(`/jobs/${id}`);
-      
+
       // Transform date from string to Date object
       const jobWithDate = {
         ...response.data,
         closingDate: new Date(response.data.closingDate),
       };
-      
+
       return jobWithDate;
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -111,7 +113,9 @@ export class JobService {
           throw new Error("Request timeout while fetching job details");
         }
       }
-      throw new Error(`Failed to fetch job with ID ${id}: ${error instanceof Error ? error.message : "Unknown error"}`);
+      throw new Error(
+        `Failed to fetch job with ID ${id}: ${error instanceof Error ? error.message : "Unknown error"}`
+      );
     }
   }
 

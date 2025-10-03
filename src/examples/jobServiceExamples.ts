@@ -3,8 +3,8 @@
  * This demonstrates how to use the new API service in your application
  */
 
-import { JobService, jobService } from "./services/jobService.js";
 import type { JobRole } from "./models/job-role.js";
+import { JobService, jobService } from "./services/jobService.js";
 
 // Example 1: Using the default service instance
 export async function fetchAllJobsExample(): Promise<void> {
@@ -12,7 +12,7 @@ export async function fetchAllJobsExample(): Promise<void> {
     console.log("Fetching all jobs...");
     const jobs: JobRole[] = await jobService.getAllJobs();
     console.log(`Found ${jobs.length} jobs:`);
-    jobs.forEach(job => {
+    jobs.forEach((job) => {
       console.log(`- ${job.name} in ${job.location} (${job.status})`);
     });
   } catch (error) {
@@ -39,7 +39,7 @@ export async function fetchJobByIdExample(jobId: number): Promise<void> {
 // Example 3: Creating a custom service instance with different configuration
 export async function useCustomServiceExample(): Promise<void> {
   const customService = new JobService("https://api.example.com/v1");
-  
+
   try {
     const jobs = await customService.getAllJobs();
     console.log(`Custom service found ${jobs.length} jobs`);
@@ -69,9 +69,12 @@ export async function errorHandlingExample(): Promise<void> {
 }
 
 // Example 5: Using with async/await in a React-like component pattern
-export async function loadJobsForComponent(setJobs: (jobs: JobRole[]) => void, setLoading: (loading: boolean) => void): Promise<void> {
+export async function loadJobsForComponent(
+  setJobs: (jobs: JobRole[]) => void,
+  setLoading: (loading: boolean) => void
+): Promise<void> {
   setLoading(true);
-  
+
   try {
     const jobs = await jobService.getAllJobs();
     setJobs(jobs);
@@ -88,9 +91,9 @@ export function configureApiEndpoint(environment: "development" | "production" |
   const baseUrls = {
     development: "/api",
     production: "https://prod-api.example.com/api",
-    testing: "https://test-api.example.com/api"
+    testing: "https://test-api.example.com/api",
   };
-  
+
   jobService.setBaseURL(baseUrls[environment]);
   console.log(`API endpoint configured for ${environment}: ${jobService.getBaseURL()}`);
 }
@@ -98,18 +101,18 @@ export function configureApiEndpoint(environment: "development" | "production" |
 // Example usage in main application
 export async function runExamples(): Promise<void> {
   console.log("=== JobService API Examples ===");
-  
+
   // Configure for development
   configureApiEndpoint("development");
-  
+
   // Example 1: Fetch all jobs
   await fetchAllJobsExample();
-  
+
   // Example 2: Fetch specific job
   await fetchJobByIdExample(1);
-  
+
   // Example 4: Error handling
   await errorHandlingExample();
-  
+
   console.log("=== Examples completed ===");
 }

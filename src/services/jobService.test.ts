@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach, type MockedFunction } from "vitest";
 import axios from "axios";
-import { JobService } from "./jobService.js";
+import { beforeEach, describe, expect, it, type MockedFunction, vi } from "vitest";
 import type { JobRole } from "../models/job-role.js";
+import { JobService } from "./jobService.js";
 
 // Mock axios
 vi.mock("axios");
@@ -10,10 +10,10 @@ const mockedAxios = vi.mocked(axios);
 describe("JobService", () => {
   let jobService: JobService;
   let mockAxiosInstance: {
-    get: MockedFunction<any>;
+    get: MockedFunction<(...args: unknown[]) => Promise<unknown>>;
     interceptors: {
-      request: { use: MockedFunction<any> };
-      response: { use: MockedFunction<any> };
+      request: { use: MockedFunction<(...args: unknown[]) => unknown> };
+      response: { use: MockedFunction<(...args: unknown[]) => unknown> };
     };
     defaults: { baseURL?: string };
   };
@@ -21,20 +21,22 @@ describe("JobService", () => {
   beforeEach(() => {
     // Reset all mocks
     vi.clearAllMocks();
-    
+
     // Create mock axios instance
     mockAxiosInstance = {
       get: vi.fn(),
       interceptors: {
         request: { use: vi.fn() },
-        response: { use: vi.fn() }
+        response: { use: vi.fn() },
       },
-      defaults: { baseURL: "/api" }
+      defaults: { baseURL: "/api" },
     };
-    
+
     // Mock axios.create to return our mock instance
-    mockedAxios.create.mockReturnValue(mockAxiosInstance as any);
-    
+    (mockedAxios.create as MockedFunction<typeof axios.create>).mockReturnValue(
+      mockAxiosInstance as never
+    );
+
     // Create new service instance
     jobService = new JobService();
   });
@@ -48,7 +50,7 @@ describe("JobService", () => {
           location: "London",
           capability: "Engineering",
           band: "Consultant",
-          closingDate: "2024-11-15T00:00:00.000Z" as any,
+          closingDate: new Date("2024-11-15T00:00:00.000Z"),
           summary: "Test summary",
           keyResponsibilities: "Test responsibilities",
           status: "open",
@@ -62,15 +64,15 @@ describe("JobService", () => {
 
       expect(mockAxiosInstance.get).toHaveBeenCalledWith("/jobs");
       expect(result).toHaveLength(1);
-      expect(result[0].closingDate).toBeInstanceOf(Date);
+      expect(result[0]?.closingDate).toBeInstanceOf(Date);
     });
 
     it("should handle 404 error", async () => {
       const error = {
-        response: { status: 404 }
+        response: { status: 404 },
       };
       mockAxiosInstance.get.mockRejectedValue(error);
-      mockedAxios.isAxiosError.mockReturnValue(true);
+      vi.mocked(axios.isAxiosError).mockReturnValue(true);
 
       await expect(jobService.getAllJobs()).rejects.toThrow("Jobs endpoint not found");
     });
@@ -84,7 +86,7 @@ describe("JobService", () => {
         location: "London",
         capability: "Engineering",
         band: "Consultant",
-        closingDate: "2024-11-15T00:00:00.000Z" as any,
+        closingDate: new Date("2024-11-15T00:00:00.000Z"),
         summary: "Test summary",
         keyResponsibilities: "Test responsibilities",
         status: "open",
@@ -102,10 +104,10 @@ describe("JobService", () => {
 
     it("should handle 404 error for specific job", async () => {
       const error = {
-        response: { status: 404 }
+        response: { status: 404 },
       };
       mockAxiosInstance.get.mockRejectedValue(error);
-      mockedAxios.isAxiosError.mockReturnValue(true);
+      vi.mocked(axios.isAxiosError).mockReturnValue(true);
 
       await expect(jobService.getJobById(999)).rejects.toThrow("Job with ID 999 not found");
     });

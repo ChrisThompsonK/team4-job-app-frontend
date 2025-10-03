@@ -3,8 +3,8 @@
  * This demonstrates how to use the new API service in your application
  */
 
-import type { JobRole } from "./models/job-role.js";
-import { JobService, jobService } from "./services/jobService.js";
+import type { JobRole } from "../models/job-role.js";
+import { JobService, jobService } from "../services/jobService.js";
 
 // Example 1: Using the default service instance
 export async function fetchAllJobsExample(): Promise<void> {

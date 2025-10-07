@@ -1,14 +1,19 @@
 import path from "node:path";
 import express from "express";
 import nunjucks from "nunjucks";
+import dotenv from "dotenv";
 import type { JobRole } from "./models/job-role.js";
-import { InMemoryJobRoleService } from "./services/in-memory-job-role-service.js";
+import { JobService } from "./services/jobService.js";
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
 // Initialize the job role service
-const jobRoleService = new InMemoryJobRoleService();
+const jobRoleService = new JobService(API_BASE_URL);
 
 // Configure Nunjucks
 const env = nunjucks.configure(path.join(process.cwd(), "views"), {

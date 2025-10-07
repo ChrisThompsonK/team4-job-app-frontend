@@ -8,7 +8,7 @@ import type { JobRoleService } from "./interfaces.js";
 export class JobService implements JobRoleService {
   private axiosInstance: AxiosInstance;
 
-  constructor(baseURL = "/api") {
+  constructor(baseURL = process.env.API_BASE_URL || "http://localhost:8080") {
     this.axiosInstance = axios.create({
       baseURL,
     });
@@ -19,10 +19,18 @@ export class JobService implements JobRoleService {
    */
   async getAllJobs(): Promise<JobRole[]> {
     try {
-      const response = await this.axiosInstance.get("/jobs");
+      const response = await this.axiosInstance.get("/api/jobs");
+
+      // Log the response to see its structure
+      console.log("API Response:", JSON.stringify(response.data, null, 2));
+
+      // Handle different response formats
+      const jobsData = Array.isArray(response.data) 
+        ? response.data 
+        : response.data.data || response.data.jobs || [];
 
       // Convert date strings to Date objects
-      return response.data.map((job: JobRole) => ({
+      return jobsData.map((job: JobRole) => ({
         ...job,
         closingDate: new Date(job.closingDate),
       }));
@@ -39,7 +47,7 @@ export class JobService implements JobRoleService {
    */
   async getJobById(id: number): Promise<JobRole> {
     try {
-      const response = await this.axiosInstance.get(`/jobs/${id}`);
+      const response = await this.axiosInstance.get(`/api/jobs/${id}`);
 
       // Convert date string to Date object
       return {

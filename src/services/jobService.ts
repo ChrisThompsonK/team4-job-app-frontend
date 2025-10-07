@@ -46,10 +46,13 @@ export class JobService implements JobRoleService {
     try {
       const response = await this.axiosInstance.get(`/api/jobs/${id}`);
 
+      // Extract job data from the response wrapper
+      const jobData = response.data.data || response.data;
+
       // Convert date string to Date object
       return {
-        ...response.data,
-        closingDate: new Date(response.data.closingDate),
+        ...jobData,
+        closingDate: new Date(jobData.closingDate),
       };
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 404) {

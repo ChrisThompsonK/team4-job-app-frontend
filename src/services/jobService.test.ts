@@ -54,7 +54,7 @@ describe("JobService", () => {
 
       const result = await jobService.getAllJobs();
 
-      expect(mockAxiosInstance.get).toHaveBeenCalledWith("/jobs");
+      expect(mockAxiosInstance.get).toHaveBeenCalledWith("/api/jobs");
       expect(result).toHaveLength(1);
       expect(result[0]?.closingDate).toBeInstanceOf(Date);
     });
@@ -89,7 +89,7 @@ describe("JobService", () => {
 
       const result = await jobService.getJobById(1);
 
-      expect(mockAxiosInstance.get).toHaveBeenCalledWith("/jobs/1");
+      expect(mockAxiosInstance.get).toHaveBeenCalledWith("/api/jobs/1");
       expect(result.id).toBe(1);
       expect(result.closingDate).toBeInstanceOf(Date);
     });

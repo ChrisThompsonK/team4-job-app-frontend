@@ -30,9 +30,9 @@ app.use("/js", express.static(path.join(process.cwd(), "js")));
 app.use(express.json());
 
 // Hello World endpoint - now renders a view
-app.get("/", (_req, res) => {
+app.get("/", async (_req, res) => {
   // Get the 3 most recent jobs for the homepage
-  const allJobs = jobRoleService.getJobRoles();
+  const allJobs = await jobRoleService.getAllJobs();
   const latestJobs = allJobs
     .sort((a, b) => b.closingDate.getTime() - a.closingDate.getTime())
     .slice(0, 3)
@@ -49,9 +49,9 @@ app.get("/", (_req, res) => {
 });
 
 // Jobs listing endpoint
-app.get("/jobs", (req, res) => {
+app.get("/jobs", async (req, res) => {
   // Get job roles from our service
-  const jobRoles = jobRoleService.getJobRoles();
+  const jobRoles = await jobRoleService.getAllJobs();
 
   // Format the dates for display
   const formattedJobRoles = jobRoles.map((job: JobRole) => ({
@@ -75,7 +75,7 @@ app.get("/jobs", (req, res) => {
 });
 
 // Job detail endpoint
-app.get("/jobs/:id", (req, res) => {
+app.get("/jobs/:id", async (req, res) => {
   const jobId = parseInt(req.params.id, 10);
 
   // Check if the ID is a valid number
@@ -84,23 +84,22 @@ app.get("/jobs/:id", (req, res) => {
     return;
   }
 
-  const job = jobRoleService.getJobRoleById(jobId);
+  try {
+    const job = await jobRoleService.getJobById(jobId);
 
-  if (!job) {
+    // Format the date for display
+    const formattedJob = {
+      ...job,
+      closingDate: job.closingDate.toLocaleDateString("en-GB"),
+    };
+
+    res.render("job-detail", {
+      title: job.name,
+      job: formattedJob,
+    });
+  } catch (_error) {
     res.redirect("/jobs?error=not-found");
-    return;
   }
-
-  // Format the date for display
-  const formattedJob = {
-    ...job,
-    closingDate: job.closingDate.toLocaleDateString("en-GB"),
-  };
-
-  res.render("job-detail", {
-    title: job.name,
-    job: formattedJob,
-  });
 });
 
 // Start the server

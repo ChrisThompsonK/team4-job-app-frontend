@@ -67,17 +67,6 @@ export class JobService implements JobRoleService {
   getBaseURL(): string {
     return this.axiosInstance.defaults.baseURL || "";
   }
-
-  /**
-   * Synchronous methods not supported - use async versions instead
-   */
-  getJobRoles(): JobRole[] {
-    throw new Error("Use getAllJobs() instead");
-  }
-
-  getJobRoleById(_id: number): JobRole | undefined {
-    throw new Error("Use getJobById() instead");
-  }
 }
 
 // Export a default instance

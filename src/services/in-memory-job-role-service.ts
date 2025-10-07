@@ -8,26 +8,18 @@ export class InMemoryJobRoleService implements JobRoleService {
     this.jobRoles = this.createSampleJobRoles();
   }
 
-  getJobRoles(): JobRole[] {
-    return this.jobRoles;
-  }
-
-  getJobRoleById(id: number): JobRole | undefined {
-    return this.jobRoles.find((job) => job.id === id);
-  }
-
   /**
-   * Async version of getJobRoles() for interface compatibility
+   * Get all jobs from in-memory storage
    */
   async getAllJobs(): Promise<JobRole[]> {
-    return Promise.resolve(this.getJobRoles());
+    return Promise.resolve(this.jobRoles);
   }
 
   /**
-   * Async version of getJobRoleById() for interface compatibility
+   * Get a specific job by ID from in-memory storage
    */
   async getJobById(id: number): Promise<JobRole> {
-    const job = this.getJobRoleById(id);
+    const job = this.jobRoles.find((job) => job.id === id);
     if (!job) {
       throw new Error(`Job with ID ${id} not found`);
     }

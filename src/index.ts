@@ -1,7 +1,7 @@
 import path from "node:path";
+import dotenv from "dotenv";
 import express from "express";
 import nunjucks from "nunjucks";
-import dotenv from "dotenv";
 import type { JobRole } from "./models/job-role.js";
 import { JobService } from "./services/jobService.js";
 

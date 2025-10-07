@@ -25,8 +25,8 @@ export class JobService implements JobRoleService {
       console.log("API Response:", JSON.stringify(response.data, null, 2));
 
       // Handle different response formats
-      const jobsData = Array.isArray(response.data) 
-        ? response.data 
+      const jobsData = Array.isArray(response.data)
+        ? response.data
         : response.data.data || response.data.jobs || [];
 
       // Convert date strings to Date objects

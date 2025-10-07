@@ -21,9 +21,6 @@ export class JobService implements JobRoleService {
     try {
       const response = await this.axiosInstance.get("/api/jobs");
 
-      // Log the response to see its structure
-      console.log("API Response:", JSON.stringify(response.data, null, 2));
-
       // Handle different response formats
       const jobsData = Array.isArray(response.data)
         ? response.data

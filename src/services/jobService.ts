@@ -53,20 +53,6 @@ export class JobService implements JobRoleService {
       throw error;
     }
   }
-
-  /**
-   * Set the base URL for the API
-   */
-  setBaseURL(baseURL: string): void {
-    this.axiosInstance.defaults.baseURL = baseURL;
-  }
-
-  /**
-   * Get the current base URL
-   */
-  getBaseURL(): string {
-    return this.axiosInstance.defaults.baseURL || "";
-  }
 }
 
 // Export a default instance

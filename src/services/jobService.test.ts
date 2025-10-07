@@ -104,12 +104,4 @@ describe("JobService", () => {
       await expect(jobService.getJobById(999)).rejects.toThrow("Job with ID 999 not found");
     });
   });
-
-  describe("configuration methods", () => {
-    it("should set and get base URL", () => {
-      jobService.setBaseURL("/new-api");
-      expect(mockAxiosInstance.defaults.baseURL).toBe("/new-api");
-      expect(jobService.getBaseURL()).toBe("/new-api");
-    });
-  });
 });

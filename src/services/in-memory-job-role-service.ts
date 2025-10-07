@@ -26,20 +26,6 @@ export class InMemoryJobRoleService implements JobRoleService {
     return Promise.resolve(job);
   }
 
-  /**
-   * Set base URL - not used by in-memory service but required by interface
-   */
-  setBaseURL(_baseURL: string): void {
-    // No-op for in-memory service
-  }
-
-  /**
-   * Get base URL - not used by in-memory service but required by interface
-   */
-  getBaseURL(): string | undefined {
-    return undefined;
-  }
-
   private createSampleJobRoles(): JobRole[] {
     return [
       {

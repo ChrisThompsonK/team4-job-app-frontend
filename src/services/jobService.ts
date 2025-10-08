@@ -21,7 +21,8 @@ export class JobService implements JobRoleService {
     try {
       const response = await this.axiosInstance.get("/api/jobs");
 
-      // Handle different response formats
+      // Axios only returns 2xx status codes here, so we know it's successful
+      // Extract data from the API response wrapper
       const jobsData = Array.isArray(response.data)
         ? response.data
         : response.data.data || response.data.jobs || [];
@@ -32,8 +33,12 @@ export class JobService implements JobRoleService {
         closingDate: new Date(job.closingDate),
       }));
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 404) {
-        throw new Error("Jobs endpoint not found");
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          throw new Error("Jobs endpoint not found");
+        }
+        // Re-throw with HTTP status information
+        throw new Error(`HTTP ${error.response?.status}: ${error.message}`);
       }
       throw error;
     }
@@ -46,8 +51,11 @@ export class JobService implements JobRoleService {
     try {
       const response = await this.axiosInstance.get(`/api/jobs/${id}`);
 
-      // Extract job data from the response wrapper
+      // Axios only returns 2xx status codes here, so we know it's successful
+      // Extract job data from the API response wrapper
       const jobData = response.data.data || response.data;
+
+      console.log("Fetched job data:", jobData);
 
       // Convert date string to Date object
       return {
@@ -55,8 +63,12 @@ export class JobService implements JobRoleService {
         closingDate: new Date(jobData.closingDate),
       };
     } catch (error) {
-      if (axios.isAxiosError(error) && error.response?.status === 404) {
-        throw new Error(`Job with ID ${id} not found`);
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 404) {
+          throw new Error(`Job with ID ${id} not found`);
+        }
+        // Re-throw with HTTP status information
+        throw new Error(`HTTP ${error.response?.status}: ${error.message}`);
       }
       throw error;
     }

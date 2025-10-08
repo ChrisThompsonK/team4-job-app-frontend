@@ -92,6 +92,8 @@ app.get("/jobs/:id", async (req, res) => {
   try {
     const job = await jobRoleService.getJobById(jobId);
 
+    console.log("Fetched job data:", job);
+
     // Format the date for display
     const formattedJob = {
       ...job,

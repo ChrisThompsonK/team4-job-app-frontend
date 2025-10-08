@@ -1,0 +1,171 @@
+{% extends "layout.njk" %}
+
+{% block title %}Apply for {{ job.name }} - Kainos Job Portal{% endblock %}
+
+{% block content %}
+    <!-- Application Form Section -->
+    <div class="container mx-auto px-6 py-12">
+        <!-- Breadcrumb -->
+        <nav class="mb-8">
+            <div class="flex items-center space-x-2 text-sm text-gray-600">
+                <a href="/" class="hover:text-blue-600">Home</a>
+                <span>/</span>
+                <a href="/jobs" class="hover:text-blue-600">Jobs</a>
+                <span>/</span>
+                <a href="/jobs/{{ job.id }}" class="hover:text-blue-600">{{ job.name }}</a>
+                <span>/</span>
+                <span class="text-gray-400">Apply</span>
+            </div>
+        </nav>
+
+        <div class="max-w-3xl mx-auto">
+            <!-- Header -->
+            <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm mb-8">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Apply for {{ job.name }}</h1>
+                <p class="text-gray-600 mb-4">Complete the form below to submit your application. We'll review your CV and get back to you soon.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-200">
+                    <div class="flex items-center">
+                        <i data-lucide="map-pin" class="h-5 w-5 mr-2 text-blue-600"></i>
+                        <span class="text-sm text-gray-700">{{ job.location }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-lucide="building" class="h-5 w-5 mr-2 text-purple-600"></i>
+                        <span class="text-sm text-gray-700">{{ job.capability }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-lucide="badge" class="h-5 w-5 mr-2 text-green-600"></i>
+                        <span class="text-sm text-gray-700">{{ job.band }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            {% if errorMessage %}
+                <div class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg mb-6">
+                    <div class="flex items-center">
+                        <i data-lucide="alert-circle" class="h-5 w-5 mr-3"></i>
+                        <span>{{ errorMessage }}</span>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Application Form -->
+            <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Your Details</h2>
+                
+                <form action="/jobs/{{ job.id }}/apply" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    <!-- Name Field -->
+                    <div>
+                        <label for="applicantName" class="block text-sm font-medium text-gray-700 mb-2">
+                            Full Name <span class="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="applicantName" 
+                            name="applicantName" 
+                            required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="Enter your full name"
+                        />
+                    </div>
+
+                    <!-- Email Field -->
+                    <div>
+                        <label for="applicantEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email Address <span class="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            id="applicantEmail" 
+                            name="applicantEmail" 
+                            required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            placeholder="your.email@example.com"
+                        />
+                    </div>
+
+                    <!-- CV Upload Field -->
+                    <div>
+                        <label for="cv" class="block text-sm font-medium text-gray-700 mb-2">
+                            CV/Resume <span class="text-red-500">*</span>
+                        </label>
+                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-blue-400 transition-colors">
+                            <div class="space-y-1 text-center">
+                                <i data-lucide="upload" class="mx-auto h-12 w-12 text-gray-400"></i>
+                                <div class="flex text-sm text-gray-600">
+                                    <label for="cv" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                        <span>Upload a file</span>
+                                        <input 
+                                            id="cv" 
+                                            name="cv" 
+                                            type="file" 
+                                            accept=".pdf,.doc,.docx" 
+                                            required
+                                            class="sr-only"
+                                            onchange="updateFileName(this)"
+                                        />
+                                    </label>
+                                    <p class="pl-1">or drag and drop</p>
+                                </div>
+                                <p class="text-xs text-gray-500">
+                                    PDF, DOC, DOCX up to 10MB
+                                </p>
+                                <p id="file-name" class="text-sm text-blue-600 font-medium mt-2"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Buttons -->
+                    <div class="flex gap-4 pt-6 border-t border-gray-200">
+                        <a 
+                            href="/jobs/{{ job.id }}" 
+                            class="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-300 px-6 py-3 flex-1 text-center"
+                        >
+                            Cancel
+                        </a>
+                        <button 
+                            type="submit" 
+                            class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-6 py-3 flex-1"
+                        >
+                            Submit Application
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Information Box -->
+            <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 mt-6">
+                <h3 class="text-lg font-semibold text-blue-900 mb-2 flex items-center">
+                    <i data-lucide="info" class="h-5 w-5 mr-2"></i>
+                    What happens next?
+                </h3>
+                <ul class="space-y-2 text-blue-800 text-sm">
+                    <li class="flex items-start">
+                        <i data-lucide="check" class="h-4 w-4 mr-2 mt-0.5 flex-shrink-0"></i>
+                        <span>Your application will be set to "in progress" status</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i data-lucide="check" class="h-4 w-4 mr-2 mt-0.5 flex-shrink-0"></i>
+                        <span>Our recruitment team will review your CV within 5 working days</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i data-lucide="check" class="h-4 w-4 mr-2 mt-0.5 flex-shrink-0"></i>
+                        <span>We'll contact you via email with the next steps</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateFileName(input) {
+            const fileNameElement = document.getElementById('file-name');
+            if (input.files && input.files[0]) {
+                fileNameElement.textContent = '📄 ' + input.files[0].name;
+            } else {
+                fileNameElement.textContent = '';
+            }
+        }
+    </script>
+{% endblock %}

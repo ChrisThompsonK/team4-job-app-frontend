@@ -9,6 +9,9 @@ pnpm-debug.log*
 dist/
 build/
 
+# Uploaded files
+uploads/
+
 # Environment variables
 .env
 .env.local

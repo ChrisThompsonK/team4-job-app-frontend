@@ -59,15 +59,31 @@
                                 {{ job.numberOfOpenPositions }} position{% if job.numberOfOpenPositions != 1 %}s{% endif %} available
                             </div>
                         </div>
-                        <div class="flex justify-between items-center">
-                            <a href="/jobs/{{ job.id }}" class="text-blue-600 hover:text-blue-800 font-medium">View Details</a>
-                            {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
-                                <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none">Apply Now</button>
-                            {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
-                                <button class="btn bg-gray-400 text-white border-none cursor-not-allowed" disabled>No Positions</button>
-                            {% else %}
-                                <button class="btn bg-gray-400 text-white border-none cursor-not-allowed" disabled>Closed</button>
-                            {% endif %}
+                        <div class="flex justify-between items-center mt-4">
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center">
+                                    {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                                            <i data-lucide="circle-check" class="h-4 w-4 mr-1"></i>
+                                            Accepting Applications
+                                        </span>
+                                    {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                                            <i data-lucide="users-x" class="h-4 w-4 mr-1"></i>
+                                            Positions Filled
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                                            <i data-lucide="circle-x" class="h-4 w-4 mr-1"></i>
+                                            Closed
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <a href="/jobs/{{ job.id }}" class="btn bg-blue-600 hover:bg-blue-700 text-white rounded-full border-none px-6 py-2">
+                                View Details
+                                <i data-lucide="arrow-right" class="h-4 w-4 ml-2"></i>
+                            </a>
                         </div>
                     </div>
                 {% endfor %}

@@ -20,7 +20,9 @@
     "format": "biome format --write .",
     "format:check": "biome format .",
     "check": "biome check .",
-    "preview": "npm run build:css && open index.html"
+    "preview": "npm run build:css && open index.html",
+    "premerge": "npm run format:check && npm run check && npm run test:run && npm run build",
+    "premerge:fix": "npm run lint:fix && npm run format && npm run test:run && npm run build"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +31,7 @@
     "@biomejs/biome": "2.2.4",
     "@tailwindcss/cli": "^4.1.0",
     "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
     "@types/node": "^24.6.0",
     "@types/nunjucks": "^3.2.6",
     "autoprefixer": "^10.4.21",
@@ -45,6 +48,7 @@
     "axios": "^1.12.2",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "multer": "^2.0.2",
     "nunjucks": "^3.2.4"
   }
 }

@@ -1,0 +1,110 @@
+{% extends "layout.njk" %}
+
+{% block title %}Application Submitted - Kainos Job Portal{% endblock %}
+
+{% block content %}
+    <!-- Success Message Section -->
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-2xl mx-auto">
+            <!-- Success Icon and Message -->
+            <div class="bg-white p-12 rounded-lg border border-gray-200 shadow-sm text-center">
+                <div class="mb-6">
+                    <div class="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
+                        <i data-lucide="check-circle" class="h-12 w-12 text-green-600"></i>
+                    </div>
+                </div>
+                
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Application Submitted!</h1>
+                <p class="text-xl text-gray-600 mb-8">
+                    Thank you for applying to <strong>{{ job.name }}</strong>
+                </p>
+
+                <!-- Application Details -->
+                <div class="bg-gray-50 p-6 rounded-lg mb-8 text-left">
+                    <h2 class="text-lg font-semibold text-gray-800 mb-4">Application Details</h2>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Position:</span>
+                            <span class="font-medium text-gray-800">{{ job.name }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Location:</span>
+                            <span class="font-medium text-gray-800">{{ job.location }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Status:</span>
+                            <span class="font-medium text-blue-600">In Progress</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Submitted:</span>
+                            <span class="font-medium text-gray-800">{{ submittedDate }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Next Steps -->
+                <div class="bg-blue-50 p-6 rounded-lg mb-8 text-left">
+                    <h3 class="text-lg font-semibold text-blue-900 mb-4 flex items-center">
+                        <i data-lucide="info" class="h-5 w-5 mr-2"></i>
+                        What happens next?
+                    </h3>
+                    <ul class="space-y-3 text-blue-800">
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="h-5 w-5 mr-3 mt-0.5 flex-shrink-0"></i>
+                            <span>Your application is now set to "in progress" and is being reviewed by our recruitment team</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="h-5 w-5 mr-3 mt-0.5 flex-shrink-0"></i>
+                            <span>We'll review your CV and qualifications within 5 working days</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="h-5 w-5 mr-3 mt-0.5 flex-shrink-0"></i>
+                            <span>You'll receive an email update about the next steps in the process</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-lucide="check" class="h-5 w-5 mr-3 mt-0.5 flex-shrink-0"></i>
+                            <span>Keep an eye on your inbox for communications from our team</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-4">
+                    <a 
+                        href="/jobs" 
+                        class="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-300 px-6 py-3 flex-1"
+                    >
+                        Browse More Jobs
+                    </a>
+                    <a 
+                        href="/" 
+                        class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-6 py-3 flex-1"
+                    >
+                        Return to Homepage
+                    </a>
+                </div>
+            </div>
+
+            <!-- Additional Resources -->
+            <div class="mt-8 bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">While you wait...</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex items-start">
+                        <i data-lucide="linkedin" class="h-5 w-5 mr-3 mt-1 text-blue-600 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="font-medium text-gray-800">Connect with us</h4>
+                            <p class="text-sm text-gray-600">Follow Kainos on LinkedIn for company updates</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <i data-lucide="book-open" class="h-5 w-5 mr-3 mt-1 text-purple-600 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="font-medium text-gray-800">Learn more</h4>
+                            <p class="text-sm text-gray-600">Explore our company culture and values</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -22,7 +22,7 @@
                 </div>
             {% endif %}
 
-            <form id="createJobForm" class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+            <form method="POST" action="/jobs/create" class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
                 <!-- Job Title -->
                 <div class="mb-6">
                     <label for="name" class="block text-gray-700 font-semibold mb-2">
@@ -65,13 +65,9 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Select capability...</option>
-                        <option value="Engineering">Engineering</option>
-                        <option value="Platforms">Platforms</option>
-                        <option value="Data">Data</option>
-                        <option value="Artificial Intelligence">Artificial Intelligence</option>
-                        <option value="Cyber Security">Cyber Security</option>
-                        <option value="Workday">Workday</option>
-                        <option value="Experience Design">Experience Design</option>
+                        {% for capability in capabilities %}
+                        <option value="{{ capability }}">{{ capability }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
@@ -87,13 +83,9 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Select band...</option>
-                        <option value="Trainee">Trainee</option>
-                        <option value="Associate">Associate</option>
-                        <option value="Senior Associate">Senior Associate</option>
-                        <option value="Consultant">Consultant</option>
-                        <option value="Manager">Manager</option>
-                        <option value="Principal">Principal</option>
-                        <option value="Leadership Community">Leadership Community</option>
+                        {% for band in bands %}
+                        <option value="{{ band }}">{{ band }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
@@ -139,8 +131,9 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option value="">Select status...</option>
-                        <option value="open">Open</option>
-                        <option value="closed">Closed</option>
+                        {% for status in statuses %}
+                        <option value="{{ status.value }}">{{ status.label }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
@@ -190,44 +183,4 @@
             </form>
         </div>
     </div>
-
-    <script>
-        document.getElementById('createJobForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            const data = {
-                name: formData.get('name'),
-                location: formData.get('location'),
-                capability: formData.get('capability'),
-                band: formData.get('band'),
-                closingDate: formData.get('closingDate'),
-                numberOfOpenPositions: parseInt(formData.get('numberOfOpenPositions')),
-                status: formData.get('status'),
-                summary: formData.get('summary'),
-                keyResponsibilities: formData.get('keyResponsibilities')
-            };
-
-            try {
-                const response = await fetch('/jobs/create', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    // Redirect to jobs page on success
-                    window.location.href = '/jobs?success=created';
-                } else {
-                    const error = await response.json();
-                    alert('Error creating job role: ' + (error.message || 'Unknown error'));
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to create job role. Please try again.');
-            }
-        });
-    </script>
 {% endblock %}

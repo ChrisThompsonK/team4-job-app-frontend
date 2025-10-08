@@ -76,7 +76,7 @@ export class JobService implements JobRoleService {
       });
 
       // Extract job data from the response
-      const createdJob = response.data.data || response.data;
+      const createdJob = response.data;
 
       // Convert date string to Date object
       return {

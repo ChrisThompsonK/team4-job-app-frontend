@@ -13,7 +13,22 @@
         <!-- Filter Section -->
         <div class="max-w-4xl mx-auto mb-8">
             <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                <h2 class="text-xl font-semibold text-gray-800 mb-4">Filter Jobs</h2>
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Search & Filter Jobs</h2>
+                
+                <!-- Search Bar -->
+                <div class="mb-6">
+                    <label for="job-search" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i data-lucide="search" class="h-4 w-4 inline mr-1"></i>
+                        Search by Job Title
+                    </label>
+                    <input 
+                        type="text" 
+                        id="job-search" 
+                        placeholder="e.g. Software Engineer, Data Scientist, DevOps..." 
+                        class="input input-bordered w-full"
+                    />
+                </div>
+                
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- Location Filter -->
                     <div>
@@ -64,6 +79,7 @@
             <div id="jobs-container" class="max-w-4xl mx-auto space-y-6">
                 {% for job in jobs %}
                     <div class="job-card bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200" 
+                         data-name="{{ job.name }}"
                          data-location="{{ job.location }}" 
                          data-capability="{{ job.capability }}" 
                          data-band="{{ job.band }}">
@@ -156,6 +172,7 @@
         
         // Filter jobs based on selected criteria
         function filterJobs() {
+            const searchTerm = document.getElementById('job-search').value.toLowerCase();
             const locationFilter = document.getElementById('location-filter').value;
             const capabilityFilter = document.getElementById('capability-filter').value;
             const bandFilter = document.getElementById('band-filter').value;
@@ -164,15 +181,17 @@
             let visibleCount = 0;
             
             jobCards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
                 const location = card.dataset.location;
                 const capability = card.dataset.capability;
                 const band = card.dataset.band;
                 
+                const searchMatch = !searchTerm || name.includes(searchTerm);
                 const locationMatch = !locationFilter || location === locationFilter;
                 const capabilityMatch = !capabilityFilter || capability === capabilityFilter;
                 const bandMatch = !bandFilter || band === bandFilter;
                 
-                if (locationMatch && capabilityMatch && bandMatch) {
+                if (searchMatch && locationMatch && capabilityMatch && bandMatch) {
                     card.style.display = 'block';
                     visibleCount++;
                 } else {
@@ -204,6 +223,7 @@
         
         // Clear all filters
         function clearFilters() {
+            document.getElementById('job-search').value = '';
             document.getElementById('location-filter').value = '';
             document.getElementById('capability-filter').value = '';
             document.getElementById('band-filter').value = '';
@@ -215,6 +235,7 @@
             initializeFilters();
             
             // Add event listeners
+            document.getElementById('job-search').addEventListener('input', filterJobs);
             document.getElementById('location-filter').addEventListener('change', filterJobs);
             document.getElementById('capability-filter').addEventListener('change', filterJobs);
             document.getElementById('band-filter').addEventListener('change', filterJobs);

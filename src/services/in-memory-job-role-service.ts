@@ -230,8 +230,7 @@ export class InMemoryJobRoleService implements JobRoleService {
         capability: "Platforms",
         band: "Principal",
         closingDate: new Date("2025-11-12"),
-        summary:
-          "Design and implement enterprise-scale cloud architectures on AWS, Azure, or GCP.",
+        summary: "Design and implement enterprise-scale cloud architectures on AWS, Azure, or GCP.",
         keyResponsibilities:
           "Design cloud infrastructure and migration strategies. Define cloud governance and cost optimization approaches. Lead cloud transformation initiatives. Provide technical leadership on cloud best practices. Ensure security, compliance, and disaster recovery.",
         status: "open",
@@ -328,8 +327,7 @@ export class InMemoryJobRoleService implements JobRoleService {
         capability: "Engineering",
         band: "Consultant",
         closingDate: new Date("2025-10-18"),
-        summary:
-          "Ensure software quality through comprehensive automated testing strategies.",
+        summary: "Ensure software quality through comprehensive automated testing strategies.",
         keyResponsibilities:
           "Design and implement test automation frameworks. Create automated test suites for web and mobile. Integrate tests into CI/CD pipelines. Perform performance and load testing. Report and track defects and test metrics.",
         status: "open",

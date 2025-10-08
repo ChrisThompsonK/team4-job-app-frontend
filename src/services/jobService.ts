@@ -61,6 +61,35 @@ export class JobService implements JobRoleService {
       throw error;
     }
   }
+
+  /**
+   * Create a new job role
+   */
+  async createJob(jobData: Omit<JobRole, "id">): Promise<JobRole> {
+    try {
+      const response = await this.axiosInstance.post("/api/jobs", {
+        ...jobData,
+        closingDate:
+          jobData.closingDate instanceof Date
+            ? jobData.closingDate.toISOString().split("T")[0]
+            : jobData.closingDate,
+      });
+
+      // Extract job data from the response
+      const createdJob = response.data.data || response.data;
+
+      // Convert date string to Date object
+      return {
+        ...createdJob,
+        closingDate: new Date(createdJob.closingDate),
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data?.error) {
+        throw new Error(error.response.data.error);
+      }
+      throw error;
+    }
+  }
 }
 
 // Export a default instance

@@ -1,0 +1,186 @@
+{% extends "layout.njk" %}
+
+{% block title %}Create New Job Role - Kainos Job Portal{% endblock %}
+
+{% block content %}
+    <!-- Create Job Role Form Section -->
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Create New Job Role</h1>
+                <p class="text-xl text-gray-600">Add a new career opportunity to the Kainos Job Portal</p>
+            </div>
+
+            {% if errorMessage %}
+                <div class="mb-8">
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert">
+                        <div class="flex items-center">
+                            <i data-lucide="alert-circle" class="h-5 w-5 mr-2"></i>
+                            <span>{{ errorMessage }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <form method="POST" action="/jobs/create" class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+                <!-- Job Title -->
+                <div class="mb-6">
+                    <label for="name" class="block text-gray-700 font-semibold mb-2">
+                        Job Title <span class="text-red-600">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g., Senior Software Engineer"
+                    />
+                </div>
+
+                <!-- Location -->
+                <div class="mb-6">
+                    <label for="location" class="block text-gray-700 font-semibold mb-2">
+                        Location <span class="text-red-600">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="location" 
+                        name="location" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g., Belfast, UK"
+                    />
+                </div>
+
+                <!-- Capability -->
+                <div class="mb-6">
+                    <label for="capability" class="block text-gray-700 font-semibold mb-2">
+                        Capability <span class="text-red-600">*</span>
+                    </label>
+                    <select 
+                        id="capability" 
+                        name="capability" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="">Select capability...</option>
+                        {% for capability in capabilities %}
+                        <option value="{{ capability }}">{{ capability }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Band -->
+                <div class="mb-6">
+                    <label for="band" class="block text-gray-700 font-semibold mb-2">
+                        Band <span class="text-red-600">*</span>
+                    </label>
+                    <select 
+                        id="band" 
+                        name="band" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="">Select band...</option>
+                        {% for band in bands %}
+                        <option value="{{ band }}">{{ band }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Closing Date -->
+                <div class="mb-6">
+                    <label for="closingDate" class="block text-gray-700 font-semibold mb-2">
+                        Closing Date <span class="text-red-600">*</span>
+                    </label>
+                    <input 
+                        type="date" 
+                        id="closingDate" 
+                        name="closingDate" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <!-- Number of Open Positions -->
+                <div class="mb-6">
+                    <label for="numberOfOpenPositions" class="block text-gray-700 font-semibold mb-2">
+                        Number of Open Positions <span class="text-red-600">*</span>
+                    </label>
+                    <input 
+                        type="number" 
+                        id="numberOfOpenPositions" 
+                        name="numberOfOpenPositions" 
+                        required
+                        min="0"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g., 3"
+                    />
+                </div>
+
+                <!-- Status -->
+                <div class="mb-6">
+                    <label for="status" class="block text-gray-700 font-semibold mb-2">
+                        Status <span class="text-red-600">*</span>
+                    </label>
+                    <select 
+                        id="status" 
+                        name="status" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="">Select status...</option>
+                        {% for status in statuses %}
+                        <option value="{{ status.value }}">{{ status.label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Summary -->
+                <div class="mb-6">
+                    <label for="summary" class="block text-gray-700 font-semibold mb-2">
+                        Summary <span class="text-red-600">*</span>
+                    </label>
+                    <textarea 
+                        id="summary" 
+                        name="summary" 
+                        required
+                        rows="4"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Provide a brief summary of the role..."
+                    ></textarea>
+                </div>
+
+                <!-- Key Responsibilities -->
+                <div class="mb-6">
+                    <label for="keyResponsibilities" class="block text-gray-700 font-semibold mb-2">
+                        Key Responsibilities <span class="text-red-600">*</span>
+                    </label>
+                    <textarea 
+                        id="keyResponsibilities" 
+                        name="keyResponsibilities" 
+                        required
+                        rows="6"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="List the main responsibilities for this role..."
+                    ></textarea>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex justify-between items-center pt-6 border-t border-gray-200">
+                    <a href="/jobs" class="text-gray-600 hover:text-gray-800 font-medium">
+                        <i data-lucide="arrow-left" class="h-5 w-5 inline mr-2"></i>
+                        Back to Jobs
+                    </a>
+                    <button 
+                        type="submit" 
+                        class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 rounded-lg font-semibold"
+                    >
+                        Create Job Role
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

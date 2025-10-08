@@ -1,14 +1,22 @@
 import path from "node:path";
+import dotenv from "dotenv";
 import express from "express";
 import nunjucks from "nunjucks";
+import { BANDS, CAPABILITIES, STATUSES } from "./constants/job-form-options.js";
+import { JobController } from "./controllers/job-controller.js";
 import type { JobRole } from "./models/job-role.js";
-import { InMemoryJobRoleService } from "./services/in-memory-job-role-service.js";
+import { JobService } from "./services/jobService.js";
+
+// Load environment variables
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
-// Initialize the job role service
-const jobRoleService = new InMemoryJobRoleService();
+// Initialize the job role service and controller
+const jobRoleService = new JobService(API_BASE_URL);
+const jobController = new JobController(jobRoleService);
 
 // Configure Nunjucks
 const env = nunjucks.configure(path.join(process.cwd(), "views"), {
@@ -23,15 +31,18 @@ app.engine("njk", env.render.bind(env));
 
 // Serve static files (CSS, JS, images, etc.)
 app.use(express.static(path.join(process.cwd(), "dist")));
+app.use(express.static(path.join(process.cwd(), "public")));
 app.use("/js", express.static(path.join(process.cwd(), "js")));
 
-// Middleware to parse JSON
+// Middleware to parse JSON and URL-encoded form data
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Hello World endpoint - now renders a view
-app.get("/", (_req, res) => {
+app.get("/", async (_req, res) => {
   // Get the 3 most recent jobs for the homepage
-  const allJobs = jobRoleService.getJobRoles();
+  const allJobs = await jobRoleService.getAllJobs();
+  console.log(allJobs);
   const latestJobs = allJobs
     .sort((a, b) => b.closingDate.getTime() - a.closingDate.getTime())
     .slice(0, 3)
@@ -48,9 +59,9 @@ app.get("/", (_req, res) => {
 });
 
 // Jobs listing endpoint
-app.get("/jobs", (_req, res) => {
+app.get("/jobs", async (req, res) => {
   // Get job roles from our service
-  const jobRoles = jobRoleService.getJobRoles();
+  const jobRoles = await jobRoleService.getAllJobs();
 
   // Format the dates for display
   const formattedJobRoles = jobRoles.map((job: JobRole) => ({
@@ -58,10 +69,70 @@ app.get("/jobs", (_req, res) => {
     closingDate: job.closingDate.toLocaleDateString("en-GB"),
   }));
 
+  // Handle error messages from redirects
+  let errorMessage = "";
+  if (req.query.error === "invalid-id") {
+    errorMessage = "Invalid job ID provided.";
+  } else if (req.query.error === "not-found") {
+    errorMessage = "The job you're looking for doesn't exist or has been removed.";
+  }
+
+  // Handle success messages
+  let successMessage = "";
+  if (req.query.success === "created") {
+    successMessage = "Job role created successfully!";
+  }
+
   res.render("jobs", {
     title: "Available Job Roles",
     jobs: formattedJobRoles,
+    errorMessage: errorMessage,
+    successMessage: successMessage,
   });
+});
+
+// Create job form page
+app.get("/jobs/create", (req, res) => {
+  const errorMessage = req.query.error ? String(req.query.error) : "";
+
+  res.render("create-job", {
+    title: "Create New Job Role",
+    capabilities: CAPABILITIES,
+    bands: BANDS,
+    statuses: STATUSES,
+    errorMessage: errorMessage,
+  });
+});
+
+// Create job form submission
+app.post("/jobs/create", jobController.createJob);
+
+// Job detail endpoint
+app.get("/jobs/:id", async (req, res) => {
+  const jobId = parseInt(req.params.id, 10);
+
+  // Check if the ID is a valid number
+  if (Number.isNaN(jobId)) {
+    res.redirect("/jobs?error=invalid-id");
+    return;
+  }
+
+  try {
+    const job = await jobRoleService.getJobById(jobId);
+
+    // Format the date for display
+    const formattedJob = {
+      ...job,
+      closingDate: job.closingDate.toLocaleDateString("en-GB"),
+    };
+
+    res.render("job-detail", {
+      title: job.name,
+      job: formattedJob,
+    });
+  } catch (_error) {
+    res.redirect("/jobs?error=not-found");
+  }
 });
 
 // Start the server

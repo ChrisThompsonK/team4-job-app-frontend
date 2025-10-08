@@ -12,8 +12,8 @@
                         <img src="/images/Kainos-logo.jpg" alt="Kainos Logo" class="h-16">
                     </div>
                 </div>
-                <p class="text-xl text-gray-700 mb-8">{{ message }}</p>
-                <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none btn-lg">Explore Jobs</button>
+                <p class="text-xl text-gray-700 mb-16">{{ message }}</p>
+                <a href="/jobs" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none btn-lg rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 px-12 py-4 text-lg font-semibold !text-white mt-8">Explore Jobs</a>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 {% for job in latestJobs %}
                     <!-- Job Card -->
                     <div class="card bg-base-100 shadow-xl feature-card">
-                        <div class="card-body">
+                        <div class="card-body p-6">
                             <h2 class="card-title text-xl font-bold text-gray-800 mb-4">{{ job.name }}</h2>
                             <div class="space-y-3 mb-6">
                                 <div class="flex items-center text-gray-600">
@@ -61,7 +61,7 @@
                             </div>
                             <div class="card-actions justify-center">
                                 {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
-                                    <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full">Apply Now</button>
+                                    <a href="/jobs/{{ job.id }}" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 inline-block text-center !text-white">Apply Now</a>
                                 {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
                                     <button class="btn bg-gray-400 text-white border-none w-full cursor-not-allowed" disabled>No Positions</button>
                                 {% else %}

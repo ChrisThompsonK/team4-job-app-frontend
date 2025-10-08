@@ -65,13 +65,14 @@ export class JobService implements JobRoleService {
   /**
    * Create a new job role
    */
-  async createJob(jobData: Omit<JobRole, 'id'>): Promise<JobRole> {
+  async createJob(jobData: Omit<JobRole, "id">): Promise<JobRole> {
     try {
-      const response = await this.axiosInstance.post('/api/jobs', {
+      const response = await this.axiosInstance.post("/api/jobs", {
         ...jobData,
-        closingDate: jobData.closingDate instanceof Date 
-          ? jobData.closingDate.toISOString().split('T')[0] 
-          : jobData.closingDate
+        closingDate:
+          jobData.closingDate instanceof Date
+            ? jobData.closingDate.toISOString().split("T")[0]
+            : jobData.closingDate,
       });
 
       // Extract job data from the response

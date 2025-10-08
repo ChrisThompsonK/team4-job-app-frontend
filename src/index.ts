@@ -38,6 +38,7 @@ app.use(express.json());
 app.get("/", async (_req, res) => {
   // Get the 3 most recent jobs for the homepage
   const allJobs = await jobRoleService.getAllJobs();
+  console.log(allJobs);
   const latestJobs = allJobs
     .sort((a, b) => b.closingDate.getTime() - a.closingDate.getTime())
     .slice(0, 3)
@@ -72,11 +73,51 @@ app.get("/jobs", async (req, res) => {
     errorMessage = "The job you're looking for doesn't exist or has been removed.";
   }
 
+  // Handle success messages
+  let successMessage = "";
+  if (req.query.success === "created") {
+    successMessage = "Job role created successfully!";
+  }
+
   res.render("jobs", {
     title: "Available Job Roles",
     jobs: formattedJobRoles,
     errorMessage: errorMessage,
+    successMessage: successMessage,
   });
+});
+
+// Create job form page
+app.get("/jobs/create", (_req, res) => {
+  res.render("create-job", {
+    title: "Create New Job Role",
+  });
+});
+
+// Create job form submission
+app.post("/jobs/create", async (req, res) => {
+  try {
+    const jobData = {
+      name: req.body.name,
+      location: req.body.location,
+      capability: req.body.capability,
+      band: req.body.band,
+      closingDate: new Date(req.body.closingDate),
+      summary: req.body.summary,
+      keyResponsibilities: req.body.keyResponsibilities,
+      status: req.body.status as "open" | "closed",
+      numberOfOpenPositions: parseInt(req.body.numberOfOpenPositions, 10),
+    };
+
+    await jobRoleService.createJob(jobData);
+    res.status(201).json({ success: true });
+  } catch (error) {
+    console.error("Error creating job role:", error);
+    res.status(500).json({
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to create job role",
+    });
+  }
 });
 
 // Job detail endpoint

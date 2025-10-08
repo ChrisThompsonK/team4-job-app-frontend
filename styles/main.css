@@ -120,16 +120,25 @@ p {
 
 /**
  * Link styling for better accessibility and UX
+ * Exclude button-styled links from default link styling
  */
-a {
-  color: rgb(37 99 235);
+a:not(.btn) {
+  color: rgb(37 99 235); /* blue-600 equivalent */
   text-decoration: none;
   transition: color 150ms ease-in-out;
 }
 
-a:hover {
-  color: rgb(29 78 216);
+a:not(.btn):hover {
+  color: rgb(29 78 216); /* blue-700 equivalent */
   text-decoration: underline;
+}
+
+a.btn {
+  text-decoration: none;
+}
+
+a.btn:hover {
+  text-decoration: none;
 }
 
 a:focus {

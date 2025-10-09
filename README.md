@@ -2,24 +2,31 @@
 
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 
-# Team 4 Job Application Project
+# Team 4 Job Application Project - Frontend
 
-A modern Node.js web application built with TypeScript, Express.js, and Nunjucks templating engine using ES modules. This project includes modern development tooling with Biome for linting and formatting.
+A modern Node.js web application built with TypeScript, Express.js, and Nunjucks templating engine using ES modules. This project includes modern development tooling with Biome for linting and formatting, and uses TailwindCSS with DaisyUI for styling.
+
+> 📚 **For Developers & AI Assistants**: See the [`instructions/`](./instructions/) directory for comprehensive guides on the project architecture, tools, and best practices.
 
 ## Features
 
-- **TypeScript** - Type-safe JavaScript development
-- **Express.js** - Fast, unopinionated web framework
+- **TypeScript** - Type-safe JavaScript development with ES Modules
+- **Express.js v5** - Fast, unopinionated web framework for server-side rendering
 - **Nunjucks** - Powerful templating engine for dynamic HTML rendering
-- **ES Modules** - Modern JavaScript module system
-- **Biome** - Fast linter and formatter for consistent code quality
+- **TailwindCSS v4** - Utility-first CSS framework
+- **DaisyUI v5** - Pre-styled accessible UI components
+- **Biome** - Ultra-fast linter and formatter (90x faster than ESLint)
 - **Hot Reloading** - Automatic server restart during development
-- **Responsive Design** - Clean, modern web interface
+- **Vitest** - Modern testing framework
+- **Backend Integration** - Communicates with REST API backend service
 
 ## Prerequisites
 
-- Node.js (v18 or higher)
-- npm
+- **Node.js** (v18 or higher, v20+ LTS recommended)
+- **npm** (v9 or higher, v10+ recommended)
+- **Backend API** (team4-job-app-backend - **REQUIRED** to be running)
+
+> ⚠️ **Important**: This frontend application requires the backend API to be running. See [Backend Integration](#backend-integration) section for setup instructions.
 
 ## Installation
 
@@ -34,10 +41,47 @@ cd team4-job-app-frontend
 npm install
 ```
 
+3. Set up environment variables:
+```bash
+# Create .env file
+cp .env.example .env
+
+# Edit .env with your configuration
+PORT=3000
+API_BASE_URL=http://localhost:8080
+```
+
 ## Running the Application
 
-### Development Mode
-Start the application in development mode with hot reloading:
+> ⚠️ **IMPORTANT**: The backend API must be running first! See [Backend Integration](#backend-integration) below.
+
+### Quick Start (Both Frontend & Backend)
+
+**1. Start the Backend** (in a separate terminal):
+```bash
+cd ../team4-job-app-backend
+npm install
+npm run db:seed    # First time only - seeds database
+npm run dev
+# Backend runs on http://localhost:3001 or http://localhost:8080
+```
+
+**2. Start the Frontend** (in this directory):
+```bash
+npm run dev
+# Frontend runs on http://localhost:3000
+```
+
+**3. Open your browser**:
+```
+http://localhost:3000
+```
+
+### Development Mode (Frontend Only)
+
+> ⚠️ Ensure backend is running first (see above)
+
+Start the frontend application in development mode with hot reloading:
 ```bash
 npm run dev
 ```
@@ -45,6 +89,9 @@ npm run dev
 The server will start on `http://localhost:3000` and automatically restart when you make changes to the code.
 
 ### Production Mode
+
+> ⚠️ Ensure backend is running in production mode first
+
 1. Build the application:
 ```bash
 npm run build
@@ -90,46 +137,86 @@ npm run start:prod    # Build and run in production mode
 - **Semicolons**: Always required
 - **Line Width**: 100 characters maximum
 - **Trailing Commas**: ES5 style
+- **Import Protocol**: Use `node:` prefix for Node.js built-ins
+- **Template Literals**: Prefer template literals over string concatenation
 
-## API Endpoints
+> 📖 See [`instructions/linting-instructions.md`](./instructions/linting-instructions.md) for detailed linting guide.
 
-- `GET /` - Renders the home page with welcome message
-- `GET /jobs` - Displays a list of available job positions
+## Application Routes
+
+The application serves server-side rendered HTML pages using Nunjucks templates:
+
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/` | GET | Homepage with latest 3 job postings |
+| `/jobs` | GET | All job listings with filter/sort options |
+| `/jobs/create` | GET | Create new job role form |
+| `/jobs/create` | POST | Submit new job role |
+| `/jobs/:id` | GET | Individual job details page |
 
 ### Web Interface
 
-The application now serves HTML pages using Nunjucks templates instead of JSON responses:
+Visit the application in your browser:
 
-- **Home Page** (`/`): Welcome page with navigation
-- **Jobs Page** (`/jobs`): Sample job listings with company information
-
-Example:
 ```bash
-# Visit in browser
-http://localhost:3000      # Home page
-http://localhost:3000/jobs # Jobs listing page
+http://localhost:3000           # Homepage
+http://localhost:3000/jobs      # Job listings
+http://localhost:3000/jobs/1    # Job details (ID: 1)
+http://localhost:3000/jobs/create  # Create new job
 ```
 
 ## Project Structure
 
 ```
 team4-job-app-frontend/
-├── src/
-│   └── index.ts          # Main application entry point
-├── views/                # Nunjucks templates
-│   ├── index.njk        # Home page template
-│   └── jobs.njk         # Jobs listing template
-├── dist/                 # Compiled JavaScript output (generated)
-├── docs/                 # Project documentation
-│   └── biome-setup.md   # Biome configuration guide
-├── node_modules/        # Dependencies (generated)
-├── .biomeignore         # Files ignored by Biome
-├── .gitignore          # Git ignore rules
-├── biome.json          # Biome configuration
-├── package.json        # Project dependencies and scripts
-├── package-lock.json   # Dependency lock file
-├── tsconfig.json       # TypeScript configuration
-└── README.md          # This file
+├── src/                          # TypeScript source code
+│   ├── index.ts                  # Main application entry point
+│   ├── controllers/              # Request handlers
+│   │   └── job-controller.ts
+│   ├── services/                 # Business logic & API communication
+│   │   ├── jobService.ts         # Backend API service
+│   │   ├── interfaces.ts
+│   │   └── in-memory-job-role-service.ts
+│   ├── models/                   # TypeScript interfaces
+│   │   ├── job-role.ts
+│   │   └── create-job-role.ts
+│   ├── constants/                # Shared configuration
+│   │   └── job-form-options.ts
+│   └── utils.ts                  # Utility functions
+├── views/                        # Nunjucks templates
+│   ├── layout.njk                # Base layout template
+│   ├── index.njk                 # Homepage
+│   ├── jobs.njk                  # Job listings
+│   ├── job-detail.njk            # Job details
+│   ├── create-job.njk            # Create job form
+│   └── partials/                 # Reusable components
+│       ├── header.njk
+│       └── footer.njk
+├── styles/                       # CSS source
+│   └── main.css                  # TailwindCSS entry point
+├── public/                       # Static assets
+│   └── images/
+│       └── Kainos-logo.jpg
+├── js/                           # Client-side JavaScript
+│   └── index.js
+├── instructions/                 # 📚 Comprehensive project documentation
+│   ├── README.md                 # Instructions overview
+│   ├── project-info.md           # Complete project guide
+│   ├── nunjucks-instructions.md  # Templating guide
+│   ├── linting-instructions.md   # Biome guide
+│   ├── dependencies-instructions.md  # Package management
+│   ├── daisyui-instructions.md   # UI components guide
+│   └── mcp-instructions.md       # Model Context Protocol setup
+├── dist/                         # Compiled output (generated)
+│   ├── src/                      # Compiled JavaScript
+│   └── styles.css                # Compiled CSS
+├── docs/                         # Additional documentation
+├── biome.json                    # Biome configuration
+├── tailwind.config.js            # TailwindCSS + DaisyUI config
+├── tsconfig.json                 # TypeScript configuration
+├── vitest.config.ts              # Vitest test configuration
+├── package.json                  # Dependencies and scripts
+└── README.md                     # This file
 ```
 
 ## Development Workflow
@@ -142,31 +229,27 @@ team4-job-app-frontend/
 
 ## Templating with Nunjucks
 
-This project uses Nunjucks as the templating engine to render dynamic HTML pages.
+This project uses Nunjucks as the templating engine to render dynamic HTML pages with DaisyUI components.
 
 ### Template Features
 
 - **Auto-reloading**: Templates automatically reload during development
-- **Template inheritance**: Consistent styling and layout across pages
-- **Dynamic content**: Data can be passed from routes to templates
-- **Conditional rendering**: Show/hide content based on data availability
+- **Template inheritance**: Consistent styling and layout across pages (`layout.njk`)
+- **Dynamic content**: Data passed from controllers to templates
+- **Conditional rendering**: Show/hide content based on data
 - **Loops and filters**: Render lists and format data
+- **Macros**: Reusable component patterns
 
-### Template Structure
+### Adding New Pages
 
-Templates are located in the `views/` directory:
-
-- `index.njk` - Home page with welcome message and navigation
-- `jobs.njk` - Job listings page with sample job data
-
-### Adding New Templates
-
-1. Create a new `.njk` file in the `views/` directory
-2. Add a new route in `src/index.ts` using `res.render()`
-3. Pass data to the template as the second parameter
+1. Create template in `views/` directory (e.g., `about.njk`)
+2. Create controller method in `src/controllers/`
+3. Add route in `src/index.ts`
+4. Style with DaisyUI components
 
 Example:
 ```typescript
+// src/index.ts
 app.get('/about', (_req, res) => {
   res.render('about', {
     title: 'About Us',
@@ -175,16 +258,36 @@ app.get('/about', (_req, res) => {
 });
 ```
 
+> 📖 See [`instructions/nunjucks-instructions.md`](./instructions/nunjucks-instructions.md) for complete templating guide.
+>
+> 📖 See [`instructions/daisyui-instructions.md`](./instructions/daisyui-instructions.md) for UI components guide.
+
 ## Technology Stack
 
-- **Runtime**: Node.js
-- **Language**: TypeScript
-- **Framework**: Express.js
-- **Templating**: Nunjucks
+### Core
+- **Runtime**: Node.js v18+ (v20+ LTS recommended)
+- **Language**: TypeScript v5.9+
+- **Framework**: Express.js v5.1.0
+- **Templating**: Nunjucks v3.2.4
 - **Module System**: ES Modules
-- **Code Quality**: Biome (linting + formatting)
-- **Development**: tsx (TypeScript execution with hot reloading)
-- **File Watching**: chokidar (for template auto-reloading)
+
+### Styling
+- **CSS Framework**: TailwindCSS v4.1.14
+- **UI Components**: DaisyUI v5.1.26
+- **Icons**: Lucide Icons (CDN)
+
+### Development Tools
+- **Code Quality**: Biome v2.2.4 (linting + formatting)
+- **Testing**: Vitest v3.2.4
+- **TypeScript Execution**: tsx v4.20.6 (hot reloading)
+- **Build Tools**: TypeScript Compiler, TailwindCSS CLI
+- **Process Management**: concurrently (parallel script execution)
+
+### API Integration
+- **HTTP Client**: Axios v1.12.2
+- **Environment Config**: dotenv v17.2.3
+
+> 📖 See [`instructions/dependencies-instructions.md`](./instructions/dependencies-instructions.md) for package management guide.
 
 ## Contributing
 
@@ -219,16 +322,140 @@ This will provide real-time linting and formatting as you type.
 
 | Script | Description |
 |--------|-------------|
-| `npm run dev` | Start development server with hot reloading |
-| `npm run build` | Compile TypeScript to JavaScript |
+| `npm run dev` | Start development server with hot reloading (CSS + TypeScript) |
+| `npm run build` | Build CSS and compile TypeScript to JavaScript |
+| `npm run build:css` | Build TailwindCSS (production) |
+| `npm run build:css:watch` | Build TailwindCSS (watch mode) |
 | `npm start` | Run the compiled application |
 | `npm run start:prod` | Build and run in production mode |
-| `npm test` | Run tests (placeholder) |
+| `npm test` | Run tests in watch mode |
+| `npm run test:run` | Run tests once |
+| `npm run test:coverage` | Run tests with coverage report |
 | `npm run check` | Check for linting and formatting issues |
 | `npm run lint` | Same as check |
 | `npm run lint:fix` | Fix linting and formatting issues automatically |
 | `npm run format` | Format code only |
 | `npm run format:check` | Check formatting without applying changes |
+
+## 📚 Documentation
+
+### For Developers & AI Assistants
+
+Comprehensive guides are available in the [`instructions/`](./instructions/) directory:
+
+- **[Instructions Overview](./instructions/README.md)** - Start here for navigation
+- **[Project Info](./instructions/project-info.md)** - Complete architecture guide
+- **[Nunjucks Guide](./instructions/nunjucks-instructions.md)** - Templating patterns
+- **[Linting Guide](./instructions/linting-instructions.md)** - Biome setup and rules
+- **[Dependencies Guide](./instructions/dependencies-instructions.md)** - Package management
+- **[DaisyUI Guide](./instructions/daisyui-instructions.md)** - UI components
+- **[MCP Guide](./instructions/mcp-instructions.md)** - Model Context Protocol setup
+
+### Additional Documentation
+
+- [Biome Setup](./docs/biome-setup.md) - Legacy Biome configuration guide
+- [Job API Service](./docs/job-api-service.md) - API integration documentation
+
+## Backend Integration
+
+> 🔗 **This frontend REQUIRES the backend API to function**
+
+This frontend communicates with the **team4-job-app-backend** REST API for all job data operations.
+
+### Backend Setup
+
+- **Backend Repository**: [team4-job-app-backend](../team4-job-app-backend)
+- **Default API URL**: `http://localhost:8080` (configurable via `.env`)
+- **Backend Port**: Usually runs on `http://localhost:3001` or `http://localhost:8080`
+- **Communication**: Axios HTTP client via `JobService` class
+
+### First-Time Backend Setup
+
+```bash
+# Navigate to backend directory
+cd ../team4-job-app-backend
+
+# Install dependencies
+npm install
+
+# Seed the database (REQUIRED - first time only)
+npm run db:seed
+
+# Start backend in development mode
+npm run dev
+```
+
+The backend will start on `http://localhost:3001` or the configured port.
+
+### Running Both Applications
+
+**Terminal 1 - Backend:**
+```bash
+cd team4-job-app-backend
+npm run dev
+# ✅ Backend running on http://localhost:3001
+```
+
+**Terminal 2 - Frontend:**
+```bash
+cd team4-job-app-frontend
+npm run dev
+# ✅ Frontend running on http://localhost:3000
+```
+
+### What Happens Without Backend?
+
+If you try to run the frontend without the backend:
+- ❌ Job listings page will fail to load
+- ❌ Job details pages will show errors
+- ❌ Creating new jobs will fail
+- ❌ Homepage will not display latest jobs
+
+**Error Example:**
+```
+Error: connect ECONNREFUSED 127.0.0.1:8080
+```
+
+**Solution**: Always start the backend first!
+
+### Environment Configuration
+
+Configure the backend URL in `.env`:
+
+```bash
+# Frontend .env
+PORT=3000
+API_BASE_URL=http://localhost:8080  # Must match backend port
+```
+
+```bash
+# Backend .env (in team4-job-app-backend)
+PORT=3001  # or 8080 to match API_BASE_URL
+```
+
+## Testing
+
+Run tests with Vitest:
+
+```bash
+npm test           # Watch mode
+npm run test:run   # Single run
+npm run test:coverage  # With coverage
+```
+
+Test files are located alongside source files with `.test.ts` extension.
+
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+```bash
+# Server Configuration
+PORT=3000
+
+# Backend API
+API_BASE_URL=http://localhost:8080
+```
 
 ## License
 

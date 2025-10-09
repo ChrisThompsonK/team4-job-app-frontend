@@ -9,56 +9,22 @@
 @import "tailwindcss";
 
 /* ========================================
-   Custom Utility Classes
+   Professional Theme Colors
    ======================================== */
-
-/**
- * Custom button utility with consistent styling
- * Usage: Apply 'btn-custom' class to any button element
- */
-@layer utilities {
-  .btn-custom {
-    padding: 1rem 1.25rem;
-    border-radius: 0.5rem;
-    font-weight: 600;
-    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  /**
-   * Custom card utility with professional shadow and borders
-   * Usage: Apply 'card-custom' class for consistent card styling
-   */
-  .card-custom {
-    background-color: rgb(255 255 255);
-    box-shadow:
-      0 10px 15px -3px rgb(0 0 0 / 0.1),
-      0 4px 6px -4px rgb(0 0 0 / 0.1);
-    border-radius: 0.5rem;
-    padding: 1.5rem;
-    border: 1px solid rgb(229 231 235);
-  }
-
-  /**
-   * Gradient text utility for modern text effects
-   * Usage: Apply 'text-gradient' class for blue-to-purple gradient text
-   */
-  .text-gradient {
-    background-image: linear-gradient(to right, rgb(37 99 235), rgb(147 51 234));
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-
-  /**
-   * Glass morphism effect utility
-   * Usage: Apply 'glass-effect' class for modern glassmorphism styling
-   */
-  .glass-effect {
-    background-color: rgb(255 255 255 / 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgb(255 255 255 / 0.3);
-  }
+:root {
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #64748b;
+  --secondary-foreground: #ffffff;
+  --accent: #06b6d4;
+  --accent-foreground: #ffffff;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
 }
 
 /* ========================================
@@ -96,6 +62,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 /**
@@ -195,11 +163,272 @@ a:focus {
 }
 
 /* ========================================
-   Kainos Brand Specific Styles
+   Professional Component Styles
+   ======================================== */
+
+/* Professional button styles */
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 200ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.btn-primary:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.btn-secondary:hover {
+  background-color: #475569;
+}
+
+.btn-outline {
+  border: 2px solid var(--primary);
+  background-color: transparent;
+  color: var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+.btn-ghost:hover {
+  background-color: var(--muted);
+}
+
+.btn-lg {
+  padding: 0.75rem 2rem;
+  font-size: 1.125rem;
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.btn-wide {
+  width: 100%;
+}
+
+/* Professional card styles */
+.card {
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: var(--background);
+  overflow: hidden;
+}
+
+.card:hover {
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* Professional navbar styles */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: var(--background);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.navbar-start {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-center {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-end {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Menu styles */
+.menu {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.menu-horizontal {
+  flex-direction: row;
+}
+
+/* Professional badge styles */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.badge-outline {
+  border: 1px solid var(--border);
+  background-color: transparent;
+  color: var(--foreground);
+}
+
+.badge-lg {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* Professional alert styles */
+.alert {
+  padding: 1rem;
+  border-radius: 0.375rem;
+  border-left: 4px solid;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.alert-warning {
+  background-color: #fef3c7;
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+/* Hero styles */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 100%;
+}
+
+/* Footer styles */
+.footer {
+  padding: 2rem 0;
+}
+
+.footer-center {
+  text-align: center;
+}
+
+/* Stats styles */
+.stats {
+  display: inline-flex;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background-color: var(--background);
+}
+
+.stat {
+  padding: 1rem;
+}
+
+.stat-title {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+/* Divider styles */
+.divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.divider::before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--border);
+}
+
+.divider-primary::before {
+  background-color: var(--primary);
+}
+
+/* Link styles */
+.link {
+  color: #2563eb;
+  transition: color 200ms ease;
+}
+
+.link:hover {
+  color: #1d4ed8;
+}
+
+.link-hover:hover {
+  text-decoration: underline;
+}
+
+/* ========================================
+   Brand Specific Styles
    ======================================== */
 
 /**
- * Kainos brand colors and utilities
+ * Brand colors and utilities
  */
 .kainos-primary {
   background: linear-gradient(135deg, #2563eb 0%, #9333ea 100%);
@@ -258,4 +487,66 @@ footer a {
 
 footer a:hover {
   transform: translateX(4px);
+}
+
+/* ========================================
+   Professional Utility Classes
+   ======================================== */
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.bg-base-100 {
+  background-color: var(--background);
+}
+
+.bg-base-200 {
+  background-color: var(--muted);
+}
+
+.bg-base-300 {
+  background-color: #e2e8f0;
+}
+
+.text-base-content {
+  color: var(--foreground);
+}
+
+.text-base-content\/70 {
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.text-base-content\/60 {
+  color: rgba(15, 23, 42, 0.6);
+}
+
+.text-base-content\/50 {
+  color: rgba(15, 23, 42, 0.5);
+}
+
+/* Professional container */
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: 80rem;
+}
+
+/* Professional shadows */
+.shadow-professional {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-professional-lg {
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }

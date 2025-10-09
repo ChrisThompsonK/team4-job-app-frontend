@@ -1,7 +1,6 @@
-import fs from "node:fs";
 import path from "node:path";
 import dotenv from "dotenv";
-import express, { type Request } from "express";
+import express from "express";
 import multer from "multer";
 import nunjucks from "nunjucks";
 import { BANDS, CAPABILITIES, STATUSES } from "./constants/job-form-options.js";
@@ -25,7 +24,7 @@ const jobController = new JobController(jobRoleService);
 const applicationService = new ApplicationService(API_BASE_URL);
 
 // Configure multer for file uploads
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: "uploads/" });
 
 // Configure Nunjucks
 const env = nunjucks.configure(path.join(process.cwd(), "views"), {

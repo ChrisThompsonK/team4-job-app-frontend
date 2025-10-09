@@ -16,35 +16,80 @@
             </div>
         </div>
         
-        {% if errorMessage %}
-            <div class="max-w-4xl mx-auto mb-8">
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert">
-                    <div class="flex items-center">
-                        <i data-lucide="alert-circle" class="h-5 w-5 mr-2"></i>
-                        <span>{{ errorMessage }}</span>
+        <!-- Filter Section -->
+        <div class="max-w-4xl mx-auto mb-8">
+            <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Search & Filter Jobs</h2>
+                
+                <!-- Search Bar -->
+                <div class="mb-6">
+                    <label for="job-search" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i data-lucide="search" class="h-4 w-4 inline mr-1"></i>
+                        Search by Job Title
+                    </label>
+                    <input 
+                        type="text" 
+                        id="job-search" 
+                        placeholder="e.g. Software Engineer, Data Scientist, DevOps..." 
+                        class="input input-bordered w-full"
+                    />
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Location Filter -->
+                    <div>
+                        <label for="location-filter" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i data-lucide="map-pin" class="h-4 w-4 inline mr-1"></i>
+                            Location
+                        </label>
+                        <select id="location-filter" class="select select-bordered w-full">
+                            <option value="">All Locations</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Capability Filter -->
+                    <div>
+                        <label for="capability-filter" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i data-lucide="building" class="h-4 w-4 inline mr-1"></i>
+                            Capability
+                        </label>
+                        <select id="capability-filter" class="select select-bordered w-full">
+                            <option value="">All Capabilities</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Band Filter -->
+                    <div>
+                        <label for="band-filter" class="block text-sm font-medium text-gray-700 mb-2">
+                            <i data-lucide="badge" class="h-4 w-4 inline mr-1"></i>
+                            Band
+                        </label>
+                        <select id="band-filter" class="select select-bordered w-full">
+                            <option value="">All Bands</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-        {% endif %}
-
-        {% if successMessage %}
-            <div class="max-w-4xl mx-auto mb-8">
-                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg" role="alert">
-                    <div class="flex items-center">
-                        <i data-lucide="check-circle" class="h-5 w-5 mr-2"></i>
-                        <span>{{ successMessage }}</span>
-                    </div>
+                
+                <!-- Clear Filters Button -->
+                <div class="mt-4">
+                    <button id="clear-filters" class="btn btn-outline btn-sm">
+                        <i data-lucide="x-circle" class="h-4 w-4 mr-1"></i>
+                        Clear All Filters
+                    </button>
+                    <span id="results-count" class="ml-4 text-sm text-gray-600"></span>
                 </div>
             </div>
-        {% endif %}
+        </div>
         
         {% if jobs %}
-            <div class="max-w-4xl mx-auto space-y-6">
+            <div id="jobs-container" class="max-w-4xl mx-auto space-y-6">
                 {% for job in jobs %}
-                    <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
-                        <a href="/jobs/{{ job.id }}" class="block">
-                            <div class="text-2xl font-bold text-gray-800 mb-4 hover:text-blue-600 transition-colors">{{ job.name }}</div>
-                        </a>
+                    <div class="job-card bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200" 
+                         data-name="{{ job.name }}"
+                         data-location="{{ job.location }}" 
+                         data-capability="{{ job.capability }}" 
+                         data-band="{{ job.band }}">
+                        <div class="text-2xl font-bold text-gray-800 mb-4">{{ job.name }}</div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div class="text-gray-600 flex items-center">
                                 <i data-lucide="map-pin" class="h-5 w-5 mr-2 text-blue-600"></i>
@@ -89,6 +134,14 @@
                     </div>
                 {% endfor %}
             </div>
+            
+            <!-- No Results Message (hidden by default) -->
+            <div id="no-results" class="hidden text-center py-16">
+                <i data-lucide="search-x" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
+                <h3 class="text-xl font-semibold text-gray-700 mb-2">No Jobs Found</h3>
+                <p class="text-gray-600">Try adjusting your filters to see more results</p>
+            </div>
+            
         {% else %}
             <div class="text-center py-16">
                 <i data-lucide="briefcase" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
@@ -97,4 +150,122 @@
             </div>
         {% endif %}
     </div>
+    
+    <!-- Filter Script -->
+    <script>
+        // Initialize filter options from job cards
+        function initializeFilters() {
+            const jobCards = document.querySelectorAll('.job-card');
+            const locations = new Set();
+            const capabilities = new Set();
+            const bands = new Set();
+            
+            jobCards.forEach(card => {
+                locations.add(card.dataset.location);
+                capabilities.add(card.dataset.capability);
+                bands.add(card.dataset.band);
+            });
+            
+            // Populate location filter
+            const locationFilter = document.getElementById('location-filter');
+            Array.from(locations).sort().forEach(location => {
+                const option = document.createElement('option');
+                option.value = location;
+                option.textContent = location;
+                locationFilter.appendChild(option);
+            });
+            
+            // Populate capability filter
+            const capabilityFilter = document.getElementById('capability-filter');
+            Array.from(capabilities).sort().forEach(capability => {
+                const option = document.createElement('option');
+                option.value = capability;
+                option.textContent = capability;
+                capabilityFilter.appendChild(option);
+            });
+            
+            // Populate band filter
+            const bandFilter = document.getElementById('band-filter');
+            Array.from(bands).sort().forEach(band => {
+                const option = document.createElement('option');
+                option.value = band;
+                option.textContent = band;
+                bandFilter.appendChild(option);
+            });
+            
+            updateResultsCount();
+        }
+        
+        // Filter jobs based on selected criteria
+        function filterJobs() {
+            const searchTerm = document.getElementById('job-search').value.toLowerCase();
+            const locationFilter = document.getElementById('location-filter').value;
+            const capabilityFilter = document.getElementById('capability-filter').value;
+            const bandFilter = document.getElementById('band-filter').value;
+            
+            const jobCards = document.querySelectorAll('.job-card');
+            let visibleCount = 0;
+            
+            jobCards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                const location = card.dataset.location;
+                const capability = card.dataset.capability;
+                const band = card.dataset.band;
+                
+                const searchMatch = !searchTerm || name.includes(searchTerm);
+                const locationMatch = !locationFilter || location === locationFilter;
+                const capabilityMatch = !capabilityFilter || capability === capabilityFilter;
+                const bandMatch = !bandFilter || band === bandFilter;
+                
+                if (searchMatch && locationMatch && capabilityMatch && bandMatch) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            // Show/hide no results message
+            const noResults = document.getElementById('no-results');
+            const jobsContainer = document.getElementById('jobs-container');
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+                if (jobsContainer) jobsContainer.classList.add('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                if (jobsContainer) jobsContainer.classList.remove('hidden');
+            }
+            
+            updateResultsCount();
+        }
+        
+        // Update results count
+        function updateResultsCount() {
+            const visibleCards = document.querySelectorAll('.job-card[style*="display: block"], .job-card:not([style*="display: none"])');
+            const count = visibleCards.length;
+            const resultsCount = document.getElementById('results-count');
+            resultsCount.textContent = `Showing ${count} job${count !== 1 ? 's' : ''}`;
+        }
+        
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('job-search').value = '';
+            document.getElementById('location-filter').value = '';
+            document.getElementById('capability-filter').value = '';
+            document.getElementById('band-filter').value = '';
+            filterJobs();
+        }
+        
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeFilters();
+            
+            // Add event listeners
+            document.getElementById('job-search').addEventListener('input', filterJobs);
+            document.getElementById('location-filter').addEventListener('change', filterJobs);
+            document.getElementById('capability-filter').addEventListener('change', filterJobs);
+            document.getElementById('band-filter').addEventListener('change', filterJobs);
+            document.getElementById('clear-filters').addEventListener('click', clearFilters);
+        });
+    </script>
 {% endblock %}

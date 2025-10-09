@@ -26,6 +26,19 @@ export class InMemoryJobRoleService implements JobRoleService {
     return Promise.resolve(job);
   }
 
+  /**
+   * Create a new job role in in-memory storage
+   */
+  async createJob(jobData: Omit<JobRole, "id">): Promise<JobRole> {
+    const newId = Math.max(...this.jobRoles.map((job) => job.id), 0) + 1;
+    const newJob: JobRole = {
+      id: newId,
+      ...jobData,
+    };
+    this.jobRoles.push(newJob);
+    return Promise.resolve(newJob);
+  }
+
   private createSampleJobRoles(): JobRole[] {
     return [
       {

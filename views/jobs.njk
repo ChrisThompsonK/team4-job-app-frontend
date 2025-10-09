@@ -1,4 +1,5 @@
 {% extends "layout.njk" %}
+{% from "partials/job-card.njk" import jobCard %}
 
 {% block title %}{{ title }} - Kainos Job Portal{% endblock %}
 
@@ -84,54 +85,7 @@
         {% if jobs %}
             <div id="jobs-container" class="max-w-4xl mx-auto space-y-6">
                 {% for job in jobs %}
-                    <div class="job-card bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200" 
-                         data-name="{{ job.name }}"
-                         data-location="{{ job.location }}" 
-                         data-capability="{{ job.capability }}" 
-                         data-band="{{ job.band }}">
-                        <div class="text-2xl font-bold text-gray-800 mb-4">{{ job.name }}</div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div class="text-gray-600 flex items-center">
-                                <i data-lucide="map-pin" class="h-5 w-5 mr-2 text-blue-600"></i>
-                                {{ job.location }}
-                            </div>
-                            <div class="text-gray-600 flex items-center">
-                                <i data-lucide="building" class="h-5 w-5 mr-2 text-purple-600"></i>
-                                {{ job.capability }}
-                            </div>
-                            <div class="text-gray-600 flex items-center">
-                                <i data-lucide="badge" class="h-5 w-5 mr-2 text-green-600"></i>
-                                {{ job.band }}
-                            </div>
-                            <div class="text-red-600 font-medium flex items-center">
-                                <i data-lucide="calendar" class="h-5 w-5 mr-2"></i>
-                                Closing: {{ job.closingDate }}
-                            </div>
-                            <div class="flex items-center">
-                                {% if job.status == 'open' %}
-                                    <i data-lucide="circle-check" class="h-5 w-5 mr-2 text-green-600"></i>
-                                    <span class="text-green-600 font-medium">Open</span>
-                                {% else %}
-                                    <i data-lucide="circle-x" class="h-5 w-5 mr-2 text-red-600"></i>
-                                    <span class="text-red-600 font-medium">Closed</span>
-                                {% endif %}
-                            </div>
-                            <div class="text-gray-600 flex items-center">
-                                <i data-lucide="users" class="h-5 w-5 mr-2 text-orange-600"></i>
-                                {{ job.numberOfOpenPositions }} position{% if job.numberOfOpenPositions != 1 %}s{% endif %} available
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <a href="/jobs/{{ job.id }}" class="text-blue-600 hover:text-blue-800 font-medium">View Details</a>
-                            {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
-                                <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none">Apply Now</button>
-                            {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
-                                <button class="btn bg-gray-400 text-white border-none cursor-not-allowed" disabled>No Positions</button>
-                            {% else %}
-                                <button class="btn bg-gray-400 text-white border-none cursor-not-allowed" disabled>Closed</button>
-                            {% endif %}
-                        </div>
-                    </div>
+                    {{ jobCard(job) }}
                 {% endfor %}
             </div>
             

@@ -1,0 +1,157 @@
+{% extends "layout.njk" %}
+
+{% block title %}{{ title }} - Kainos Job Portal{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-2xl mx-auto">
+            <!-- Job Information Section -->
+            <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ title }}</h1>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="text-gray-600 flex items-center">
+                        <i data-lucide="map-pin" class="h-5 w-5 mr-2 text-blue-600"></i>
+                        {{ job.location }}
+                    </div>
+                    <div class="text-gray-600 flex items-center">
+                        <i data-lucide="building" class="h-5 w-5 mr-2 text-purple-600"></i>
+                        {{ job.capability }}
+                    </div>
+                    <div class="text-gray-600 flex items-center">
+                        <i data-lucide="badge" class="h-5 w-5 mr-2 text-green-600"></i>
+                        {{ job.band }}
+                    </div>
+                    <div class="text-red-600 font-medium flex items-center">
+                        <i data-lucide="calendar" class="h-5 w-5 mr-2"></i>
+                        Closing: {{ job.closingDate }}
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <a href="/jobs/{{ job.id }}" class="text-blue-600 hover:text-blue-800 font-medium">
+                        <i data-lucide="arrow-left" class="h-4 w-4 inline mr-1"></i>
+                        View Full Job Details
+                    </a>
+                </div>
+            </div>
+
+            <!-- Error Messages -->
+            {% if errorMessage %}
+                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+                    <div class="flex items-center">
+                        <i data-lucide="alert-circle" class="h-5 w-5 mr-2"></i>
+                        <span>
+                            {% if errorMessage == 'missing-fields' %}
+                                Please fill in all required fields.
+                            {% elif errorMessage == 'submission-failed' %}
+                                There was an error submitting your application. Please try again.
+                            {% else %}
+                                {{ errorMessage }}
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Application Form -->
+            <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Submit Your Application</h2>
+                
+                <form method="POST" action="/jobs/{{ job.id }}/apply" class="space-y-6">
+                    <!-- Applicant Name -->
+                    <div>
+                        <label for="applicantName" class="block text-sm font-medium text-gray-700 mb-2">
+                            Full Name <span class="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="applicantName" 
+                            name="applicantName" 
+                            required
+                            class="input input-bordered w-full"
+                            placeholder="Enter your full name"
+                        />
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email Address <span class="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            required
+                            class="input input-bordered w-full"
+                            placeholder="Enter your email address"
+                        />
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div>
+                        <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-2">
+                            Phone Number
+                        </label>
+                        <input 
+                            type="tel" 
+                            id="phoneNumber" 
+                            name="phoneNumber" 
+                            class="input input-bordered w-full"
+                            placeholder="Enter your phone number"
+                        />
+                    </div>
+
+                    <!-- Cover Letter -->
+                    <div>
+                        <label for="coverLetter" class="block text-sm font-medium text-gray-700 mb-2">
+                            Cover Letter
+                        </label>
+                        <textarea 
+                            id="coverLetter" 
+                            name="coverLetter" 
+                            rows="6"
+                            class="textarea textarea-bordered w-full"
+                            placeholder="Tell us why you're interested in this role and what makes you a great fit..."
+                        ></textarea>
+                        <p class="text-sm text-gray-500 mt-1">
+                            Optional: Share your motivation and relevant experience for this position.
+                        </p>
+                    </div>
+
+                    <!-- Submit Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                        <button 
+                            type="submit" 
+                            class="btn bg-blue-600 hover:bg-blue-700 text-white border-none flex-1 sm:flex-none px-8"
+                        >
+                            <i data-lucide="send" class="h-5 w-5 mr-2"></i>
+                            Submit Application
+                        </button>
+                        
+                        <a 
+                            href="/jobs/{{ job.id }}" 
+                            class="btn btn-outline flex-1 sm:flex-none px-8"
+                        >
+                            <i data-lucide="arrow-left" class="h-5 w-5 mr-2"></i>
+                            Back to Job
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Information Notice -->
+            <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded mt-6">
+                <div class="flex items-start">
+                    <i data-lucide="info" class="h-5 w-5 mr-2 mt-0.5 flex-shrink-0"></i>
+                    <div class="text-sm">
+                        <p class="font-medium mb-1">Application Process</p>
+                        <p>
+                            Your application will be reviewed by our recruitment team. We'll contact you within 5 business days 
+                            to let you know the next steps. You can also upload your CV by contacting our HR team directly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

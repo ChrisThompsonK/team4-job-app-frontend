@@ -3,8 +3,10 @@ import dotenv from "dotenv";
 import express from "express";
 import nunjucks from "nunjucks";
 import { BANDS, CAPABILITIES, STATUSES } from "./constants/job-form-options.js";
+import { ApplicationController } from "./controllers/application-controller.js";
 import { JobController } from "./controllers/job-controller.js";
 import type { JobRole } from "./models/job-role.js";
+import { ApplicationService } from "./services/applicationService.js";
 import { JobService } from "./services/jobService.js";
 
 // Load environment variables
@@ -17,6 +19,8 @@ const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 // Initialize the job role service and controller
 const jobRoleService = new JobService(API_BASE_URL);
 const jobController = new JobController(jobRoleService);
+const applicationService = new ApplicationService();
+const applicationController = new ApplicationController(applicationService, jobRoleService);
 
 // Configure Nunjucks
 const env = nunjucks.configure(path.join(process.cwd(), "views"), {
@@ -109,7 +113,13 @@ app.post("/jobs/create", jobController.createJob);
 
 // Job detail endpoint
 app.get("/jobs/:id", async (req, res) => {
-  const jobId = parseInt(req.params.id, 10);
+  const jobIdParam = req.params.id;
+  if (!jobIdParam) {
+    res.redirect("/jobs?error=invalid-id");
+    return;
+  }
+
+  const jobId = parseInt(jobIdParam, 10);
 
   // Check if the ID is a valid number
   if (Number.isNaN(jobId)) {
@@ -134,6 +144,11 @@ app.get("/jobs/:id", async (req, res) => {
     res.redirect("/jobs?error=not-found");
   }
 });
+
+// Application routes
+app.get("/jobs/:id/apply", applicationController.showApplicationForm);
+app.post("/jobs/:id/apply", applicationController.submitApplication);
+app.get("/jobs/:id/apply/success", applicationController.showApplicationSuccess);
 
 // Start the server
 const main = async (): Promise<void> => {

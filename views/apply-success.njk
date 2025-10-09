@@ -1,0 +1,92 @@
+{% extends "layout.njk" %}
+
+{% block title %}{{ title }} - Kainos Job Portal{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-2xl mx-auto text-center">
+            <!-- Success Icon -->
+            <div class="mb-8">
+                <i data-lucide="check-circle" class="h-24 w-24 text-green-600 mx-auto"></i>
+            </div>
+
+            <!-- Success Message -->
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ title }}</h1>
+            <p class="text-xl text-gray-600 mb-8">
+                Your application for <strong>{{ job.name }}</strong> has been successfully submitted!
+            </p>
+
+            <!-- Job Details Reminder -->
+            <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm mb-8 text-left">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Application Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="text-gray-600 flex items-center">
+                        <i data-lucide="briefcase" class="h-5 w-5 mr-2 text-blue-600"></i>
+                        {{ job.name }}
+                    </div>
+                    <div class="text-gray-600 flex items-center">
+                        <i data-lucide="map-pin" class="h-5 w-5 mr-2 text-blue-600"></i>
+                        {{ job.location }}
+                    </div>
+                    <div class="text-gray-600 flex items-center">
+                        <i data-lucide="building" class="h-5 w-5 mr-2 text-purple-600"></i>
+                        {{ job.capability }}
+                    </div>
+                    <div class="text-red-600 font-medium flex items-center">
+                        <i data-lucide="calendar" class="h-5 w-5 mr-2"></i>
+                        Closing: {{ job.closingDate }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Steps Information -->
+            <div class="bg-blue-50 border border-blue-200 text-blue-700 px-6 py-4 rounded-lg mb-8 text-left">
+                <h3 class="font-semibold mb-3 flex items-center">
+                    <i data-lucide="clock" class="h-5 w-5 mr-2"></i>
+                    What happens next?
+                </h3>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex items-start">
+                        <i data-lucide="check" class="h-4 w-4 mr-2 mt-0.5 text-blue-600"></i>
+                        Our recruitment team will review your application
+                    </li>
+                    <li class="flex items-start">
+                        <i data-lucide="mail" class="h-4 w-4 mr-2 mt-0.5 text-blue-600"></i>
+                        We'll contact you within 5 business days with an update
+                    </li>
+                    <li class="flex items-start">
+                        <i data-lucide="phone" class="h-4 w-4 mr-2 mt-0.5 text-blue-600"></i>
+                        If shortlisted, we'll invite you for an interview
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a 
+                    href="/jobs" 
+                    class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8"
+                >
+                    <i data-lucide="briefcase" class="h-5 w-5 mr-2"></i>
+                    Browse More Jobs
+                </a>
+                
+                <a 
+                    href="/jobs/{{ job.id }}" 
+                    class="btn btn-outline px-8"
+                >
+                    <i data-lucide="eye" class="h-5 w-5 mr-2"></i>
+                    View Job Details
+                </a>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="mt-12 text-gray-600">
+                <p class="text-sm">
+                    Have questions about your application? 
+                    <a href="mailto:hr@kainos.com" class="text-blue-600 hover:text-blue-800">Contact our HR team</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

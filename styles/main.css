@@ -128,8 +128,8 @@ a:not(.btn) {
   transition: color 150ms ease-in-out;
 }
 
-a:not(.btn):hover {
-  color: rgb(29 78 216); /* blue-700 equivalent */
+a:hover {
+  color: rgb(29 78 216);
   text-decoration: underline;
 }
 

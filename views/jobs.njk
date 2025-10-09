@@ -69,52 +69,21 @@
                             <option value="">All Bands</option>
                         </select>
                     </div>
-                    
-                    <!-- Capability Filter -->
-                    <div>
-                        <label for="capability-filter" class="block text-sm font-medium text-gray-700 mb-2">
-                            <i data-lucide="building" class="h-4 w-4 inline mr-1"></i>
-                            Capability
-                        </label>
-                        <select id="capability-filter" class="select select-bordered w-full">
-                            <option value="">All Capabilities</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Band Filter -->
-                    <div>
-                        <label for="band-filter" class="block text-sm font-medium text-gray-700 mb-2">
-                            <i data-lucide="badge" class="h-4 w-4 inline mr-1"></i>
-                            Band
-                        </label>
-                        <select id="band-filter" class="select select-bordered w-full">
-                            <option value="">All Bands</option>
-                        </select>
-                    </div>
-                </div>
                 
                 <!-- Clear Filters Button -->
-                <div class="mt-4">
+                <div class="mt-4 flex items-center gap-4">
                     <button id="clear-filters" class="btn btn-outline btn-sm">
                         <i data-lucide="x-circle" class="h-4 w-4 mr-1"></i>
                         Clear All Filters
                     </button>
-                    <span id="results-count" class="ml-4 text-sm text-gray-600"></span>
-                </div>
-                
-                <!-- Clear Filters Button -->
-                <div class="mt-4">
-                    <button id="clear-filters" class="btn btn-outline btn-sm">
-                        <i data-lucide="x-circle" class="h-4 w-4 mr-1"></i>
-                        Clear All Filters
-                    </button>
-                    <span id="results-count" class="ml-4 text-sm text-gray-600"></span>
+                    <span id="results-count" class="text-sm text-gray-600"></span>
                 </div>
             </div>
         </div>
+        </div>
         
         {% if jobs %}
-            <div id="jobs-container" class="max-w-4xl mx-auto space-y-6">
+            <div id="jobs-container" class="max-w-4xl mx-auto space-y-6 mt-8">
                 {% for job in jobs %}
                     {{ jobCard(job) }}
                 {% endfor %}

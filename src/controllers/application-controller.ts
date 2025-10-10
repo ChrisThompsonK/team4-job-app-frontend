@@ -129,4 +129,167 @@ export class ApplicationController {
       res.redirect("/jobs?error=not-found");
     }
   };
+
+  // Show all applications for a specific job
+  showApplications = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const jobIdParam = req.params.id;
+      if (!jobIdParam) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      const jobId = parseInt(jobIdParam, 10);
+
+      if (Number.isNaN(jobId)) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      // Get the job details
+      const job = await this.jobService.getJobById(jobId);
+
+      // Get all applications for this job
+      const applications = await this.applicationService.getApplicationsByJobId(jobId);
+
+      // Format the dates for display
+      const formattedApplications = applications.map((app) => ({
+        ...app,
+        applicationDate: app.applicationDate.toLocaleDateString("en-GB"),
+      }));
+
+      res.render("applications", {
+        title: `Applications for ${job.name}`,
+        job: {
+          ...job,
+          closingDate: job.closingDate.toLocaleDateString("en-GB"),
+        },
+        applications: formattedApplications,
+      });
+    } catch (error) {
+      console.error("Error showing applications:", error);
+      res.redirect("/jobs?error=not-found");
+    }
+  };
+
+  // Show a single application with full details
+  showApplicationDetail = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const jobIdParam = req.params.id;
+      const applicationIdParam = req.params.applicationId;
+
+      if (!jobIdParam || !applicationIdParam) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      const jobId = parseInt(jobIdParam, 10);
+      const applicationId = parseInt(applicationIdParam, 10);
+
+      if (Number.isNaN(jobId) || Number.isNaN(applicationId)) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      // Get the job details
+      const job = await this.jobService.getJobById(jobId);
+
+      // Get the application
+      const application = await this.applicationService.getApplicationById(applicationId);
+
+      // Verify the application belongs to this job
+      if (application.jobId !== jobId) {
+        res.redirect(`/jobs/${jobId}/applications?error=not-found`);
+        return;
+      }
+
+      // Handle success messages
+      let successMessage = "";
+      if (req.query.success === "accepted") {
+        successMessage = "Application accepted successfully!";
+      } else if (req.query.success === "rejected") {
+        successMessage = "Application rejected.";
+      }
+
+      res.render("application-detail", {
+        title: `Application from ${application.applicantName}`,
+        job: {
+          ...job,
+          closingDate: job.closingDate.toLocaleDateString("en-GB"),
+        },
+        application: {
+          ...application,
+          applicationDate: application.applicationDate.toLocaleDateString("en-GB"),
+        },
+        successMessage,
+      });
+    } catch (error) {
+      console.error("Error showing application detail:", error);
+      res.redirect("/jobs?error=not-found");
+    }
+  };
+
+  // Accept an application
+  acceptApplication = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const jobIdParam = req.params.id;
+      const applicationIdParam = req.params.applicationId;
+
+      if (!jobIdParam || !applicationIdParam) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      const jobId = parseInt(jobIdParam, 10);
+      const applicationId = parseInt(applicationIdParam, 10);
+
+      if (Number.isNaN(jobId) || Number.isNaN(applicationId)) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      // Get notes from the form, or use default message
+      const notes = req.body.notes || "Application accepted by reviewer";
+
+      // Update the application status to accepted
+      await this.applicationService.updateApplicationStatus(applicationId, "accepted", notes);
+
+      res.redirect(`/jobs/${jobId}/applications/${applicationId}?success=accepted`);
+    } catch (error) {
+      console.error("Error accepting application:", error);
+      res.redirect(`/jobs/${req.params.id}/applications?error=update-failed`);
+    }
+  };
+
+  // Reject an application
+  rejectApplication = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const jobIdParam = req.params.id;
+      const applicationIdParam = req.params.applicationId;
+
+      if (!jobIdParam || !applicationIdParam) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      const jobId = parseInt(jobIdParam, 10);
+      const applicationId = parseInt(applicationIdParam, 10);
+
+      if (Number.isNaN(jobId) || Number.isNaN(applicationId)) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      // Get notes from the form, or use default message
+      const notes = req.body.notes || "Application rejected by reviewer";
+
+      // Update the application status to rejected
+      await this.applicationService.updateApplicationStatus(applicationId, "rejected", notes);
+
+      res.redirect(`/jobs/${jobId}/applications/${applicationId}?success=rejected`);
+    } catch (error) {
+      console.error("Error rejecting application:", error);
+      res.redirect(`/jobs/${req.params.id}/applications?error=update-failed`);
+    }
+  };
 }

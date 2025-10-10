@@ -252,11 +252,7 @@ export class ApplicationController {
       const notes = req.body.notes || "Application accepted by reviewer";
 
       // Update the application status to accepted
-      await this.applicationService.updateApplicationStatus(
-        applicationId,
-        "accepted",
-        notes
-      );
+      await this.applicationService.updateApplicationStatus(applicationId, "accepted", notes);
 
       res.redirect(`/jobs/${jobId}/applications/${applicationId}?success=accepted`);
     } catch (error) {
@@ -288,11 +284,7 @@ export class ApplicationController {
       const notes = req.body.notes || "Application rejected by reviewer";
 
       // Update the application status to rejected
-      await this.applicationService.updateApplicationStatus(
-        applicationId,
-        "rejected",
-        notes
-      );
+      await this.applicationService.updateApplicationStatus(applicationId, "rejected", notes);
 
       res.redirect(`/jobs/${jobId}/applications/${applicationId}?success=rejected`);
     } catch (error) {

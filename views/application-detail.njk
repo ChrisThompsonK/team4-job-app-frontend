@@ -1,0 +1,224 @@
+{% extends "layout.njk" %}
+
+{% block title %}{{ application.applicantName }} - Application Details{% endblock %}
+
+{% block content %}
+    <!-- Application Detail Content Section -->
+    <div class="container mx-auto px-6 py-12">
+        <!-- Breadcrumb -->
+        <nav class="mb-8">
+            <div class="flex items-center space-x-2 text-sm text-gray-600">
+                <a href="/" class="hover:text-blue-600">Home</a>
+                <span>/</span>
+                <a href="/jobs" class="hover:text-blue-600">Jobs</a>
+                <span>/</span>
+                <a href="/jobs/{{ job.id }}" class="hover:text-blue-600">{{ job.name }}</a>
+                <span>/</span>
+                <a href="/jobs/{{ job.id }}/applications" class="hover:text-blue-600">Applications</a>
+                <span>/</span>
+                <span class="text-gray-400">{{ application.applicantName }}</span>
+            </div>
+        </nav>
+
+        <!-- Success Message -->
+        {% if successMessage %}
+            <div class="alert alert-success mb-6 bg-green-50 border border-green-200 text-green-800 p-4 rounded-lg flex items-center">
+                <i data-lucide="check-circle" class="h-5 w-5 mr-3"></i>
+                <span>{{ successMessage }}</span>
+            </div>
+        {% endif %}
+
+        <!-- Application Header -->
+        <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm mb-8">
+            <div class="flex items-start justify-between mb-6">
+                <div>
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">{{ application.applicantName }}</h1>
+                    <p class="text-lg text-gray-600">Application for {{ job.name }}</p>
+                </div>
+                <div>
+                    {% if application.status == 'pending' %}
+                        <span class="badge badge-warning text-white px-4 py-3 text-lg">Pending Review</span>
+                    {% elif application.status == 'reviewed' %}
+                        <span class="badge badge-info text-white px-4 py-3 text-lg">Reviewed</span>
+                    {% elif application.status == 'accepted' %}
+                        <span class="badge badge-success text-white px-4 py-3 text-lg">Accepted</span>
+                    {% elif application.status == 'rejected' %}
+                        <span class="badge badge-error text-white px-4 py-3 text-lg">Rejected</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-gray-200">
+                <div class="flex items-center">
+                    <i data-lucide="mail" class="h-5 w-5 mr-3 text-blue-600"></i>
+                    <div>
+                        <div class="text-sm text-gray-500">Email Address</div>
+                        <a href="mailto:{{ application.email }}" class="font-medium text-blue-600 hover:underline">{{ application.email }}</a>
+                    </div>
+                </div>
+                {% if application.phoneNumber %}
+                    <div class="flex items-center">
+                        <i data-lucide="phone" class="h-5 w-5 mr-3 text-green-600"></i>
+                        <div>
+                            <div class="text-sm text-gray-500">Phone Number</div>
+                            <a href="tel:{{ application.phoneNumber }}" class="font-medium text-blue-600 hover:underline">{{ application.phoneNumber }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="flex items-center">
+                    <i data-lucide="calendar" class="h-5 w-5 mr-3 text-purple-600"></i>
+                    <div>
+                        <div class="text-sm text-gray-500">Application Date</div>
+                        <div class="font-medium text-gray-800">{{ application.applicationDate }}</div>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <i data-lucide="hash" class="h-5 w-5 mr-3 text-gray-600"></i>
+                    <div>
+                        <div class="text-sm text-gray-500">Application ID</div>
+                        <div class="font-medium text-gray-800">#{{ application.id }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Cover Letter -->
+                {% if application.coverLetter %}
+                    <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i data-lucide="file-text" class="h-6 w-6 mr-3 text-blue-600"></i>
+                            Cover Letter
+                        </h2>
+                        <div class="prose max-w-none">
+                            <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ application.coverLetter }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- CV Section (Placeholder) -->
+                {% if application.cv %}
+                    <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                            <i data-lucide="paperclip" class="h-6 w-6 mr-3 text-green-600"></i>
+                            Curriculum Vitae
+                        </h2>
+                        <a href="{{ application.cv }}" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none" target="_blank">
+                            <i data-lucide="download" class="h-4 w-4 mr-2"></i>
+                            Download CV
+                        </a>
+                    </div>
+                {% endif %}
+
+                <!-- Notes Section -->
+                {% if application.notes %}
+                    <div class="bg-yellow-50 p-8 rounded-lg border border-yellow-200">
+                        <h2 class="text-2xl font-bold text-yellow-800 mb-4 flex items-center">
+                            <i data-lucide="sticky-note" class="h-6 w-6 mr-3 text-yellow-600"></i>
+                            Reviewer Notes
+                        </h2>
+                        <p class="text-yellow-700 leading-relaxed">{{ application.notes }}</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Job Information -->
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 mb-6">
+                    <h3 class="text-xl font-bold text-blue-800 mb-4">Job Details</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="text-sm text-blue-600">Position</div>
+                            <div class="font-medium text-blue-900">{{ job.name }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-blue-600">Location</div>
+                            <div class="font-medium text-blue-900">{{ job.location }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-blue-600">Band</div>
+                            <div class="font-medium text-blue-900">{{ job.band }}</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-blue-600">Closing Date</div>
+                            <div class="font-medium text-blue-900">{{ job.closingDate }}</div>
+                        </div>
+                    </div>
+                    <a href="/jobs/{{ job.id }}" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full mt-4">
+                        View Job Details
+                    </a>
+                </div>
+
+                <!-- Action Buttons -->
+                {% if application.status != 'accepted' and application.status != 'rejected' %}
+                    <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm mb-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">Review Actions</h3>
+                        
+                        <!-- Accept Form -->
+                        <form method="POST" action="/jobs/{{ job.id }}/applications/{{ application.id }}/accept" class="mb-4">
+                            <label for="acceptNotes" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="message-square" class="h-4 w-4 inline mr-1"></i>
+                                Add Notes (Optional)
+                            </label>
+                            <textarea 
+                                id="acceptNotes" 
+                                name="notes" 
+                                rows="3" 
+                                class="textarea textarea-bordered w-full mb-3 resize-none"
+                                placeholder="Add any notes about this acceptance..."></textarea>
+                            <button type="submit" class="btn bg-green-600 hover:bg-green-700 text-white border-none w-full flex items-center justify-center">
+                                <i data-lucide="check-circle" class="h-4 w-4 mr-2"></i>
+                                Accept Application
+                            </button>
+                        </form>
+
+                        <div class="divider">OR</div>
+
+                        <!-- Reject Form -->
+                        <form method="POST" action="/jobs/{{ job.id }}/applications/{{ application.id }}/reject">
+                            <label for="rejectNotes" class="block text-sm font-medium text-gray-700 mb-2">
+                                <i data-lucide="message-square" class="h-4 w-4 inline mr-1"></i>
+                                Add Notes (Optional)
+                            </label>
+                            <textarea 
+                                id="rejectNotes" 
+                                name="notes" 
+                                rows="3" 
+                                class="textarea textarea-bordered w-full mb-3 resize-none"
+                                placeholder="Add any notes about this rejection..."></textarea>
+                            <button type="submit" class="btn bg-red-600 hover:bg-red-700 text-white border-none w-full flex items-center justify-center">
+                                <i data-lucide="x-circle" class="h-4 w-4 mr-2"></i>
+                                Reject Application
+                            </button>
+                        </form>
+                    </div>
+                {% elif application.status == 'accepted' %}
+                    <div class="bg-green-50 p-6 rounded-lg border border-green-200 mb-6">
+                        <h3 class="text-xl font-bold text-green-800 mb-2">Application Accepted</h3>
+                        <p class="text-green-700 text-sm">This application has been accepted. The applicant has been notified.</p>
+                    </div>
+                {% elif application.status == 'rejected' %}
+                    <div class="bg-red-50 p-6 rounded-lg border border-red-200 mb-6">
+                        <h3 class="text-xl font-bold text-red-800 mb-2">Application Rejected</h3>
+                        <p class="text-red-700 text-sm">This application has been rejected. The applicant has been notified.</p>
+                    </div>
+                {% endif %}
+
+                <!-- Navigation -->
+                <div class="space-y-3">
+                    <a href="/jobs/{{ job.id }}/applications" class="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-300 w-full flex items-center justify-center">
+                        <i data-lucide="list" class="h-4 w-4 mr-2"></i>
+                        All Applications
+                    </a>
+                    <a href="/jobs/{{ job.id }}" class="btn bg-gray-100 hover:bg-gray-200 text-gray-800 border-gray-300 w-full flex items-center justify-center">
+                        <i data-lucide="arrow-left" class="h-4 w-4 mr-2"></i>
+                        Back to Job
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -149,6 +149,10 @@ app.get("/jobs/:id", async (req, res) => {
 app.get("/jobs/:id/apply", applicationController.showApplicationForm);
 app.post("/jobs/:id/apply", applicationController.submitApplication);
 app.get("/jobs/:id/apply/success", applicationController.showApplicationSuccess);
+app.get("/jobs/:id/applications", applicationController.showApplications);
+app.get("/jobs/:id/applications/:applicationId", applicationController.showApplicationDetail);
+app.post("/jobs/:id/applications/:applicationId/accept", applicationController.acceptApplication);
+app.post("/jobs/:id/applications/:applicationId/reject", applicationController.rejectApplication);
 
 // Start the server
 const main = async (): Promise<void> => {

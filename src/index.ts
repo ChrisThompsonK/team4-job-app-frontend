@@ -43,23 +43,40 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Hello World endpoint - now renders a view
-app.get("/", async (_req, res) => {
-  // Get the 3 most recent jobs for the homepage
-  const allJobs = await jobRoleService.getAllJobs();
-  console.log(allJobs);
-  const latestJobs = allJobs
-    .sort((a, b) => b.closingDate.getTime() - a.closingDate.getTime())
-    .slice(0, 3)
-    .map((job: JobRole) => ({
-      ...job,
-      closingDate: job.closingDate.toLocaleDateString("en-GB"),
-    }));
+app.get("/", async (req, res) => {
+  try {
+    // Get the 3 most recent jobs for the homepage
+    const allJobs = await jobRoleService.getAllJobs();
+    console.log(allJobs);
+    const latestJobs = allJobs
+      .sort((a, b) => a.id - b.id) // Sort by id instead since we don't have createdDate
+      .slice(0, 3)
+      .map((job) => ({
+        ...job,
+        closingDate: job.closingDate.toLocaleDateString("en-GB"),
+      }));
 
-  res.render("index", {
-    title: "Kainos Jobs",
-    message: "Find your next career opportunity with Belfast's leading software company",
-    latestJobs: latestJobs,
-  });
+    // Example: Check for demo user session (in a real app, this would be req.session.user or similar)
+    const isLoggedIn = req.query.demo === 'loggedin';
+    const user = isLoggedIn ? { id: 1, username: 'demo_user', name: 'Demo User' } : null;
+
+    res.render("index", {
+      title: "Home - Kainos Job Portal",
+      latestJobs,
+      user, // Pass user context to template
+    });
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    // Fallback to empty jobs array if API is unavailable
+    const isLoggedIn = req.query.demo === 'loggedin';
+    const user = isLoggedIn ? { id: 1, username: 'demo_user', name: 'Demo User' } : null;
+
+    res.render("index", {
+      title: "Home - Kainos Job Portal",
+      latestJobs: [],
+      user,
+    });
+  }
 });
 
 // Jobs listing endpoint
@@ -150,6 +167,12 @@ app.get("/login", (_req, res) => {
   res.render("login", {
     title: "Login",
   });
+});
+
+// Logout route
+app.post("/logout", (_req, res) => {
+  // Clear session/authentication here when implemented
+  res.redirect("/");
 });
 
 // Application routes

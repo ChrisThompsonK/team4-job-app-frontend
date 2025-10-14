@@ -145,6 +145,13 @@ app.get("/jobs/:id", async (req, res) => {
   }
 });
 
+// Login route
+app.get("/login", (_req, res) => {
+  res.render("login", {
+    title: "Login",
+  });
+});
+
 // Application routes
 app.get("/jobs/:id/apply", applicationController.showApplicationForm);
 app.post("/jobs/:id/apply", applicationController.submitApplication);

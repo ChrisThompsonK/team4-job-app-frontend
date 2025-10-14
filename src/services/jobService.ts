@@ -17,9 +17,18 @@ export class JobService implements JobRoleService {
   /**
    * Get all jobs from the API
    */
-  async getAllJobs(): Promise<JobRole[]> {
+  async getAllJobs(limit?: number, offset?: number): Promise<JobRole[]> {
     try {
-      const response = await this.axiosInstance.get("/api/jobs");
+      const params = new URLSearchParams();
+      if (limit !== undefined) {
+        params.append("limit", limit.toString());
+      }
+      if (offset !== undefined) {
+        params.append("offset", offset.toString());
+      }
+
+      const url = `/api/jobs${params.toString() ? `?${params.toString()}` : ""}`;
+      const response = await this.axiosInstance.get(url);
 
       // Handle different response formats
       const jobsData = Array.isArray(response.data)
@@ -31,6 +40,47 @@ export class JobService implements JobRoleService {
         ...job,
         closingDate: new Date(job.closingDate),
       }));
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        throw new Error("Jobs endpoint not found");
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Get jobs with pagination info
+   */
+  async getJobsWithPagination(
+    limit?: number,
+    offset?: number
+  ): Promise<{ jobs: JobRole[]; total: number }> {
+    try {
+      const params = new URLSearchParams();
+      if (limit !== undefined) {
+        params.append("limit", limit.toString());
+      }
+      if (offset !== undefined) {
+        params.append("offset", offset.toString());
+      }
+
+      const url = `/api/jobs${params.toString() ? `?${params.toString()}` : ""}`;
+      const response = await this.axiosInstance.get(url);
+
+      // Handle different response formats
+      const jobsData = Array.isArray(response.data)
+        ? response.data
+        : response.data.data || response.data.jobs || [];
+
+      const total = response.data.total || jobsData.length;
+
+      // Convert date strings to Date objects
+      const jobs = jobsData.map((job: JobRole) => ({
+        ...job,
+        closingDate: new Date(job.closingDate),
+      }));
+
+      return { jobs, total };
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
         throw new Error("Jobs endpoint not found");

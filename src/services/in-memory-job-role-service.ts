@@ -11,8 +11,29 @@ export class InMemoryJobRoleService implements JobRoleService {
   /**
    * Get all jobs from in-memory storage
    */
-  async getAllJobs(): Promise<JobRole[]> {
-    return Promise.resolve(this.jobRoles);
+  async getAllJobs(limit?: number, offset?: number): Promise<JobRole[]> {
+    let jobs = [...this.jobRoles];
+    
+    if (offset !== undefined) {
+      jobs = jobs.slice(offset);
+    }
+    
+    if (limit !== undefined) {
+      jobs = jobs.slice(0, limit);
+    }
+    
+    return Promise.resolve(jobs);
+  }
+
+  /**
+   * Get jobs with pagination info
+   */
+  async getJobsWithPagination(
+    limit?: number,
+    offset?: number
+  ): Promise<{ jobs: JobRole[]; total: number }> {
+    const jobs = await this.getAllJobs(limit, offset);
+    return Promise.resolve({ jobs, total: this.jobRoles.length });
   }
 
   /**

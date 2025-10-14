@@ -57,8 +57,8 @@ app.get("/", async (req, res) => {
       }));
 
     // Example: Check for demo user session (in a real app, this would be req.session.user or similar)
-    const isLoggedIn = req.query.demo === 'loggedin';
-    const user = isLoggedIn ? { id: 1, username: 'demo_user', name: 'Demo User' } : null;
+    const isLoggedIn = req.query.demo === "loggedin";
+    const user = isLoggedIn ? { id: 1, username: "demo_user", name: "Demo User" } : null;
 
     res.render("index", {
       title: "Home - Kainos Job Portal",
@@ -68,8 +68,8 @@ app.get("/", async (req, res) => {
   } catch (error) {
     console.error("Error fetching jobs:", error);
     // Fallback to empty jobs array if API is unavailable
-    const isLoggedIn = req.query.demo === 'loggedin';
-    const user = isLoggedIn ? { id: 1, username: 'demo_user', name: 'Demo User' } : null;
+    const isLoggedIn = req.query.demo === "loggedin";
+    const user = isLoggedIn ? { id: 1, username: "demo_user", name: "Demo User" } : null;
 
     res.render("index", {
       title: "Home - Kainos Job Portal",

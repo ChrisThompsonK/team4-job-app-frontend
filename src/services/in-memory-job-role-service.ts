@@ -13,15 +13,15 @@ export class InMemoryJobRoleService implements JobRoleService {
    */
   async getAllJobs(limit?: number, offset?: number): Promise<JobRole[]> {
     let jobs = [...this.jobRoles];
-    
+
     if (offset !== undefined) {
       jobs = jobs.slice(offset);
     }
-    
+
     if (limit !== undefined) {
       jobs = jobs.slice(0, limit);
     }
-    
+
     return Promise.resolve(jobs);
   }
 

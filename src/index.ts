@@ -18,15 +18,17 @@ const PORT = process.env.PORT || 3000;
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
 // Session configuration
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'your-secret-key-change-this-in-production',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }
-}));
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "your-secret-key-change-this-in-production",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
 
 // Middleware to make user available in all templates
 app.use((req, res, next) => {
@@ -185,7 +187,7 @@ app.post("/login", async (req, res) => {
       name: username === "admin" ? "John Doe" : username,
       email: username === "admin" ? "john.doe@kainos.com" : `${username}@kainos.com`,
       phoneNumber: "+44 7900 123456",
-      role: username === "admin" ? "admin" : "user"
+      role: username === "admin" ? "admin" : "user",
     };
 
     // Store user in session
@@ -220,7 +222,7 @@ const requireAuth = (req: express.Request, res: express.Response, next: express.
 app.get("/profile", requireAuth, (req, res) => {
   res.render("profile", {
     title: "Profile",
-    user: (req as any).user
+    user: (req as any).user,
   });
 });
 
@@ -231,7 +233,7 @@ app.get("/my-applications", requireAuth, async (req, res) => {
   res.render("my-applications", {
     title: "My Applications",
     user: user,
-    applications: [] // Would be populated from database
+    applications: [], // Would be populated from database
   });
 });
 

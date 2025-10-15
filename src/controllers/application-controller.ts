@@ -6,7 +6,7 @@ export class ApplicationController {
   constructor(
     private applicationService: ApplicationService,
     private jobService: JobService
-  ) { }
+  ) {}
 
   // Show the application form for a specific job
   showApplicationForm = async (req: Request, res: Response): Promise<void> => {
@@ -99,7 +99,7 @@ export class ApplicationController {
         jobId,
         applicantName: finalApplicantName,
         email: finalEmail,
-        phoneNumber: phoneNumber || (user?.phoneNumber) || "",
+        phoneNumber: phoneNumber || user?.phoneNumber || "",
         coverLetter,
         userId: user?.id, // Include user ID if logged in
       });

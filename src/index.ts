@@ -1,12 +1,16 @@
 import path from "node:path";
 import dotenv from "dotenv";
 import express from "express";
+import session from "express-session";
 import nunjucks from "nunjucks";
 import { BANDS, CAPABILITIES, STATUSES } from "./constants/job-form-options.js";
 import { ApplicationController } from "./controllers/application-controller.js";
+import { AuthController } from "./controllers/auth-controller.js";
 import { JobController } from "./controllers/job-controller.js";
+import { addUserToLocals, requireAdmin, requireAuth } from "./middleware/auth.js";
 import type { JobRole } from "./models/job-role.js";
 import { ApplicationService } from "./services/applicationService.js";
+import { AuthService } from "./services/authService.js";
 import { JobService } from "./services/jobService.js";
 
 // Load environment variables
@@ -16,11 +20,13 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
-// Initialize the job role service and controller
+// Initialize services and controllers
 const jobRoleService = new JobService(API_BASE_URL);
 const jobController = new JobController(jobRoleService);
 const applicationService = new ApplicationService();
 const applicationController = new ApplicationController(applicationService, jobRoleService);
+const authService = new AuthService(API_BASE_URL);
+const authController = new AuthController(authService);
 
 // Configure Nunjucks
 const env = nunjucks.configure(path.join(process.cwd(), "views"), {
@@ -41,6 +47,23 @@ app.use("/js", express.static(path.join(process.cwd(), "js")));
 // Middleware to parse JSON and URL-encoded form data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Session configuration
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "your-secret-key-change-in-production",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true in production with HTTPS
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
+// Add user information to all templates
+app.use(addUserToLocals);
 
 // Hello World endpoint - now renders a view
 app.get("/", async (_req, res) => {
@@ -114,7 +137,7 @@ app.get("/jobs", async (req, res) => {
 });
 
 // Create job form page
-app.get("/jobs/create", (req, res) => {
+app.get("/jobs/create", requireAuth, requireAdmin, (req, res) => {
   const errorMessage = req.query.error ? String(req.query.error) : "";
 
   res.render("create-job", {
@@ -127,7 +150,7 @@ app.get("/jobs/create", (req, res) => {
 });
 
 // Create job form submission
-app.post("/jobs/create", jobController.createJob);
+app.post("/jobs/create", requireAuth, requireAdmin, jobController.createJob);
 
 // Job detail endpoint
 app.get("/jobs/:id", async (req, res) => {
@@ -163,21 +186,41 @@ app.get("/jobs/:id", async (req, res) => {
   }
 });
 
-// Login route
-app.get("/login", (_req, res) => {
-  res.render("login", {
-    title: "Login",
-  });
-});
+// Authentication routes
+app.get("/login", authController.showLogin);
+app.post("/login", authController.login);
+app.post("/logout", authController.logout);
 
-// Application routes
-app.get("/jobs/:id/apply", applicationController.showApplicationForm);
-app.post("/jobs/:id/apply", applicationController.submitApplication);
-app.get("/jobs/:id/apply/success", applicationController.showApplicationSuccess);
-app.get("/jobs/:id/applications", applicationController.showApplications);
-app.get("/jobs/:id/applications/:applicationId", applicationController.showApplicationDetail);
-app.post("/jobs/:id/applications/:applicationId/accept", applicationController.acceptApplication);
-app.post("/jobs/:id/applications/:applicationId/reject", applicationController.rejectApplication);
+// Application routes - require authentication
+app.get("/jobs/:id/apply", requireAuth, applicationController.showApplicationForm);
+app.post("/jobs/:id/apply", requireAuth, applicationController.submitApplication);
+app.get("/jobs/:id/apply/success", requireAuth, applicationController.showApplicationSuccess);
+
+// Admin routes - require admin access
+app.get(
+  "/jobs/:id/applications",
+  requireAuth,
+  requireAdmin,
+  applicationController.showApplications
+);
+app.get(
+  "/jobs/:id/applications/:applicationId",
+  requireAuth,
+  requireAdmin,
+  applicationController.showApplicationDetail
+);
+app.post(
+  "/jobs/:id/applications/:applicationId/accept",
+  requireAuth,
+  requireAdmin,
+  applicationController.acceptApplication
+);
+app.post(
+  "/jobs/:id/applications/:applicationId/reject",
+  requireAuth,
+  requireAdmin,
+  applicationController.rejectApplication
+);
 
 // Start the server
 const main = async (): Promise<void> => {

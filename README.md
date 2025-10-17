@@ -331,6 +331,8 @@ This will provide real-time linting and formatting as you type.
 | `npm test` | Run tests in watch mode |
 | `npm run test:run` | Run tests once |
 | `npm run test:coverage` | Run tests with coverage report |
+| `npm run test:a11y` | Run accessibility tests (requires server running) |
+| `npm run test:a11y:ci` | Run accessibility tests with pa11y-ci |
 | `npm run check` | Check for linting and formatting issues |
 | `npm run lint` | Same as check |
 | `npm run lint:fix` | Fix linting and formatting issues automatically |
@@ -435,6 +437,8 @@ PORT=3001  # or 8080 to match API_BASE_URL
 
 ## Testing
 
+### Unit Tests
+
 Run tests with Vitest:
 
 ```bash
@@ -444,6 +448,138 @@ npm run test:coverage  # With coverage
 ```
 
 Test files are located alongside source files with `.test.ts` extension.
+
+### Accessibility Tests
+
+This project includes automated accessibility testing using **Pa11y** to ensure WCAG 2.1 Level AA compliance. Pa11y tests run against a live server and check for common accessibility issues.
+
+#### Prerequisites
+
+Before running accessibility tests:
+1. Ensure all dependencies are installed (`npm install`)
+2. The application server must be running on `http://localhost:3000`
+
+#### Running Accessibility Tests
+
+**Option 1: Custom Test Script (Recommended)**
+
+The custom test script provides detailed output with color-coded results:
+
+```bash
+# Terminal 1: Start the development server
+npm run dev
+
+# Terminal 2: Run accessibility tests
+npm run test:a11y
+```
+
+**Option 2: Pa11y-CI**
+
+Use pa11y-ci with the `.pa11yci.json` configuration:
+
+```bash
+# Start the server first, then run:
+npm run test:a11y:ci
+```
+
+#### Test Output
+
+The accessibility tests will:
+- ✅ Test all configured pages against WCAG 2.1 Level AA standards
+- 📸 Capture screenshots of each page (saved to `pa11y-screenshots/`)
+- 📊 Provide detailed issue reports with code, message, and selector
+- 🎯 Exit with error code if tests fail (useful for CI/CD)
+
+Example output:
+```
+🚀 Starting Pa11y Accessibility Tests
+📍 Base URL: http://localhost:3000
+📊 Standard: WCAG 2.1 Level AA
+
+🔍 Testing: Homepage (http://localhost:3000/)
+✅ Homepage: No accessibility issues found
+
+============================================================
+📋 ACCESSIBILITY TEST SUMMARY
+============================================================
+
+✅ Passed: 4/4
+❌ Failed: 0/4
+🐛 Total Issues: 0
+```
+
+#### Testing Different Environments
+
+Test against staging, production, or any URL:
+
+```bash
+# Test against staging
+BASE_URL=http://staging.example.com npm run test:a11y
+
+# Test against production
+BASE_URL=https://production.example.com npm run test:a11y
+```
+
+#### Adding New Pages to Test
+
+To add new pages to the accessibility test suite:
+
+1. Open `accessibility-tests.ts`
+2. Add your new page to the `URLS_TO_TEST` array:
+
+```typescript
+const URLS_TO_TEST = [
+  { url: '/', name: 'Homepage' },
+  { url: '/jobs', name: 'Jobs Listing' },
+  { url: '/jobs/create', name: 'Create Job Form' },
+  { url: '/login', name: 'Login Page' },
+  // Add your new pages here:
+  { url: '/jobs/1', name: 'Job Detail Page' },
+  { url: '/jobs/1/apply', name: 'Apply for Job' },
+];
+```
+
+#### Currently Tested Pages
+
+- ✅ Homepage (`/`)
+- ✅ Jobs Listing (`/jobs`)
+- ✅ Create Job Form (`/jobs/create`)
+- ✅ Login Page (`/login`)
+
+#### Accessibility Standards
+
+Tests check for:
+- **WCAG 2.1 Level AA** compliance
+- Color contrast ratios
+- Keyboard navigation support
+- Screen reader compatibility
+- Form labels and ARIA attributes
+- Image alt text
+- Semantic HTML structure
+
+#### CI/CD Integration
+
+Example GitHub Actions workflow:
+
+```yaml
+- name: Start application
+  run: npm run dev &
+  
+- name: Wait for server
+  run: npx wait-on http://localhost:3000 --timeout 30000
+
+- name: Run accessibility tests
+  run: npm run test:a11y
+  
+- name: Upload screenshots on failure
+  if: failure()
+  uses: actions/upload-artifact@v3
+  with:
+    name: accessibility-screenshots
+    path: pa11y-screenshots/
+```
+
+> 📖 **Full Documentation**: See [`docs/accessibility-testing.md`](./docs/accessibility-testing.md) for complete guide including troubleshooting, common issues, and advanced configuration.
 
 ## Environment Variables
 

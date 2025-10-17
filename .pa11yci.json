@@ -1,0 +1,32 @@
+{
+  "defaults": {
+    "timeout": 10000,
+    "wait": 1000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+    },
+    "standard": "WCAG2AA",
+    "runners": ["axe", "htmlcs"],
+    "includeNotices": false,
+    "includeWarnings": false,
+    "ignore": []
+  },
+  "urls": [
+    {
+      "url": "http://localhost:3000",
+      "screenCapture": "./pa11y-screenshots/homepage.png"
+    },
+    {
+      "url": "http://localhost:3000/jobs",
+      "screenCapture": "./pa11y-screenshots/jobs.png"
+    },
+    {
+      "url": "http://localhost:3000/jobs/create",
+      "screenCapture": "./pa11y-screenshots/create-job.png"
+    },
+    {
+      "url": "http://localhost:3000/login",
+      "screenCapture": "./pa11y-screenshots/login.png"
+    }
+  ]
+}

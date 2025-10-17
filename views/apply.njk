@@ -56,36 +56,51 @@
             <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Submit Your Application</h2>
                 
+                {% if user %}
+                    <!-- User Info Display -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                        <div class="flex items-center">
+                            <i data-lucide="user-check" class="h-5 w-5 text-blue-600 mr-2"></i>
+                            <div>
+                                <p class="text-sm font-medium text-blue-800">Applying as:</p>
+                                <p class="text-blue-700">{{ user.name }} ({{ user.email }})</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                
                 <form method="POST" action="/jobs/{{ job.id }}/apply" class="space-y-6">
-                    <!-- Applicant Name -->
-                    <div>
-                        <label for="applicantName" class="block text-sm font-medium text-gray-700 mb-2">
-                            Full Name <span class="text-red-500">*</span>
-                        </label>
-                        <input 
-                            type="text" 
-                            id="applicantName" 
-                            name="applicantName" 
-                            required
-                            class="input input-bordered w-full"
-                            placeholder="Enter your full name"
-                        />
-                    </div>
+                    {% if not user %}
+                        <!-- Applicant Name - Only shown if not logged in -->
+                        <div>
+                            <label for="applicantName" class="block text-sm font-medium text-gray-700 mb-2">
+                                Full Name <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="applicantName" 
+                                name="applicantName" 
+                                required
+                                class="input input-bordered w-full"
+                                placeholder="Enter your full name"
+                            />
+                        </div>
 
-                    <!-- Email -->
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                            Email Address <span class="text-red-500">*</span>
-                        </label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            required
-                            class="input input-bordered w-full"
-                            placeholder="Enter your email address"
-                        />
-                    </div>
+                        <!-- Email - Only shown if not logged in -->
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                Email Address <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                required
+                                class="input input-bordered w-full"
+                                placeholder="Enter your email address"
+                            />
+                        </div>
+                    {% endif %}
 
                     <!-- Phone Number -->
                     <div>
@@ -98,6 +113,7 @@
                             name="phoneNumber" 
                             class="input input-bordered w-full"
                             placeholder="Enter your phone number"
+                            {% if user and user.phoneNumber %}value="{{ user.phoneNumber }}"{% endif %}
                         />
                     </div>
 

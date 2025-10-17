@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import type { ApplicationService } from "../services/applicationService.js";
 import type { JobService } from "../services/jobService.js";
+import "../types/express-session.js";
 
 export class ApplicationController {
   constructor(
@@ -41,6 +42,7 @@ export class ApplicationController {
       res.render("apply", {
         title: `Apply for ${job.name}`,
         job: formattedJob,
+        user: req.session?.user || null, // Pass user info if available
       });
     } catch (error) {
       console.error("Error showing application form:", error);
@@ -59,16 +61,31 @@ export class ApplicationController {
 
       const jobId = parseInt(jobIdParam, 10);
       const { applicantName, email, phoneNumber, coverLetter } = req.body;
+      const user = req.session?.user || null;
 
       if (Number.isNaN(jobId)) {
         res.redirect("/jobs?error=invalid-id");
         return;
       }
 
-      // Validate required fields
-      if (!applicantName || !email) {
-        res.redirect(`/jobs/${jobId}/apply?error=missing-fields`);
-        return;
+      // Get applicant details - either from logged-in user or form submission
+      let finalApplicantName: string;
+      let finalEmail: string;
+
+      if (user) {
+        // User is logged in - use their information
+        finalApplicantName = user.name;
+        finalEmail = user.email;
+      } else {
+        // User is not logged in - use form data
+        finalApplicantName = applicantName;
+        finalEmail = email;
+
+        // Validate required fields for non-logged-in users
+        if (!applicantName || !email) {
+          res.redirect(`/jobs/${jobId}/apply?error=missing-fields`);
+          return;
+        }
       }
 
       // Check if job exists and is still open
@@ -81,10 +98,11 @@ export class ApplicationController {
       // Create the application
       await this.applicationService.createApplication({
         jobId,
-        applicantName,
-        email,
-        phoneNumber,
+        applicantName: finalApplicantName,
+        email: finalEmail,
+        phoneNumber: phoneNumber?.trim() ? phoneNumber : user?.phoneNumber || "",
         coverLetter,
+        ...(user?.id && { userId: user.id }), // Include user ID if logged in
       });
 
       // Redirect to success page

@@ -1,0 +1,73 @@
+{% extends "layout.njk" %}
+
+{% block title %}My Applications - Kainos Job Portal{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">My Applications</h1>
+                <p class="text-gray-600">Track your job applications and their status</p>
+            </div>
+
+            {% if applications and applications.length > 0 %}
+                <!-- Applications List -->
+                <div class="space-y-4">
+                    {% for application in applications %}
+                        <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-800">{{ application.jobTitle }}</h3>
+                                    <p class="text-gray-600">Applied on {{ application.applicationDate | date("d MMM yyyy") }}</p>
+                                </div>
+                                <div class="flex items-center">
+                                    {% if application.status == 'pending' %}
+                                        <span class="badge bg-yellow-100 text-yellow-800 border-yellow-200">Pending</span>
+                                    {% elif application.status == 'reviewed' %}
+                                        <span class="badge bg-blue-100 text-blue-800 border-blue-200">Under Review</span>
+                                    {% elif application.status == 'accepted' %}
+                                        <span class="badge bg-green-100 text-green-800 border-green-200">Accepted</span>
+                                    {% elif application.status == 'rejected' %}
+                                        <span class="badge bg-red-100 text-red-800 border-red-200">Rejected</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="text-sm text-gray-600 mb-4">
+                                <p><strong>Location:</strong> {{ application.location }}</p>
+                                <p><strong>Capability:</strong> {{ application.capability }}</p>
+                            </div>
+
+                            {% if application.notes %}
+                                <div class="bg-gray-50 p-3 rounded border mb-4">
+                                    <p class="text-sm"><strong>Notes:</strong> {{ application.notes }}</p>
+                                </div>
+                            {% endif %}
+
+                            <div class="flex gap-2">
+                                <a href="/jobs/{{ application.jobId }}" class="btn btn-sm btn-outline">
+                                    <i data-lucide="eye" class="h-4 w-4 mr-1"></i>
+                                    View Job
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <!-- No Applications -->
+                <div class="bg-white p-12 rounded-lg border border-gray-200 shadow-sm text-center">
+                    <div class="mb-6">
+                        <i data-lucide="file-text" class="h-16 w-16 text-gray-300 mx-auto"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">No Applications Yet</h3>
+                    <p class="text-gray-600 mb-6">You haven't submitted any job applications yet. Start browsing available positions!</p>
+                    <a href="/jobs" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none">
+                        <i data-lucide="briefcase" class="h-5 w-5 mr-2"></i>
+                        Browse Job Opportunities
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

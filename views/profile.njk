@@ -1,0 +1,64 @@
+{% extends "layout.njk" %}
+
+{% block title %}Profile - Kainos Job Portal{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-2xl mx-auto">
+            <!-- Profile Header -->
+            <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm mb-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-blue-100 p-3 rounded-full mr-4">
+                        <i data-lucide="user" class="h-8 w-8 text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-800">{{ user.name }}</h1>
+                        <p class="text-gray-600">{{ user.email }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Information -->
+            <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Profile Information</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <p class="text-gray-900">{{ user.name }}</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <p class="text-gray-900">{{ user.email }}</p>
+                    </div>
+                    
+                    {% if user.phoneNumber %}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <p class="text-gray-900">{{ user.phoneNumber }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                        <p class="text-gray-900 capitalize">{{ user.role }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <div class="flex gap-4">
+                        <a href="/my-applications" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none">
+                            <i data-lucide="file-text" class="h-5 w-5 mr-2"></i>
+                            View My Applications
+                        </a>
+                        <a href="/jobs" class="btn btn-outline">
+                            <i data-lucide="briefcase" class="h-5 w-5 mr-2"></i>
+                            Browse Jobs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

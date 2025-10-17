@@ -7,10 +7,9 @@ export interface User {
   role: string;
 }
 
-// Extend Express Request to include user and session properties
+// Extend Express Request to include session properties
 declare module "express-serve-static-core" {
   interface Request {
-    user?: User;
     session: {
       user?: User;
       destroy(callback: (err?: Error) => void): void;

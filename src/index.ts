@@ -18,14 +18,20 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
+// Enforce SESSION_SECRET presence
+if (!process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET environment variable is required");
+}
+
 // Session configuration
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "your-secret-key-change-this-in-production",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
       secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     },
   })
@@ -228,9 +234,8 @@ app.get("/logout", (req, res) => {
 });
 
 // Middleware to check if user is authenticated
-const requireAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  if (req.session?.user) {
-    req.user = req.session.user;
+const requireAuth = (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (res.locals.user) {
     next();
   } else {
     res.redirect("/login");
@@ -238,20 +243,19 @@ const requireAuth = (req: express.Request, res: express.Response, next: express.
 };
 
 // User profile route (requires authentication)
-app.get("/profile", requireAuth, (req, res) => {
+app.get("/profile", requireAuth, (_req, res) => {
   res.render("profile", {
     title: "Profile",
-    user: req.user,
+    user: res.locals.user,
   });
 });
 
 // User applications route (requires authentication)
-app.get("/my-applications", requireAuth, async (req, res) => {
-  const user = req.user;
+app.get("/my-applications", requireAuth, async (_req, res) => {
   // This would typically fetch applications from the database filtered by user ID
   res.render("my-applications", {
     title: "My Applications",
-    user: user,
+    user: res.locals.user,
     applications: [], // Would be populated from database
   });
 });

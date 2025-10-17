@@ -84,8 +84,18 @@ app.get("/", async (_req, res) => {
 
 // Jobs listing endpoint
 app.get("/jobs", async (req, res) => {
-  // Get job roles from our service
-  const jobRoles = await jobRoleService.getAllJobs();
+  // Get pagination parameters from query string
+  const page = parseInt(req.query.page as string, 10) || 1;
+  const limit = 10;
+  const offset = (page - 1) * limit;
+
+  // Get job roles from our service with pagination
+  const { jobs: jobRoles, total } = await jobRoleService.getJobsWithPagination(limit, offset);
+
+  // Calculate pagination info
+  const totalPages = Math.ceil(total / limit);
+  const hasNext = page < totalPages;
+  const hasPrevious = page > 1;
 
   // Format the dates for display
   const formattedJobRoles = jobRoles.map((job: JobRole) => ({
@@ -112,6 +122,14 @@ app.get("/jobs", async (req, res) => {
     jobs: formattedJobRoles,
     errorMessage: errorMessage,
     successMessage: successMessage,
+    pagination: {
+      currentPage: page,
+      totalPages: totalPages,
+      hasNext: hasNext,
+      hasPrevious: hasPrevious,
+      total: total,
+      limit: limit,
+    },
   });
 });
 

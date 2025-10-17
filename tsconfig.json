@@ -27,6 +27,12 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*", "**/*.test.ts", "**/*.spec.ts", "vitest.config.ts"],
+  "include": [
+    "src/**/*",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "vitest.config.ts",
+    "accessibility-tests.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }

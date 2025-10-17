@@ -3,7 +3,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   role: string;
 }
 

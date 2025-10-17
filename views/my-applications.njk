@@ -19,7 +19,7 @@
                             <div class="flex justify-between items-start mb-4">
                                 <div>
                                     <h3 class="text-xl font-semibold text-gray-800">{{ application.jobTitle }}</h3>
-                                    <p class="text-gray-600">Applied on {{ application.applicationDate }}</p>
+                                    <p class="text-gray-600">Applied on {{ application.applicationDate | date("d MMM yyyy") }}</p>
                                 </div>
                                 <div class="flex items-center">
                                     {% if application.status == 'pending' %}

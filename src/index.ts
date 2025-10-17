@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
 import nunjucks from "nunjucks";
+import "./types/express-session.js";
 import { BANDS, CAPABILITIES, STATUSES } from "./constants/job-form-options.js";
 import { ApplicationController } from "./controllers/application-controller.js";
 import { JobController } from "./controllers/job-controller.js";
@@ -32,7 +33,7 @@ app.use(
 
 // Middleware to make user available in all templates
 app.use((req, res, next) => {
-  res.locals.user = (req as any).session?.user || null;
+  res.locals.user = req.session?.user || null;
   next();
 });
 
@@ -209,7 +210,7 @@ app.post("/login", async (req, res) => {
     };
 
     // Store user in session
-    (req as any).session.user = mockUser;
+    req.session.user = mockUser;
     res.redirect("/jobs");
   } else {
     res.redirect("/login?error=invalid-credentials");
@@ -218,7 +219,7 @@ app.post("/login", async (req, res) => {
 
 // Logout route
 app.get("/logout", (req, res) => {
-  (req as any).session.destroy((err: any) => {
+  req.session.destroy((err?: Error) => {
     if (err) {
       console.error("Error destroying session:", err);
     }
@@ -228,8 +229,8 @@ app.get("/logout", (req, res) => {
 
 // Middleware to check if user is authenticated
 const requireAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  if ((req as any).session?.user) {
-    (req as any).user = (req as any).session.user;
+  if (req.session?.user) {
+    req.user = req.session.user;
     next();
   } else {
     res.redirect("/login");
@@ -240,13 +241,13 @@ const requireAuth = (req: express.Request, res: express.Response, next: express.
 app.get("/profile", requireAuth, (req, res) => {
   res.render("profile", {
     title: "Profile",
-    user: (req as any).user,
+    user: req.user,
   });
 });
 
 // User applications route (requires authentication)
 app.get("/my-applications", requireAuth, async (req, res) => {
-  const user = (req as any).user;
+  const user = req.user;
   // This would typically fetch applications from the database filtered by user ID
   res.render("my-applications", {
     title: "My Applications",

@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import type { ApplicationService } from "../services/applicationService.js";
 import type { JobService } from "../services/jobService.js";
+import "../types/express-session.js";
 
 export class ApplicationController {
   constructor(
@@ -41,7 +42,7 @@ export class ApplicationController {
       res.render("apply", {
         title: `Apply for ${job.name}`,
         job: formattedJob,
-        user: (req as any).session?.user || null, // Pass user info if available
+        user: req.session?.user || null, // Pass user info if available
       });
     } catch (error) {
       console.error("Error showing application form:", error);
@@ -60,7 +61,7 @@ export class ApplicationController {
 
       const jobId = parseInt(jobIdParam, 10);
       const { applicantName, email, phoneNumber, coverLetter } = req.body;
-      const user = (req as any).session?.user || null;
+      const user = req.session?.user || null;
 
       if (Number.isNaN(jobId)) {
         res.redirect("/jobs?error=invalid-id");
@@ -101,7 +102,7 @@ export class ApplicationController {
         email: finalEmail,
         phoneNumber: phoneNumber || user?.phoneNumber || "",
         coverLetter,
-        userId: user?.id, // Include user ID if logged in
+        ...(user?.id && { userId: user.id }), // Include user ID if logged in
       });
 
       // Redirect to success page

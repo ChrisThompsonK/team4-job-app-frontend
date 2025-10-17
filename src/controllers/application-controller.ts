@@ -100,7 +100,7 @@ export class ApplicationController {
         jobId,
         applicantName: finalApplicantName,
         email: finalEmail,
-        phoneNumber: phoneNumber || user?.phoneNumber || "",
+        phoneNumber: phoneNumber?.trim() ? phoneNumber : user?.phoneNumber || "",
         coverLetter,
         ...(user?.id && { userId: user.id }), // Include user ID if logged in
       });

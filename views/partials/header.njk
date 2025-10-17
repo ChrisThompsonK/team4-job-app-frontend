@@ -11,15 +11,34 @@
             <nav class="hidden md:flex items-center justify-center flex-1 space-x-8">
                 <a href="/" class="text-gray-700 hover:text-blue-600 font-medium px-3 py-2 transition-colors duration-200">Home</a>
                 <a href="/jobs" class="text-gray-700 hover:text-blue-600 font-medium px-3 py-2 transition-colors duration-200">Jobs</a>
+                {% if isAuthenticated and currentUser.role === "admin" %}
+                    <a href="/jobs/create" class="text-gray-700 hover:text-blue-600 font-medium px-3 py-2 transition-colors duration-200">Create Job</a>
+                {% endif %}
                 <a href="#" class="text-gray-700 hover:text-blue-600 font-medium px-3 py-2 transition-colors duration-200">About</a>
                 <a href="#" class="text-gray-700 hover:text-blue-600 font-medium px-3 py-2 transition-colors duration-200">Contact</a>
             </nav>
 
-            <!-- Desktop CTA Button -->
-            <div class="hidden md:flex flex-shrink-0 ml-4">
-                <a href="/login" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 !text-white">
-                    Login
-                </a>
+            <!-- Desktop User Actions -->
+            <div class="hidden md:flex flex-shrink-0 ml-4 items-center space-x-4">
+                {% if isAuthenticated %}
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm text-gray-600">
+                            Welcome, <span class="font-medium">{{ currentUser.username }}</span>
+                            {% if currentUser.role === "admin" %}
+                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full ml-1">Admin</span>
+                            {% endif %}
+                        </span>
+                        <form method="POST" action="/logout" class="inline">
+                            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                {% else %}
+                    <a href="/login" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 !text-white">
+                        Login
+                    </a>
+                {% endif %}
             </div>
 
             <!-- Mobile menu button -->
@@ -35,6 +54,11 @@
                         <li><a href="/jobs" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-md transition-colors duration-200">
                             <span>Jobs</span>
                         </a></li>
+                        {% if isAuthenticated and currentUser.role === "admin" %}
+                            <li><a href="/jobs/create" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-md transition-colors duration-200">
+                                <span>Create Job</span>
+                            </a></li>
+                        {% endif %}
                         <li><a href="#" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-md transition-colors duration-200">
                             <span>About</span>
                         </a></li>
@@ -42,9 +66,23 @@
                             <span>Contact</span>
                         </a></li>
                         <li class="border-t border-gray-200 mt-2 pt-2">
-                            <a href="/login" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-md font-medium transition-colors duration-200 block text-center !text-white">
-                                Login
-                            </a>
+                            {% if isAuthenticated %}
+                                <div class="px-4 py-2 text-sm text-gray-600">
+                                    {{ currentUser.username }}
+                                    {% if currentUser.role === "admin" %}
+                                        <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full ml-1">Admin</span>
+                                    {% endif %}
+                                </div>
+                                <form method="POST" action="/logout" class="w-full">
+                                    <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-md font-medium transition-colors duration-200 block text-center !text-white">
+                                        Logout
+                                    </button>
+                                </form>
+                            {% else %}
+                                <a href="/login" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-md font-medium transition-colors duration-200 block text-center !text-white">
+                                    Login
+                                </a>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>

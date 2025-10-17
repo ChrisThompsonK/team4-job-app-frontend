@@ -29,6 +29,9 @@ coverage/
 # nyc test coverage
 .nyc_output
 
+# Pa11y accessibility test screenshots
+pa11y-screenshots/
+
 # Dependency directories
 .pnp
 .pnp.js

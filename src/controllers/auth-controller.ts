@@ -74,7 +74,7 @@ export class AuthController {
       await this.authService.logout();
 
       // Destroy session
-      req.session.destroy((err) => {
+      req.session.destroy((err?: Error) => {
         if (err) {
           console.error("Session destroy error:", err);
         }

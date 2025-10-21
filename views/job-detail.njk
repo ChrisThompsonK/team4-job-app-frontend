@@ -131,7 +131,7 @@
                         {% if isAuthenticated %}
                             <a href="/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full">Apply Now</a>
                         {% else %}
-                            <a href="/login?redirectTo=/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full">Login to Apply</a>
+                            <a href="/login?redirectTo=/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full" role="button">Login to Apply</a>
                         {% endif %}
                     {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
                         <p class="text-gray-600 mb-4">All positions for this role have been filled.</p>

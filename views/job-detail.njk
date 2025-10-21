@@ -77,9 +77,13 @@
                 </div>
             </div>
 
-            <div class="flex justify-end">
+                        <div class="flex justify-end">
                 {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
-                    <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 text-lg">Apply Now</button>
+                    {% if isAuthenticated %}
+                        <a href="/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 text-lg no-underline cursor-pointer inline-block">Apply Now</a>
+                    {% else %}
+                        <a href="/login?redirectTo=/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 text-lg no-underline cursor-pointer inline-block">Login to Apply</a>
+                    {% endif %}
                 {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
                     <button class="btn bg-gray-400 text-white border-none px-8 py-3 text-lg cursor-not-allowed" disabled>No Positions Available</button>
                 {% else %}
@@ -121,7 +125,11 @@
                     <h3 class="text-xl font-bold text-blue-800 mb-4">Ready to Apply?</h3>
                     {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
                         <p class="text-blue-700 mb-4">Join our team and make a difference in the technology industry.</p>
-                        <button class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full">Apply Now</button>
+                        {% if isAuthenticated %}
+                            <a href="/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full no-underline cursor-pointer inline-block">Apply Now</a>
+                        {% else %}
+                            <a href="/login?redirectTo=/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full no-underline cursor-pointer inline-block">Login to Apply</a>
+                        {% endif %}
                     {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
                         <p class="text-gray-600 mb-4">All positions for this role have been filled.</p>
                         <button class="btn bg-gray-400 text-white border-none w-full cursor-not-allowed" disabled>No Positions Available</button>
@@ -131,7 +139,8 @@
                     {% endif %}
                 </div>
 
-                <!-- View Applications Section -->
+                <!-- View Applications Section - Admin Only -->
+                {% if isAuthenticated and currentUser.role === "admin" %}
                 <div class="bg-purple-50 p-6 rounded-lg border border-purple-200 mb-6">
                     <h3 class="text-xl font-bold text-purple-800 mb-4">Manage Applications</h3>
                     <p class="text-purple-700 mb-4">View and manage all applications submitted for this role.</p>
@@ -140,6 +149,7 @@
                         View Applications
                     </a>
                 </div>
+                {% endif %}
 
                 <!-- Additional Info -->
                 <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">

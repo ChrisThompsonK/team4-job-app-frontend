@@ -60,10 +60,10 @@
             <!-- Mobile menu button -->
             <div class="md:hidden ml-auto">
                 <div class="dropdown dropdown-end">
-                    <div tabindex="0" role="button" class="btn btn-ghost btn-square">
+                    <button type="button" class="btn btn-ghost btn-square" aria-label="Open navigation menu" aria-haspopup="menu" aria-expanded="false" aria-controls="mobile-menu">
                         <i data-lucide="menu" class="h-5 w-5"></i>
-                    </div>
-                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-white rounded-lg w-56 border border-gray-200">
+                    </button>
+                    <ul id="mobile-menu" tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow-lg bg-white rounded-lg w-56 border border-gray-200">
                         <li><a href="/" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-md transition-colors duration-200">
                             <span>Home</span>
                         </a></li>

@@ -1,3 +1,5 @@
+//Need new tests to ensure that the apllicatoion bciasics work and that it is not silly test
+
 import { describe, expect, it } from "vitest";
 import { isAdult } from "./utils";
 

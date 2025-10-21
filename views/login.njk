@@ -18,36 +18,39 @@
                     <p class="text-gray-900">Login to your account to continue</p>
                 </div>
 
-                <!-- Error Messages -->
-                {% if error %}
+                <!-- Error/Success Messages -->
+                {% if errorMessage %}
                     <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
                         <div class="flex items-center">
                             <i data-lucide="alert-circle" class="h-5 w-5 mr-2"></i>
-                            <span>
-                                {% if error == 'invalid-credentials' %}
-                                    Invalid username or password. Please try again.
-                                {% else %}
-                                    {{ error }}
-                                {% endif %}
-                            </span>
+                            {{ errorMessage }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if successMessage %}
+                    <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-6">
+                        <div class="flex items-center">
+                            <i data-lucide="check-circle" class="h-5 w-5 mr-2"></i>
+                            {{ successMessage }}
                         </div>
                     </div>
                 {% endif %}
 
                 <!-- Login Form -->
                 <form method="POST" action="/login" class="space-y-6">
-                    <!-- Username -->
+                    <!-- Email -->
                     <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
-                            Username <span class="text-red-500">*</span>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                            Email <span class="text-red-500">*</span>
                         </label>
                         <input 
-                            type="text" 
-                            id="username" 
-                            name="username" 
+                            type="email" 
+                            id="email" 
+                            name="email" 
                             required
                             class="input input-bordered w-full"
-                            placeholder="Enter your username"
+                            placeholder="Enter your email address"
                         />
                     </div>
 

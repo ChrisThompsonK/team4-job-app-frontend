@@ -1,4 +1,5 @@
 import type { JobRole } from "../models/job-role.js";
+import type { LoginRequest, LoginResponse, User } from "../models/user.js";
 
 export interface JobRoleService {
   getAllJobs(limit?: number, offset?: number): Promise<JobRole[]>;
@@ -8,4 +9,10 @@ export interface JobRoleService {
     limit?: number,
     offset?: number
   ): Promise<{ jobs: JobRole[]; total: number }>;
+}
+
+export interface AuthenticationService {
+  login(credentials: LoginRequest): Promise<LoginResponse>;
+  logout(): Promise<void>;
+  validateSession(token?: string): Promise<User | null>;
 }

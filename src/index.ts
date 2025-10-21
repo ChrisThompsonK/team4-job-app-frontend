@@ -6,9 +6,12 @@ import nunjucks from "nunjucks";
 import "./types/express-session.js";
 import { BANDS, CAPABILITIES, STATUSES } from "./constants/job-form-options.js";
 import { ApplicationController } from "./controllers/application-controller.js";
+import { AuthController } from "./controllers/auth-controller.js";
 import { JobController } from "./controllers/job-controller.js";
+import { addUserToLocals, requireAdmin, requireAuth } from "./middleware/auth.js";
 import type { JobRole } from "./models/job-role.js";
 import { ApplicationService } from "./services/applicationService.js";
+import { AuthService } from "./services/authService.js";
 import { JobService } from "./services/jobService.js";
 
 // Load environment variables
@@ -18,36 +21,18 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
-// Enforce SESSION_SECRET presence
+// Validate required environment variables
 if (!process.env.SESSION_SECRET) {
   throw new Error("SESSION_SECRET environment variable is required");
 }
 
-// Session configuration
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-    },
-  })
-);
-
-// Middleware to make user available in all templates
-app.use((req, res, next) => {
-  res.locals.user = req.session?.user || null;
-  next();
-});
-
-// Initialize the job role service and controller
+// Initialize services and controllers
 const jobRoleService = new JobService(API_BASE_URL);
 const jobController = new JobController(jobRoleService);
 const applicationService = new ApplicationService();
 const applicationController = new ApplicationController(applicationService, jobRoleService);
+const authService = new AuthService(API_BASE_URL);
+const authController = new AuthController(authService);
 
 // Configure Nunjucks
 const env = nunjucks.configure(path.join(process.cwd(), "views"), {
@@ -69,6 +54,24 @@ app.use("/js", express.static(path.join(process.cwd(), "js")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Session configuration
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      sameSite: "lax", // CSRF protection
+    },
+  })
+);
+
+// Add user information to all templates
+app.use(addUserToLocals);
+
 // Hello World endpoint - now renders a view
 app.get("/", async (_req, res) => {
   // Get the 3 most recent jobs for the homepage
@@ -83,8 +86,7 @@ app.get("/", async (_req, res) => {
     }));
 
   res.render("index", {
-    title: "Kainos Jobs",
-    message: "Find your next career opportunity with Belfast's leading software company",
+    message: "Find Your Next Career Opportunity",
     latestJobs: latestJobs,
   });
 });
@@ -141,7 +143,7 @@ app.get("/jobs", async (req, res) => {
 });
 
 // Create job form page
-app.get("/jobs/create", (req, res) => {
+app.get("/jobs/create", requireAuth, requireAdmin, (req, res) => {
   const errorMessage = req.query.error ? String(req.query.error) : "";
 
   res.render("create-job", {
@@ -154,7 +156,7 @@ app.get("/jobs/create", (req, res) => {
 });
 
 // Create job form submission
-app.post("/jobs/create", jobController.createJob);
+app.post("/jobs/create", requireAuth, requireAdmin, jobController.createJob);
 
 // Job detail endpoint
 app.get("/jobs/:id", async (req, res) => {
@@ -190,84 +192,41 @@ app.get("/jobs/:id", async (req, res) => {
   }
 });
 
-// Login route
-app.get("/login", (req, res) => {
-  const errorMessage = req.query.error ? String(req.query.error) : "";
+// Authentication routes
+app.get("/login", authController.showLogin);
+app.post("/login", authController.login);
+app.post("/logout", authController.logout);
 
-  res.render("login", {
-    title: "Login",
-    error: errorMessage,
-  });
-});
+// Application routes - require authentication
+app.get("/jobs/:id/apply", requireAuth, applicationController.showApplicationForm);
+app.post("/jobs/:id/apply", requireAuth, applicationController.submitApplication);
+app.get("/jobs/:id/apply/success", requireAuth, applicationController.showApplicationSuccess);
 
-// Login form submission
-app.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-
-  // Mock authentication - in production, this would validate against a real database/API
-  if (username && password) {
-    // Mock user data - this would come from your authentication service/database
-    const mockUser = {
-      id: 1,
-      name: username === "admin" ? "John Doe" : username,
-      email: username === "admin" ? "john.doe@kainos.com" : `${username}@kainos.com`,
-      phoneNumber: "+44 7900 123456",
-      role: username === "admin" ? "admin" : "user",
-    };
-
-    // Store user in session
-    req.session.user = mockUser;
-    res.redirect("/jobs");
-  } else {
-    res.redirect("/login?error=invalid-credentials");
-  }
-});
-
-// Logout route
-app.get("/logout", (req, res) => {
-  req.session.destroy((err?: Error) => {
-    if (err) {
-      console.error("Error destroying session:", err);
-    }
-    res.redirect("/");
-  });
-});
-
-// Middleware to check if user is authenticated
-const requireAuth = (_req: express.Request, res: express.Response, next: express.NextFunction) => {
-  if (res.locals.user) {
-    next();
-  } else {
-    res.redirect("/login");
-  }
-};
-
-// User profile route (requires authentication)
-app.get("/profile", requireAuth, (_req, res) => {
-  res.render("profile", {
-    title: "Profile",
-    user: res.locals.user,
-  });
-});
-
-// User applications route (requires authentication)
-app.get("/my-applications", requireAuth, async (_req, res) => {
-  // This would typically fetch applications from the database filtered by user ID
-  res.render("my-applications", {
-    title: "My Applications",
-    user: res.locals.user,
-    applications: [], // Would be populated from database
-  });
-});
-
-// Application routes
-app.get("/jobs/:id/apply", applicationController.showApplicationForm);
-app.post("/jobs/:id/apply", applicationController.submitApplication);
-app.get("/jobs/:id/apply/success", applicationController.showApplicationSuccess);
-app.get("/jobs/:id/applications", applicationController.showApplications);
-app.get("/jobs/:id/applications/:applicationId", applicationController.showApplicationDetail);
-app.post("/jobs/:id/applications/:applicationId/accept", applicationController.acceptApplication);
-app.post("/jobs/:id/applications/:applicationId/reject", applicationController.rejectApplication);
+// Admin routes - require admin access
+app.get(
+  "/jobs/:id/applications",
+  requireAuth,
+  requireAdmin,
+  applicationController.showApplications
+);
+app.get(
+  "/jobs/:id/applications/:applicationId",
+  requireAuth,
+  requireAdmin,
+  applicationController.showApplicationDetail
+);
+app.post(
+  "/jobs/:id/applications/:applicationId/accept",
+  requireAuth,
+  requireAdmin,
+  applicationController.acceptApplication
+);
+app.post(
+  "/jobs/:id/applications/:applicationId/reject",
+  requireAuth,
+  requireAdmin,
+  applicationController.rejectApplication
+);
 
 // Start the server
 const main = async (): Promise<void> => {

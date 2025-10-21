@@ -1,89 +1,170 @@
-{% extends "layout.njk" %} 
+{% extends "layout.njk" %}
 
 {% block title %}Kainos Job Portal - Find Your Next Career Opportunity{% endblock %}
 
 {% block content %}
     <!-- Hero Section -->
-    <div class="min-h-96 bg-white flex items-center justify-center">
-        <div class="text-center px-4">
-            <div class="max-w-2xl mx-auto">
-                <div class="flex justify-center mb-6">
-                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-3 rounded-lg shadow-sm">
-                        <img src="/images/Kainos-logo.jpg" alt="Kainos Logo" class="h-16">
+    <div class="hero min-h-96 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div class="hero-content text-center">
+            <div class="max-w-2xl">
+                <div class="flex justify-center mb-8">
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-2 rounded-lg shadow-lg w-48 h-24 md:w-64 md:h-32">
+                        <img src="/images/Kainos-logo.jpg" alt="Kainos Logo" class="w-full h-full object-contain" loading="lazy">
                     </div>
                 </div>
-                <p class="text-xl text-gray-950 mb-16">{{ message }}</p>
-                <a href="/jobs" class="btn bg-blue-700 hover:bg-blue-800 text-white border-none btn-lg rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 px-12 py-4 text-lg font-semibold !text-white mt-8">Explore Jobs</a>
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 text-gray-800">{{ title }}</h1>
+                <p class="text-xl text-gray-700 mb-8 leading-relaxed">{{ message }}</p>
+                <a href="/jobs" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none btn-lg rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 px-12 py-4 text-lg font-semibold !text-white">
+                    <span class="mr-2">�</span>
+                    Explore Jobs
+                </a>
             </div>
         </div>
     </div>
 
+    <!-- Features Section -->
+    <section class="py-20 bg-base-100">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-base-content">
+                    Why Choose Kainos?
+                </h2>
+                <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+                    We connect talented professionals with exceptional opportunities through innovation and excellence
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card bg-base-100 shadow-xl border border-base-300 hover:shadow-2xl transition-all duration-300">
+                    <div class="card-body items-center text-center p-8">
+                        <div class="text-5xl mb-6">🎯</div>
+                        <h3 class="card-title text-xl font-bold mb-4 text-primary">Perfect Matches</h3>
+                        <p class="text-base-content/70 leading-relaxed">
+                            Find roles that align perfectly with your skills, experience, and career aspirations in our innovative tech environment.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card bg-base-100 shadow-xl border border-base-300 hover:shadow-2xl transition-all duration-300">
+                    <div class="card-body items-center text-center p-8">
+                        <div class="text-5xl mb-6">⚡</div>
+                        <h3 class="card-title text-xl font-bold mb-4 text-primary">Fast Process</h3>
+                        <p class="text-base-content/70 leading-relaxed">
+                            Our streamlined application process gets you connected with hiring managers quickly and efficiently.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card bg-base-100 shadow-xl border border-base-300 hover:shadow-2xl transition-all duration-300">
+                    <div class="card-body items-center text-center p-8">
+                        <div class="text-5xl mb-6">🚀</div>
+                        <h3 class="card-title text-xl font-bold mb-4 text-primary">Career Growth</h3>
+                        <p class="text-base-content/70 leading-relaxed">
+                            Join a company that prioritizes professional development, mentorship, and clear advancement paths.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Latest Jobs Section -->
     <div class="container mx-auto px-4 py-16">
-        <h2 class="text-3xl font-bold text-center mb-12">Latest Jobs</h2>
+        <h2 class="text-3xl font-bold text-center mb-12">Latest Job Opportunities</h2>
         {% if latestJobs and latestJobs.length > 0 %}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {% for job in latestJobs %}
                     <!-- Job Card -->
-                    <div class="card bg-base-100 shadow-xl feature-card">
+                    <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300">
                         <div class="card-body p-6">
-                            <h2 class="card-title text-xl font-bold text-gray-800 mb-4">{{ job.name }}</h2>
+                            <h3 class="card-title text-xl font-bold text-gray-800 mb-4">{{ job.name }}</h3>
                             <div class="space-y-3 mb-6">
                                 <div class="flex items-center text-gray-600">
-                                    <i data-lucide="map-pin" class="h-5 w-5 mr-3 text-blue-600"></i>
+                                    <i data-lucide="map-pin" class="h-5 w-5 mr-3 text-blue-600" aria-hidden="true"></i>
                                     <span class="text-sm">{{ job.location }}</span>
                                 </div>
                                 <div class="flex items-center text-gray-600">
-                                    <i data-lucide="building" class="h-5 w-5 mr-3 text-purple-600"></i>
+                                    <i data-lucide="building" class="h-5 w-5 mr-3 text-purple-600" aria-hidden="true"></i>
                                     <span class="text-sm">{{ job.capability }}</span>
                                 </div>
                                 <div class="flex items-center text-gray-600">
-                                    <i data-lucide="badge" class="h-5 w-5 mr-3 text-green-600"></i>
+                                    <i data-lucide="badge" class="h-5 w-5 mr-3 text-green-600" aria-hidden="true"></i>
                                     <span class="text-sm">{{ job.band }}</span>
                                 </div>
                                 <div class="flex items-center text-red-600 font-medium">
-                                    <i data-lucide="calendar" class="h-5 w-5 mr-3"></i>
+                                    <i data-lucide="calendar" class="h-5 w-5 mr-3" aria-hidden="true"></i>
                                     <span class="text-sm">Closes: {{ job.closingDate }}</span>
                                 </div>
                                 <div class="flex items-center">
                                     {% if job.status == 'open' %}
-                                        <i data-lucide="circle-check" class="h-5 w-5 mr-3 text-green-700" aria-hidden="true"></i>
-                                        <span class="text-sm text-green-700 font-medium">Open</span>
+                                        <i data-lucide="circle-check" class="h-5 w-5 mr-3 text-green-600" aria-hidden="true"></i>
+                                        <span class="text-sm text-green-600 font-medium badge badge-success badge-sm">Open</span>
                                     {% else %}
                                         <i data-lucide="circle-x" class="h-5 w-5 mr-3 text-red-600" aria-hidden="true"></i>
-                                        <span class="text-sm text-red-600 font-medium">Closed</span>
+                                        <span class="text-sm text-red-600 font-medium badge badge-error badge-sm">Closed</span>
                                     {% endif %}
                                 </div>
                                 <div class="flex items-center text-gray-600">
-                                    <i data-lucide="users" class="h-5 w-5 mr-3 text-orange-600"></i>
+                                    <i data-lucide="users" class="h-5 w-5 mr-3 text-orange-600" aria-hidden="true"></i>
                                     <span class="text-sm">{{ job.numberOfOpenPositions }} position{% if job.numberOfOpenPositions != 1 %}s{% endif %}</span>
                                 </div>
                             </div>
                             <div class="card-actions justify-center">
                                 {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
-                                    <a href="/jobs/{{ job.id }}" class="btn bg-blue-700 hover:bg-blue-800 text-white border-none w-full rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 inline-block text-center !text-white">Apply Now</a>
+                                    <a href="/jobs/{{ job.id }}" class="btn btn-primary w-full rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                                        Apply Now
+                                    </a>
                                 {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
-                                    <button class="btn bg-gray-400 text-white border-none w-full cursor-not-allowed" disabled>No Positions</button>
+                                    <button class="btn btn-disabled w-full cursor-not-allowed" disabled aria-label="No positions available">
+                                        No Positions
+                                    </button>
                                 {% else %}
-                                    <button class="btn bg-gray-400 text-white border-none w-full cursor-not-allowed" disabled>Closed</button>
+                                    <button class="btn btn-disabled w-full cursor-not-allowed" disabled aria-label="Job closed">
+                                        Closed
+                                    </button>
                                 {% endif %}
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
-            <div class="text-center mt-8">
-                <a href="/jobs" class="inline-flex items-center px-8 py-3 bg-purple-800 hover:bg-purple-900 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200">
+            <div class="text-center mt-12">
+                <a href="/jobs" class="btn btn-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-none rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 px-8">
                     <span class="text-white">View All Jobs</span>
-                    <i data-lucide="arrow-right" class="h-5 w-5 ml-2 text-white"></i>
+                    <i data-lucide="arrow-right" class="h-5 w-5 ml-2 text-white" aria-hidden="true"></i>
                 </a>
             </div>
         {% else %}
             <div class="text-center py-16">
-                <i data-lucide="briefcase" class="h-16 w-16 text-gray-400 mx-auto mb-4"></i>
+                <i data-lucide="briefcase" class="h-16 w-16 text-gray-400 mx-auto mb-4" aria-hidden="true"></i>
                 <h3 class="text-xl font-semibold text-gray-700 mb-2">No Jobs Available</h3>
                 <p class="text-gray-600">Check back soon for new career opportunities at Kainos!</p>
+                <a href="/jobs" class="btn btn-outline btn-primary mt-4">
+                    Refresh Job Listings
+                </a>
             </div>
         {% endif %}
     </div>
+
+    <!-- Call to Action Section -->
+    <section class="py-20 bg-primary text-primary-content">
+        <div class="container mx-auto px-4 text-center max-w-4xl">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">
+                Ready to Transform Your Career?
+            </h2>
+            <p class="text-lg mb-8 opacity-90 leading-relaxed">
+                Join the Kainos team and be part of innovative projects that make a real difference. Your next opportunity is just one click away.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="/jobs" class="btn btn-secondary btn-lg px-8 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200">
+                    <span class="mr-2">👀</span>
+                    View All Opportunities
+                </a>
+                <a href="/login" class="btn btn-outline btn-lg border-primary-content text-primary-content hover:bg-primary-content hover:text-primary px-8 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200">
+                    <span class="mr-2">🔐</span>
+                    Login to Apply
+                </a>
+            </div>
+        </div>
+    </section>
 {% endblock %}

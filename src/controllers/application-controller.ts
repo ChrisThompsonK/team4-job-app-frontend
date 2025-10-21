@@ -74,7 +74,7 @@ export class ApplicationController {
 
       if (user) {
         // User is logged in - use their information
-        finalApplicantName = user.name;
+        finalApplicantName = user.username;
         finalEmail = user.email;
       } else {
         // User is not logged in - use form data
@@ -100,7 +100,7 @@ export class ApplicationController {
         jobId,
         applicantName: finalApplicantName,
         email: finalEmail,
-        phoneNumber: phoneNumber?.trim() ? phoneNumber : user?.phoneNumber || "",
+        phoneNumber: phoneNumber?.trim() || "",
         coverLetter,
         ...(user?.id && { userId: user.id }), // Include user ID if logged in
       });

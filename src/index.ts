@@ -85,8 +85,7 @@ app.get("/", async (_req, res) => {
     }));
 
   res.render("index", {
-    title: "Kainos Jobs",
-    message: "Find your next career opportunity with Belfast's leading software company",
+    message: "Find Your Next Career Opportunity",
     latestJobs: latestJobs,
   });
 });

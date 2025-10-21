@@ -123,9 +123,19 @@
                             </div>
                             <div class="card-actions justify-center">
                                 {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
-                                    <a href="/jobs/{{ job.id }}" class="btn btn-primary w-full rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
-                                        Apply Now
-                                    </a>
+                                    {% if isAuthenticated and currentUser.role === "admin" %}
+                                        <a href="/jobs/{{ job.id }}/applications" class="btn btn-primary w-full rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                                            Manage Applications
+                                        </a>
+                                    {% elif isAuthenticated %}
+                                        <a href="/jobs/{{ job.id }}/apply" class="btn btn-primary w-full rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                                            Apply Now
+                                        </a>
+                                    {% else %}
+                                        <a href="/login?redirectTo=/jobs/{{ job.id }}/apply" class="btn btn-primary w-full rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                                            Login to Apply
+                                        </a>
+                                    {% endif %}
                                 {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
                                     <button class="btn btn-disabled w-full cursor-not-allowed" disabled aria-label="No positions available">
                                         No Positions

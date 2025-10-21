@@ -37,7 +37,7 @@ export interface BackendLoginResponse {
 declare module "express-session" {
   interface SessionData {
     user?: User;
-    isAuthenticated: boolean;
+    isAuthenticated?: boolean;
     redirectTo?: string;
   }
 }

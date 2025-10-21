@@ -1,7 +1,9 @@
 import path from "node:path";
 import dotenv from "dotenv";
 import express from "express";
+import session from "express-session";
 import nunjucks from "nunjucks";
+import "./types/express-session.js";
 import { BANDS, CAPABILITIES, STATUSES } from "./constants/job-form-options.js";
 import { ApplicationController } from "./controllers/application-controller.js";
 import { JobController } from "./controllers/job-controller.js";
@@ -15,6 +17,31 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
+
+// Enforce SESSION_SECRET presence
+if (!process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET environment variable is required");
+}
+
+// Session configuration
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
+  })
+);
+
+// Middleware to make user available in all templates
+app.use((req, res, next) => {
+  res.locals.user = req.session?.user || null;
+  next();
+});
 
 // Initialize the job role service and controller
 const jobRoleService = new JobService(API_BASE_URL);
@@ -164,9 +191,72 @@ app.get("/jobs/:id", async (req, res) => {
 });
 
 // Login route
-app.get("/login", (_req, res) => {
+app.get("/login", (req, res) => {
+  const errorMessage = req.query.error ? String(req.query.error) : "";
+
   res.render("login", {
     title: "Login",
+    error: errorMessage,
+  });
+});
+
+// Login form submission
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  // Mock authentication - in production, this would validate against a real database/API
+  if (username && password) {
+    // Mock user data - this would come from your authentication service/database
+    const mockUser = {
+      id: 1,
+      name: username === "admin" ? "John Doe" : username,
+      email: username === "admin" ? "john.doe@kainos.com" : `${username}@kainos.com`,
+      phoneNumber: "+44 7900 123456",
+      role: username === "admin" ? "admin" : "user",
+    };
+
+    // Store user in session
+    req.session.user = mockUser;
+    res.redirect("/jobs");
+  } else {
+    res.redirect("/login?error=invalid-credentials");
+  }
+});
+
+// Logout route
+app.get("/logout", (req, res) => {
+  req.session.destroy((err?: Error) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+    }
+    res.redirect("/");
+  });
+});
+
+// Middleware to check if user is authenticated
+const requireAuth = (_req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (res.locals.user) {
+    next();
+  } else {
+    res.redirect("/login");
+  }
+};
+
+// User profile route (requires authentication)
+app.get("/profile", requireAuth, (_req, res) => {
+  res.render("profile", {
+    title: "Profile",
+    user: res.locals.user,
+  });
+});
+
+// User applications route (requires authentication)
+app.get("/my-applications", requireAuth, async (_req, res) => {
+  // This would typically fetch applications from the database filtered by user ID
+  res.render("my-applications", {
+    title: "My Applications",
+    user: res.locals.user,
+    applications: [], // Would be populated from database
   });
 });
 

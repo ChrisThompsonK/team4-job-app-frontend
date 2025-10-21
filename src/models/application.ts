@@ -9,6 +9,7 @@ export interface Application {
   applicationDate: Date;
   status: "pending" | "reviewed" | "accepted" | "rejected";
   notes?: string;
+  userId?: number; // ID of the logged-in user who submitted the application
 }
 
 export interface CreateApplicationRequest {
@@ -18,4 +19,5 @@ export interface CreateApplicationRequest {
   phoneNumber?: string;
   cv?: string;
   coverLetter?: string;
+  userId?: number; // ID of the logged-in user who submitted the application
 }

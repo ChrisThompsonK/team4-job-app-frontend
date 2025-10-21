@@ -15,11 +15,46 @@
                 <a href="#" class="text-gray-700 hover:text-blue-600 font-medium px-3 py-2 transition-colors duration-200">Contact</a>
             </nav>
 
-            <!-- Desktop CTA Button -->
-            <div class="hidden md:flex flex-shrink-0 ml-4">
-                <a href="/login" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 !text-white">
-                    Login
-                </a>
+            <!-- Desktop CTA Button and Settings -->
+            <div class="hidden md:flex flex-shrink-0 ml-4 gap-2">
+                <button onclick="openAccessibilitySettings()" class="btn btn-ghost btn-circle" aria-label="Open accessibility settings" title="Accessibility Settings">
+                    <i data-lucide="settings" class="h-5 w-5" aria-hidden="true"></i>
+                </button>
+                
+                {% if user %}
+                    <!-- User is logged in -->
+                    <div class="dropdown dropdown-end">
+                        <div tabindex="0" role="button" class="btn btn-ghost rounded-btn flex items-center gap-2">
+                            <i data-lucide="user" class="h-5 w-5"></i>
+                            <span class="hidden lg:block">{{ user.name }}</span>
+                            <i data-lucide="chevron-down" class="h-4 w-4"></i>
+                        </div>
+                        <ul tabindex="0" class="menu dropdown-content z-[1] p-2 shadow bg-white rounded-box w-52 mt-2 border border-gray-200">
+                            <li class="menu-title">
+                                <span>{{ user.name }}</span>
+                                <span class="text-xs text-gray-500">{{ user.email }}</span>
+                            </li>
+                            <li><a href="/profile" class="text-gray-700 hover:text-blue-600">
+                                <i data-lucide="user" class="h-4 w-4"></i>
+                                Profile
+                            </a></li>
+                            <li><a href="/my-applications" class="text-gray-700 hover:text-blue-600">
+                                <i data-lucide="file-text" class="h-4 w-4"></i>
+                                My Applications
+                            </a></li>
+                            <li><hr class="my-2"></li>
+                            <li><a href="/logout" class="text-red-600 hover:text-red-700">
+                                <i data-lucide="log-out" class="h-4 w-4"></i>
+                                Logout
+                            </a></li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <!-- User is not logged in -->
+                    <a href="/login" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors duration-200 !text-white">
+                        Login
+                    </a>
+                {% endif %}
             </div>
 
             <!-- Mobile menu button -->
@@ -42,10 +77,41 @@
                             <span>Contact</span>
                         </a></li>
                         <li class="border-t border-gray-200 mt-2 pt-2">
-                            <a href="/login" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-md font-medium transition-colors duration-200 block text-center !text-white">
-                                Login
-                            </a>
+                            <button onclick="openAccessibilitySettings()" class="w-full text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-md transition-colors duration-200 flex items-center gap-2">
+                                <i data-lucide="settings" class="h-4 w-4" aria-hidden="true"></i>
+                                <span>Accessibility Settings</span>
+                            </button>
                         </li>
+                        
+                        {% if user %}
+                            <!-- User is logged in - Mobile -->
+                            <li class="border-t border-gray-200 mt-2 pt-2">
+                                <div class="px-4 py-2 text-sm text-gray-500">
+                                    Logged in as <strong>{{ user.name }}</strong>
+                                </div>
+                            </li>
+                            <li><a href="/profile" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-md transition-colors duration-200 flex items-center gap-2">
+                                <i data-lucide="user" class="h-4 w-4"></i>
+                                <span>Profile</span>
+                            </a></li>
+                            <li><a href="/my-applications" class="text-gray-700 hover:text-blue-600 hover:bg-blue-50 px-4 py-3 rounded-md transition-colors duration-200 flex items-center gap-2">
+                                <i data-lucide="file-text" class="h-4 w-4"></i>
+                                <span>My Applications</span>
+                            </a></li>
+                            <li>
+                                <a href="/logout" class="w-full text-red-600 hover:text-red-700 hover:bg-red-50 px-4 py-3 rounded-md transition-colors duration-200 flex items-center gap-2">
+                                    <i data-lucide="log-out" class="h-4 w-4"></i>
+                                    <span>Logout</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <!-- User is not logged in - Mobile -->
+                            <li>
+                                <a href="/login" class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-md font-medium transition-colors duration-200 block text-center !text-white">
+                                    Login
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

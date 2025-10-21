@@ -17,6 +17,21 @@
             </div>
         </div>
         
+        <!-- Error and Success Messages -->
+        {% if errorDisplay.show %}
+            <div class="{{ errorDisplay.containerClass }}">
+                <i data-lucide="{{ errorDisplay.iconClass }}" class="h-5 w-5 inline mr-2"></i>
+                {{ errorDisplay.message }}
+            </div>
+        {% endif %}
+        
+        {% if successDisplay.show %}
+            <div class="{{ successDisplay.containerClass }}">
+                <i data-lucide="{{ successDisplay.iconClass }}" class="h-5 w-5 inline mr-2"></i>
+                {{ successDisplay.message }}
+            </div>
+        {% endif %}
+        
         <!-- Filter Section -->
         <div class="max-w-4xl mx-auto mb-8">
             <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">

@@ -54,43 +54,46 @@
             <!-- Status and Open Positions Row -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="flex items-center">
-                    {% if job.status == 'open' %}
-                        <i data-lucide="circle-check" class="h-5 w-5 mr-3 text-green-600"></i>
-                        <div>
-                            <div class="text-sm text-gray-500">Status</div>
-                            <div class="font-medium text-green-600">Open</div>
-                        </div>
-                    {% else %}
-                        <i data-lucide="circle-x" class="h-5 w-5 mr-3 text-red-600"></i>
-                        <div>
-                            <div class="text-sm text-gray-500">Status</div>
-                            <div class="font-medium text-red-600">Closed</div>
-                        </div>
-                    {% endif %}
+                    <i data-lucide="{{ job.statusDisplay.iconClass }}" class="h-5 w-5 mr-3 {{ job.statusDisplay.color }}"></i>
+                    <div>
+                        <div class="text-sm text-gray-500">Status</div>
+                        <div class="font-medium {{ job.statusDisplay.color }}">{{ job.statusDisplay.text }}</div>
+                    </div>
                 </div>
                 <div class="flex items-center">
                     <i data-lucide="users" class="h-5 w-5 mr-3 text-orange-600"></i>
                     <div>
                         <div class="text-sm text-gray-500">Open Positions</div>
-                        <div class="font-medium text-gray-800">{{ job.numberOfOpenPositions }} position{% if job.numberOfOpenPositions != 1 %}s{% endif %}</div>
+                        <div class="font-medium text-gray-800">{{ job.positionsText }}</div>
                     </div>
                 </div>
             </div>
 
-                        <div class="flex justify-end">
-                {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
-                    {% if isAuthenticated %}
-                        <a href="/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 text-lg no-underline cursor-pointer inline-block">Apply Now</a>
-                    {% else %}
-                        <a href="/login?redirectTo=/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 text-lg no-underline cursor-pointer inline-block">Login to Apply</a>
-                    {% endif %}
-                {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
-                    <button class="btn bg-gray-400 text-white border-none px-8 py-3 text-lg cursor-not-allowed" disabled>No Positions Available</button>
+            {% if job.actions.headerAction.show %}
+            <div class="flex justify-end">
+                {% if job.actions.headerAction.disabled %}
+                    <button class="{{ job.actions.headerAction.className }} px-8 py-3 text-lg" disabled>{{ job.actions.headerAction.text }}</button>
                 {% else %}
-                    <button class="btn bg-gray-400 text-white border-none px-8 py-3 text-lg cursor-not-allowed" disabled>Applications Closed</button>
+                    <a href="{{ job.actions.headerAction.href }}" class="{{ job.actions.headerAction.className }} px-8 py-3 text-lg">{{ job.actions.headerAction.text }}</a>
                 {% endif %}
             </div>
+            {% endif %}
         </div>
+
+        <!-- Error and Success Messages -->
+        {% if errorDisplay.show %}
+            <div class="{{ errorDisplay.containerClass }}">
+                <i data-lucide="{{ errorDisplay.iconClass }}" class="h-5 w-5 inline mr-2"></i>
+                {{ errorDisplay.message }}
+            </div>
+        {% endif %}
+        
+        {% if successDisplay.show %}
+            <div class="{{ successDisplay.containerClass }}">
+                <i data-lucide="{{ successDisplay.iconClass }}" class="h-5 w-5 inline mr-2"></i>
+                {{ successDisplay.message }}
+            </div>
+        {% endif %}
 
         <!-- Job Details -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -120,35 +123,38 @@
 
             <!-- Sidebar -->
             <div class="lg:col-span-1">
-                <!-- Apply Section -->
-                <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 mb-6">
-                    <h3 class="text-xl font-bold text-blue-800 mb-4">Ready to Apply?</h3>
-                    {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
-                        <p class="text-blue-700 mb-4">Join our team and make a difference in the technology industry.</p>
-                        {% if isAuthenticated %}
-                            <a href="/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full no-underline cursor-pointer inline-block">Apply Now</a>
-                        {% else %}
-                            <a href="/login?redirectTo=/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full no-underline cursor-pointer inline-block">Login to Apply</a>
+                {% if job.actions.sidebarContent.showManageSection %}
+                    <!-- View Applications Section - Admin Only -->
+                    <div class="bg-purple-50 p-6 rounded-lg border border-purple-200 mb-6">
+                        <h3 class="text-xl font-bold text-purple-800 mb-4">Manage Applications</h3>
+                        <p class="text-purple-700 mb-4">View and manage all applications submitted for this role.</p>
+                        <a href="/jobs/{{ job.id }}/applications" class="btn bg-purple-600 hover:bg-purple-700 text-white border-none w-full flex items-center justify-center">
+                            <i data-lucide="file-text" class="h-4 w-4 mr-2"></i>
+                            View Applications
+                        </a>
+                    </div>
+                {% endif %}
+                
+                {% if job.actions.sidebarContent.showApplySection %}
+                    <!-- Apply Section - Non-Admin Users -->
+                    <div class="bg-blue-50 p-6 rounded-lg border border-blue-200 mb-6">
+                        <h3 class="text-xl font-bold text-blue-800 mb-4">Ready to Apply?</h3>
+                        {% if job.actions.sidebarContent.applyAction.show %}
+                            {% if job.actions.sidebarContent.applyAction.text == "Apply Now" or job.actions.sidebarContent.applyAction.text == "Login to Apply" %}
+                                <p class="text-blue-700 mb-4">Join our team and make a difference in the technology industry.</p>
+                            {% elif job.actions.sidebarContent.applyAction.text == "No Positions Available" %}
+                                <p class="text-gray-600 mb-4">All positions for this role have been filled.</p>
+                            {% else %}
+                                <p class="text-gray-600 mb-4">Applications for this position are currently closed.</p>
+                            {% endif %}
+                            
+                            {% if job.actions.sidebarContent.applyAction.disabled %}
+                                <button class="{{ job.actions.sidebarContent.applyAction.className }}" disabled>{{ job.actions.sidebarContent.applyAction.text }}</button>
+                            {% else %}
+                                <a href="{{ job.actions.sidebarContent.applyAction.href }}" class="{{ job.actions.sidebarContent.applyAction.className }}">{{ job.actions.sidebarContent.applyAction.text }}</a>
+                            {% endif %}
                         {% endif %}
-                    {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
-                        <p class="text-gray-600 mb-4">All positions for this role have been filled.</p>
-                        <button class="btn bg-gray-400 text-white border-none w-full cursor-not-allowed" disabled>No Positions Available</button>
-                    {% else %}
-                        <p class="text-gray-600 mb-4">Applications for this position are currently closed.</p>
-                        <button class="btn bg-gray-400 text-white border-none w-full cursor-not-allowed" disabled>Applications Closed</button>
-                    {% endif %}
-                </div>
-
-                <!-- View Applications Section - Admin Only -->
-                {% if isAuthenticated and currentUser.role === "admin" %}
-                <div class="bg-purple-50 p-6 rounded-lg border border-purple-200 mb-6">
-                    <h3 class="text-xl font-bold text-purple-800 mb-4">Manage Applications</h3>
-                    <p class="text-purple-700 mb-4">View and manage all applications submitted for this role.</p>
-                    <a href="/jobs/{{ job.id }}/applications" class="btn bg-purple-600 hover:bg-purple-700 text-white border-none w-full flex items-center justify-center">
-                        <i data-lucide="file-text" class="h-4 w-4 mr-2"></i>
-                        View Applications
-                    </a>
-                </div>
+                    </div>
                 {% endif %}
 
                 <!-- Additional Info -->

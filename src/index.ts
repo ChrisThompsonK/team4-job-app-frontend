@@ -7,8 +7,14 @@ import "./types/express-session.js";
 import { BANDS, CAPABILITIES, STATUSES } from "./constants/job-form-options.js";
 import { ApplicationController } from "./controllers/application-controller.js";
 import { AuthController } from "./controllers/auth-controller.js";
+import { FormController } from "./controllers/form-controller.js";
 import { JobController } from "./controllers/job-controller.js";
-import { addUserToLocals, requireAdmin, requireAuth } from "./middleware/auth.js";
+import {
+  addUserToLocals,
+  preventAdminAccess,
+  requireAdmin,
+  requireAuth,
+} from "./middleware/auth.js";
 import type { JobRole } from "./models/job-role.js";
 import { ApplicationService } from "./services/applicationService.js";
 import { AuthService } from "./services/authService.js";
@@ -73,7 +79,7 @@ app.use(
 app.use(addUserToLocals);
 
 // Hello World endpoint - now renders a view
-app.get("/", async (_req, res) => {
+app.get("/", async (req, res) => {
   // Get the 3 most recent jobs for the homepage
   const allJobs = await jobRoleService.getAllJobs();
   console.log(allJobs);
@@ -85,9 +91,13 @@ app.get("/", async (_req, res) => {
       closingDate: job.closingDate.toLocaleDateString("en-GB"),
     }));
 
+  // Handle success messages from login redirects
+  const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+
   res.render("index", {
     message: "Find Your Next Career Opportunity",
     latestJobs: latestJobs,
+    successDisplay: successDisplay,
   });
 });
 
@@ -106,31 +116,30 @@ app.get("/jobs", async (req, res) => {
   const hasNext = page < totalPages;
   const hasPrevious = page > 1;
 
-  // Format the dates for display
-  const formattedJobRoles = jobRoles.map((job: JobRole) => ({
-    ...job,
-    closingDate: job.closingDate.toLocaleDateString("en-GB"),
-  }));
+  // Format the dates for display and add action button data
+  const formattedJobRoles = jobRoles.map((job: JobRole) => {
+    const actionButton = JobController.getJobActionButton(
+      job,
+      res.locals.isAuthenticated || false,
+      res.locals.currentUser || null
+    );
 
-  // Handle error messages from redirects
-  let errorMessage = "";
-  if (req.query.error === "invalid-id") {
-    errorMessage = "Invalid job ID provided.";
-  } else if (req.query.error === "not-found") {
-    errorMessage = "The job you're looking for doesn't exist or has been removed.";
-  }
+    return {
+      ...job,
+      closingDate: job.closingDate.toLocaleDateString("en-GB"),
+      actionButton: actionButton,
+    };
+  });
 
-  // Handle success messages
-  let successMessage = "";
-  if (req.query.success === "created") {
-    successMessage = "Job role created successfully!";
-  }
+  // Handle error and success messages using FormController
+  const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
+  const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
 
   res.render("jobs", {
     title: "Available Job Roles",
     jobs: formattedJobRoles,
-    errorMessage: errorMessage,
-    successMessage: successMessage,
+    errorDisplay: errorDisplay,
+    successDisplay: successDisplay,
     pagination: {
       currentPage: page,
       totalPages: totalPages,
@@ -144,14 +153,14 @@ app.get("/jobs", async (req, res) => {
 
 // Create job form page
 app.get("/jobs/create", requireAuth, requireAdmin, (req, res) => {
-  const errorMessage = req.query.error ? String(req.query.error) : "";
+  const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
 
   res.render("create-job", {
     title: "Create New Job Role",
     capabilities: CAPABILITIES,
     bands: BANDS,
     statuses: STATUSES,
-    errorMessage: errorMessage,
+    errorDisplay: errorDisplay,
   });
 });
 
@@ -177,15 +186,32 @@ app.get("/jobs/:id", async (req, res) => {
   try {
     const job = await jobRoleService.getJobById(jobId);
 
-    // Format the date for display
+    // Get job detail actions and metadata using controller
+    const jobActions = JobController.getJobDetailActions(
+      job,
+      res.locals.isAuthenticated || false,
+      res.locals.currentUser || null
+    );
+    const jobMetadata = JobController.getJobMetadata(job);
+
+    // Handle messages from query parameters
+    const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
+    const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+
+    // Format the job data with controller-provided information
     const formattedJob = {
       ...job,
-      closingDate: job.closingDate.toLocaleDateString("en-GB"),
+      closingDate: jobMetadata.formattedClosingDate,
+      statusDisplay: jobMetadata.statusDisplay,
+      positionsText: jobMetadata.positionsText,
+      actions: jobActions,
     };
 
     res.render("job-detail", {
       title: job.name,
       job: formattedJob,
+      errorDisplay: errorDisplay,
+      successDisplay: successDisplay,
     });
   } catch (_error) {
     res.redirect("/jobs?error=not-found");
@@ -197,10 +223,25 @@ app.get("/login", authController.showLogin);
 app.post("/login", authController.login);
 app.post("/logout", authController.logout);
 
-// Application routes - require authentication
-app.get("/jobs/:id/apply", requireAuth, applicationController.showApplicationForm);
-app.post("/jobs/:id/apply", requireAuth, applicationController.submitApplication);
-app.get("/jobs/:id/apply/success", requireAuth, applicationController.showApplicationSuccess);
+// Application routes - require authentication and prevent admin access
+app.get(
+  "/jobs/:id/apply",
+  requireAuth,
+  preventAdminAccess,
+  applicationController.showApplicationForm
+);
+app.post(
+  "/jobs/:id/apply",
+  requireAuth,
+  preventAdminAccess,
+  applicationController.submitApplication
+);
+app.get(
+  "/jobs/:id/apply/success",
+  requireAuth,
+  preventAdminAccess,
+  applicationController.showApplicationSuccess
+);
 
 // Admin routes - require admin access
 app.get(

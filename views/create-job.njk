@@ -11,12 +11,12 @@
                 <p class="text-xl text-gray-600">Add a new career opportunity to the Kainos Job Portal</p>
             </div>
 
-            {% if errorMessage %}
+            {% if errorDisplay.show %}
                 <div class="mb-8">
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert">
+                    <div class="{{ errorDisplay.containerClass }}" role="alert">
                         <div class="flex items-center">
-                            <i data-lucide="alert-circle" class="h-5 w-5 mr-2"></i>
-                            <span>{{ errorMessage }}</span>
+                            <i data-lucide="{{ errorDisplay.iconClass }}" class="h-5 w-5 mr-2"></i>
+                            <span>{{ errorDisplay.message }}</span>
                         </div>
                     </div>
                 </div>

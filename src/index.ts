@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
 import nunjucks from "nunjucks";
+import "./types/express-session.js";
 import { BANDS, CAPABILITIES, STATUSES } from "./constants/job-form-options.js";
 import { ApplicationController } from "./controllers/application-controller.js";
 import { AuthController } from "./controllers/auth-controller.js";

@@ -38,22 +38,14 @@
         </div>
         <div class="flex justify-between items-center">
             <a href="/jobs/{{ job.id }}" class="text-blue-600 hover:text-blue-800 font-medium">View Details</a>
+
             <div class="flex items-center space-x-2">
-                {% if isAuthenticated and currentUser.role === "admin" %}
-                    <a href="/jobs/{{ job.id }}/applications" class="btn btn-sm bg-purple-600 hover:bg-purple-700 text-white border-none">
-                        View Applications
-                    </a>
-                {% endif %}
-                {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
-                    {% if isAuthenticated %}
-                        <a href="/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none">Apply Now</a>
+                {% if job.actionButton.show %}
+                    {% if job.actionButton.disabled %}
+                        <button class="{{ job.actionButton.className }}" disabled>{{ job.actionButton.text }}</button>
                     {% else %}
-                        <a href="/login?redirectTo=/jobs/{{ job.id }}/apply" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none">Login to Apply</a>
+                        <a href="{{ job.actionButton.href }}" class="{{ job.actionButton.className }}">{{ job.actionButton.text }}</a>
                     {% endif %}
-                {% elif job.status == 'open' and job.numberOfOpenPositions == 0 %}
-                    <button class="btn bg-gray-400 text-white border-none cursor-not-allowed" disabled>No Positions</button>
-                {% else %}
-                    <button class="btn bg-gray-400 text-white border-none cursor-not-allowed" disabled>Closed</button>
                 {% endif %}
             </div>
         </div>

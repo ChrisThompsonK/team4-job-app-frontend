@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import type { AuthService } from "../services/authService.js";
+import { FormController } from "./form-controller.js";
 
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -12,26 +13,13 @@ export class AuthController {
       return;
     }
 
-    let errorMessage = "";
-    if (req.query.error === "invalid-credentials") {
-      errorMessage = "Invalid email or password. Please try again.";
-    } else if (req.query.error === "missing-fields") {
-      errorMessage = "Please provide both email and password.";
-    } else if (req.query.error === "login-failed") {
-      errorMessage = "Login failed. Please try again.";
-    } else if (req.query.error === "unauthorized") {
-      errorMessage = "Please log in to access this page.";
-    }
-
-    let successMessage = "";
-    if (req.query.success === "logout") {
-      successMessage = "You have been logged out successfully.";
-    }
+    const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
+    const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
 
     res.render("login", {
       title: "Login - Kainos Job Portal",
-      errorMessage,
-      successMessage,
+      errorDisplay,
+      successDisplay,
     });
   };
 
@@ -40,9 +28,16 @@ export class AuthController {
     try {
       const { email, password } = req.body;
 
-      // Validate required fields
-      if (!email || !password) {
+      // Validate required fields using FormController
+      const formErrors = FormController.validateRequiredFields(req.body, ["email", "password"]);
+      if (Object.keys(formErrors).length > 0) {
         res.redirect("/login?error=missing-fields");
+        return;
+      }
+
+      // Validate email format
+      if (!FormController.validateEmail(email)) {
+        res.redirect("/login?error=invalid-credentials");
         return;
       }
 
@@ -57,13 +52,19 @@ export class AuthController {
         // Redirect to intended page or home
         const redirectTo = req.session.redirectTo || "/";
         delete req.session.redirectTo;
-        res.redirect(redirectTo);
+
+        // Add success message only if redirecting to homepage
+        if (redirectTo === "/") {
+          res.redirect("/?success=login");
+        } else {
+          res.redirect(redirectTo);
+        }
       } else {
         res.redirect("/login?error=invalid-credentials");
       }
     } catch (error) {
       console.error("Login error:", error);
-      res.redirect("/login?error=login-failed");
+      res.redirect("/login?error=server-error");
     }
   };
 

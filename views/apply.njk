@@ -34,20 +34,21 @@
                 </div>
             </div>
 
-            <!-- Error Messages -->
-            {% if errorMessage %}
-                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-6">
+            <!-- Error and Success Messages -->
+            {% if errorDisplay.show %}
+                <div class="{{ errorDisplay.containerClass }}">
                     <div class="flex items-center">
-                        <i data-lucide="alert-circle" class="h-5 w-5 mr-2"></i>
-                        <span>
-                            {% if errorMessage == 'missing-fields' %}
-                                Please fill in all required fields.
-                            {% elif errorMessage == 'submission-failed' %}
-                                There was an error submitting your application. Please try again.
-                            {% else %}
-                                {{ errorMessage }}
-                            {% endif %}
-                        </span>
+                        <i data-lucide="{{ errorDisplay.iconClass }}" class="h-5 w-5 mr-2"></i>
+                        <span>{{ errorDisplay.message }}</span>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if successDisplay.show %}
+                <div class="{{ successDisplay.containerClass }}">
+                    <div class="flex items-center">
+                        <i data-lucide="{{ successDisplay.iconClass }}" class="h-5 w-5 mr-2"></i>
+                        <span>{{ successDisplay.message }}</span>
                     </div>
                 </div>
             {% endif %}

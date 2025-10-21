@@ -22,6 +22,64 @@
         </div>
     </div>
 
+    <!-- Success Messages -->
+    {% if successDisplay.show %}
+        <div class="container mx-auto px-6 -mt-6 mb-8">
+            <div class="{{ successDisplay.containerClass }}">
+                <div class="flex items-center justify-center">
+                    <i data-lucide="{{ successDisplay.iconClass }}" class="h-5 w-5 mr-2"></i>
+                    {{ successDisplay.message }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Features Section -->
+    <section class="py-20 bg-base-100">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-base-content">
+                    Why Choose Kainos?
+                </h2>
+                <p class="text-lg text-base-content/70 max-w-2xl mx-auto">
+                    We connect talented professionals with exceptional opportunities through innovation and excellence
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card bg-base-100 shadow-xl border border-base-300 hover:shadow-2xl transition-all duration-300">
+                    <div class="card-body items-center text-center p-8">
+                        <div class="text-5xl mb-6">🎯</div>
+                        <h3 class="card-title text-xl font-bold mb-4 text-primary">Perfect Matches</h3>
+                        <p class="text-base-content/70 leading-relaxed">
+                            Find roles that align perfectly with your skills, experience, and career aspirations in our innovative tech environment.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card bg-base-100 shadow-xl border border-base-300 hover:shadow-2xl transition-all duration-300">
+                    <div class="card-body items-center text-center p-8">
+                        <div class="text-5xl mb-6">⚡</div>
+                        <h3 class="card-title text-xl font-bold mb-4 text-primary">Fast Process</h3>
+                        <p class="text-base-content/70 leading-relaxed">
+                            Our streamlined application process gets you connected with hiring managers quickly and efficiently.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="card bg-base-100 shadow-xl border border-base-300 hover:shadow-2xl transition-all duration-300">
+                    <div class="card-body items-center text-center p-8">
+                        <div class="text-5xl mb-6">🚀</div>
+                        <h3 class="card-title text-xl font-bold mb-4 text-primary">Career Growth</h3>
+                        <p class="text-base-content/70 leading-relaxed">
+                            Join a company that prioritizes professional development, mentorship, and clear advancement paths.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Latest Jobs Section -->
     <div class="container mx-auto px-4 py-16">
         <h2 class="text-3xl font-bold text-center mb-12">Latest Job Opportunities</h2>

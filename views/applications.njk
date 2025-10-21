@@ -56,24 +56,31 @@
             </div>
         </div>
 
+        <!-- Error and Success Messages -->
+        {% if errorDisplay.show %}
+            <div class="{{ errorDisplay.containerClass }}">
+                <i data-lucide="{{ errorDisplay.iconClass }}" class="h-5 w-5 inline mr-2"></i>
+                {{ errorDisplay.message }}
+            </div>
+        {% endif %}
+        
+        {% if successDisplay.show %}
+            <div class="{{ successDisplay.containerClass }}">
+                <i data-lucide="{{ successDisplay.iconClass }}" class="h-5 w-5 inline mr-2"></i>
+                {{ successDisplay.message }}
+            </div>
+        {% endif %}
+
         <!-- Applications List -->
         {% if applications.length > 0 %}
             <div class="space-y-4">
                 {% for application in applications %}
-                    <div class="p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow {% if application.status == 'accepted' %}bg-green-50 border-2 border-green-300{% elif application.status == 'rejected' %}bg-red-50 border-2 border-red-300{% else %}bg-white border border-gray-200{% endif %}">
+                    <div class="{{ application.cardStyle }}">
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
                                 <div class="flex items-center gap-4 mb-3">
                                     <h3 class="text-xl font-bold text-gray-800">{{ application.applicantName }}</h3>
-                                    {% if application.status == 'pending' %}
-                                        <span class="badge badge-warning text-white px-3 py-2">Pending</span>
-                                    {% elif application.status == 'reviewed' %}
-                                        <span class="badge badge-info text-white px-3 py-2">Reviewed</span>
-                                    {% elif application.status == 'accepted' %}
-                                        <span class="badge badge-success text-white px-3 py-2">Accepted</span>
-                                    {% elif application.status == 'rejected' %}
-                                        <span class="badge badge-error text-white px-3 py-2">Rejected</span>
-                                    {% endif %}
+                                    <span class="px-3 py-2 rounded-full text-sm font-medium {{ application.statusDisplay.badgeClass }}">{{ application.statusDisplay.text }}</span>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -114,10 +121,12 @@
                                 {% endif %}
                             </div>
                             <div class="ml-4">
-                                <a href="/jobs/{{ job.id }}/applications/{{ application.id }}" class="btn bg-purple-600 hover:bg-purple-700 text-white border-none">
-                                    <i data-lucide="eye" class="h-4 w-4 mr-2"></i>
-                                    View Details
-                                </a>
+                                {% if application.actions.viewAction.show %}
+                                    <a href="{{ application.actions.viewAction.href }}" class="{{ application.actions.viewAction.className }}">
+                                        <i data-lucide="eye" class="h-4 w-4 mr-2"></i>
+                                        {{ application.actions.viewAction.text }}
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

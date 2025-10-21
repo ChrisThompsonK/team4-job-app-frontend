@@ -20,11 +20,22 @@
             </div>
         </nav>
 
-        <!-- Success Message -->
-        {% if successMessage %}
-            <div class="alert alert-success mb-6 bg-green-50 border border-green-200 text-green-800 p-4 rounded-lg flex items-center">
-                <i data-lucide="check-circle" class="h-5 w-5 mr-3"></i>
-                <span>{{ successMessage }}</span>
+        <!-- Error and Success Messages -->
+        {% if errorDisplay.show %}
+            <div class="{{ errorDisplay.containerClass }}">
+                <div class="flex items-center">
+                    <i data-lucide="{{ errorDisplay.iconClass }}" class="h-5 w-5 mr-3"></i>
+                    <span>{{ errorDisplay.message }}</span>
+                </div>
+            </div>
+        {% endif %}
+        
+        {% if successDisplay.show %}
+            <div class="{{ successDisplay.containerClass }}">
+                <div class="flex items-center">
+                    <i data-lucide="{{ successDisplay.iconClass }}" class="h-5 w-5 mr-3"></i>
+                    <span>{{ successDisplay.message }}</span>
+                </div>
             </div>
         {% endif %}
 
@@ -36,15 +47,7 @@
                     <p class="text-lg text-gray-600">Application for {{ job.name }}</p>
                 </div>
                 <div>
-                    {% if application.status == 'pending' %}
-                        <span class="badge badge-warning text-white px-4 py-3 text-lg">Pending Review</span>
-                    {% elif application.status == 'reviewed' %}
-                        <span class="badge badge-info text-white px-4 py-3 text-lg">Reviewed</span>
-                    {% elif application.status == 'accepted' %}
-                        <span class="badge badge-success text-white px-4 py-3 text-lg">Accepted</span>
-                    {% elif application.status == 'rejected' %}
-                        <span class="badge badge-error text-white px-4 py-3 text-lg">Rejected</span>
-                    {% endif %}
+                    <span class="px-4 py-3 text-lg rounded-full font-medium {{ application.statusDisplay.badgeClass }}">{{ application.statusDisplay.text }}</span>
                 </div>
             </div>
 
@@ -153,12 +156,13 @@
                 </div>
 
                 <!-- Action Buttons -->
-                {% if application.status != 'accepted' and application.status != 'rejected' %}
+                {% if application.actions.acceptAction.show or application.actions.rejectAction.show %}
                     <div class="bg-white p-6 rounded-lg border border-gray-200 shadow-sm mb-6">
                         <h3 class="text-xl font-bold text-gray-800 mb-4">Review Actions</h3>
                         
+                        {% if application.actions.acceptAction.show %}
                         <!-- Accept Form -->
-                        <form method="POST" action="/jobs/{{ job.id }}/applications/{{ application.id }}/accept" class="mb-4">
+                        <form method="POST" action="{{ application.actions.acceptAction.formAction }}" class="mb-4">
                             <label for="acceptNotes" class="block text-sm font-medium text-gray-700 mb-2">
                                 <i data-lucide="message-square" class="h-4 w-4 inline mr-1"></i>
                                 Add Notes (Optional)
@@ -169,16 +173,20 @@
                                 rows="3" 
                                 class="textarea textarea-bordered w-full mb-3 resize-none"
                                 placeholder="Add any notes about this acceptance..."></textarea>
-                            <button type="submit" class="btn bg-green-600 hover:bg-green-700 text-white border-none w-full flex items-center justify-center">
+                            <button type="submit" class="{{ application.actions.acceptAction.className }} w-full flex items-center justify-center">
                                 <i data-lucide="check-circle" class="h-4 w-4 mr-2"></i>
-                                Accept Application
+                                {{ application.actions.acceptAction.text }} Application
                             </button>
                         </form>
+                        {% endif %}
 
+                        {% if application.actions.acceptAction.show and application.actions.rejectAction.show %}
                         <div class="divider">OR</div>
+                        {% endif %}
 
+                        {% if application.actions.rejectAction.show %}
                         <!-- Reject Form -->
-                        <form method="POST" action="/jobs/{{ job.id }}/applications/{{ application.id }}/reject">
+                        <form method="POST" action="{{ application.actions.rejectAction.formAction }}">
                             <label for="rejectNotes" class="block text-sm font-medium text-gray-700 mb-2">
                                 <i data-lucide="message-square" class="h-4 w-4 inline mr-1"></i>
                                 Add Notes (Optional)
@@ -189,21 +197,25 @@
                                 rows="3" 
                                 class="textarea textarea-bordered w-full mb-3 resize-none"
                                 placeholder="Add any notes about this rejection..."></textarea>
-                            <button type="submit" class="btn bg-red-600 hover:bg-red-700 text-white border-none w-full flex items-center justify-center">
+                            <button type="submit" class="{{ application.actions.rejectAction.className }} w-full flex items-center justify-center">
                                 <i data-lucide="x-circle" class="h-4 w-4 mr-2"></i>
-                                Reject Application
+                                {{ application.actions.rejectAction.text }} Application
                             </button>
                         </form>
+                        {% endif %}
                     </div>
-                {% elif application.status == 'accepted' %}
-                    <div class="bg-green-50 p-6 rounded-lg border border-green-200 mb-6">
-                        <h3 class="text-xl font-bold text-green-800 mb-2">Application Accepted</h3>
-                        <p class="text-green-700 text-sm">This application has been accepted. The applicant has been notified.</p>
+                {% endif %}
+                
+                <!-- Status-specific messages -->
+                {% if application.status == 'accepted' %}
+                    <div class="{{ application.statusDisplay.bgColor }} p-6 rounded-lg border {{ application.statusDisplay.borderColor }} mb-6">
+                        <h3 class="text-xl font-bold {{ application.statusDisplay.color }} mb-2">Application {{ application.statusDisplay.text }}</h3>
+                        <p class="{{ application.statusDisplay.color }} text-sm">This application has been accepted. The applicant has been notified.</p>
                     </div>
                 {% elif application.status == 'rejected' %}
-                    <div class="bg-red-50 p-6 rounded-lg border border-red-200 mb-6">
-                        <h3 class="text-xl font-bold text-red-800 mb-2">Application Rejected</h3>
-                        <p class="text-red-700 text-sm">This application has been rejected. The applicant has been notified.</p>
+                    <div class="{{ application.statusDisplay.bgColor }} p-6 rounded-lg border {{ application.statusDisplay.borderColor }} mb-6">
+                        <h3 class="text-xl font-bold {{ application.statusDisplay.color }} mb-2">Application {{ application.statusDisplay.text }}</h3>
+                        <p class="{{ application.statusDisplay.color }} text-sm">This application has been rejected. The applicant has been notified.</p>
                     </div>
                 {% endif %}
 

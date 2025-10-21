@@ -135,11 +135,15 @@ app.get("/jobs", async (req, res) => {
   const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
   const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
 
+  // Check if user is admin for create job button visibility
+  const isAdmin = res.locals.isAuthenticated && res.locals.currentUser?.role === "admin";
+
   res.render("jobs", {
     title: "Available Job Roles",
     jobs: formattedJobRoles,
     errorDisplay: errorDisplay,
     successDisplay: successDisplay,
+    isAdmin: isAdmin,
     pagination: {
       currentPage: page,
       totalPages: totalPages,

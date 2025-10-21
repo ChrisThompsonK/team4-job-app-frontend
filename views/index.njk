@@ -123,7 +123,7 @@
                             </div>
                             <div class="card-actions justify-center">
                                 {% if job.status == 'open' and job.numberOfOpenPositions > 0 %}
-                                    {% if isAuthenticated and currentUser.role === "admin" %}
+                                    {% if isAuthenticated and currentUser.role == "admin" %}
                                         <a href="/jobs/{{ job.id }}/applications" class="btn btn-primary w-full rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200">
                                             Manage Applications
                                         </a>

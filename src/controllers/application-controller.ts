@@ -1,13 +1,141 @@
 import type { Request, Response } from "express";
 import type { ApplicationService } from "../services/applicationService.js";
 import type { JobService } from "../services/jobService.js";
+import { FormController } from "./form-controller.js";
 import "../types/express-session.js";
+
+interface ApplicationStatusDisplay {
+  text: string;
+  color: string;
+  bgColor: string;
+  borderColor: string;
+  badgeClass: string;
+}
+
+interface ApplicationAction {
+  show: boolean;
+  text: string;
+  href?: string;
+  className: string;
+  formAction?: string;
+  disabled?: boolean;
+}
+
+interface ApplicationActions {
+  acceptAction: ApplicationAction;
+  rejectAction: ApplicationAction;
+  viewAction: ApplicationAction;
+}
+
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  role: "admin" | "member";
+  createdAt: Date;
+}
+
+interface ApplicationData {
+  id: number;
+  status: "pending" | "reviewed" | "accepted" | "rejected";
+}
 
 export class ApplicationController {
   constructor(
     private applicationService: ApplicationService,
     private jobService: JobService
   ) {}
+
+  /**
+   * Get application status display information
+   */
+  static getApplicationStatusDisplay(status: string): ApplicationStatusDisplay {
+    switch (status) {
+      case "pending":
+        return {
+          text: "Pending Review",
+          color: "text-yellow-700",
+          bgColor: "bg-yellow-50",
+          borderColor: "border-yellow-300",
+          badgeClass: "bg-yellow-100 text-yellow-800",
+        };
+      case "reviewed":
+        return {
+          text: "Under Review",
+          color: "text-blue-700",
+          bgColor: "bg-blue-50",
+          borderColor: "border-blue-300",
+          badgeClass: "bg-blue-100 text-blue-800",
+        };
+      case "accepted":
+        return {
+          text: "Accepted",
+          color: "text-green-700",
+          bgColor: "bg-green-50",
+          borderColor: "border-green-300",
+          badgeClass: "bg-green-100 text-green-800",
+        };
+      case "rejected":
+        return {
+          text: "Rejected",
+          color: "text-red-700",
+          bgColor: "bg-red-50",
+          borderColor: "border-red-300",
+          badgeClass: "bg-red-100 text-red-800",
+        };
+      default:
+        return {
+          text: "Unknown",
+          color: "text-gray-700",
+          bgColor: "bg-gray-50",
+          borderColor: "border-gray-300",
+          badgeClass: "bg-gray-100 text-gray-800",
+        };
+    }
+  }
+
+  /**
+   * Get available actions for an application
+   */
+  static getApplicationActions(
+    application: ApplicationData,
+    isAuthenticated: boolean,
+    currentUser: User | null,
+    jobId: number
+  ): ApplicationActions {
+    const isAdmin = isAuthenticated && currentUser?.role === "admin";
+    const canTakeAction =
+      isAdmin && (application.status === "pending" || application.status === "reviewed");
+
+    return {
+      acceptAction: {
+        show: canTakeAction,
+        text: "Accept",
+        className: "btn bg-green-600 hover:bg-green-700 text-white border-none",
+        formAction: `/jobs/${jobId}/applications/${application.id}/accept`,
+      },
+      rejectAction: {
+        show: canTakeAction,
+        text: "Reject",
+        className: "btn bg-red-600 hover:bg-red-700 text-white border-none",
+        formAction: `/jobs/${jobId}/applications/${application.id}/reject`,
+      },
+      viewAction: {
+        show: isAdmin,
+        text: "View Details",
+        href: `/jobs/${jobId}/applications/${application.id}`,
+        className: "btn bg-blue-600 hover:bg-blue-700 text-white border-none text-center block",
+      },
+    };
+  }
+
+  /**
+   * Get CSS classes for application card styling based on status
+   */
+  static getApplicationCardStyle(status: string): string {
+    const statusDisplay = ApplicationController.getApplicationStatusDisplay(status);
+    return `p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow ${statusDisplay.bgColor} border-2 ${statusDisplay.borderColor}`;
+  }
 
   // Show the application form for a specific job
   showApplicationForm = async (req: Request, res: Response): Promise<void> => {
@@ -33,6 +161,10 @@ export class ApplicationController {
         return;
       }
 
+      // Handle error and success messages using FormController
+      const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
+      const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+
       // Format the date for display
       const formattedJob = {
         ...job,
@@ -43,6 +175,8 @@ export class ApplicationController {
         title: `Apply for ${job.name}`,
         job: formattedJob,
         user: req.session?.user || null, // Pass user info if available
+        errorDisplay: errorDisplay,
+        successDisplay: successDisplay,
       });
     } catch (error) {
       console.error("Error showing application form:", error);
@@ -81,11 +215,32 @@ export class ApplicationController {
         finalApplicantName = applicantName;
         finalEmail = email;
 
-        // Validate required fields for non-logged-in users
-        if (!applicantName || !email) {
+        // Validate required fields for non-logged-in users using FormController
+        const requiredFields = ["applicantName", "email"];
+        const formErrors = FormController.validateRequiredFields(req.body, requiredFields);
+
+        if (Object.keys(formErrors).length > 0) {
           res.redirect(`/jobs/${jobId}/apply?error=missing-fields`);
           return;
         }
+
+        // Validate email format
+        if (!FormController.validateEmail(email)) {
+          res.redirect(`/jobs/${jobId}/apply?error=validation-failed`);
+          return;
+        }
+      }
+
+      // Validate cover letter (required for all users)
+      if (!coverLetter || coverLetter.trim().length === 0) {
+        res.redirect(`/jobs/${jobId}/apply?error=missing-fields`);
+        return;
+      }
+
+      // Validate cover letter length (minimum 50 characters)
+      if (coverLetter.trim().length < 50) {
+        res.redirect(`/jobs/${jobId}/apply?error=validation-failed`);
+        return;
       }
 
       // Check if job exists and is still open
@@ -170,11 +325,23 @@ export class ApplicationController {
       // Get all applications for this job
       const applications = await this.applicationService.getApplicationsByJobId(jobId);
 
-      // Format the dates for display
+      // Format the applications with status display and actions
       const formattedApplications = applications.map((app) => ({
         ...app,
         applicationDate: app.applicationDate.toLocaleDateString("en-GB"),
+        statusDisplay: ApplicationController.getApplicationStatusDisplay(app.status),
+        actions: ApplicationController.getApplicationActions(
+          app,
+          res.locals.isAuthenticated || false,
+          res.locals.currentUser || null,
+          jobId
+        ),
+        cardStyle: ApplicationController.getApplicationCardStyle(app.status),
       }));
+
+      // Handle error and success messages using FormController
+      const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
+      const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
 
       res.render("applications", {
         title: `Applications for ${job.name}`,
@@ -183,6 +350,8 @@ export class ApplicationController {
           closingDate: job.closingDate.toLocaleDateString("en-GB"),
         },
         applications: formattedApplications,
+        errorDisplay: errorDisplay,
+        successDisplay: successDisplay,
       });
     } catch (error) {
       console.error("Error showing applications:", error);
@@ -221,13 +390,22 @@ export class ApplicationController {
         return;
       }
 
-      // Handle success messages
-      let successMessage = "";
-      if (req.query.success === "accepted") {
-        successMessage = "Application accepted successfully!";
-      } else if (req.query.success === "rejected") {
-        successMessage = "Application rejected.";
-      }
+      // Handle error and success messages using FormController
+      const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
+      const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+
+      // Format application with status display and actions
+      const formattedApplication = {
+        ...application,
+        applicationDate: application.applicationDate.toLocaleDateString("en-GB"),
+        statusDisplay: ApplicationController.getApplicationStatusDisplay(application.status),
+        actions: ApplicationController.getApplicationActions(
+          application,
+          res.locals.isAuthenticated || false,
+          res.locals.currentUser || null,
+          jobId
+        ),
+      };
 
       res.render("application-detail", {
         title: `Application from ${application.applicantName}`,
@@ -235,11 +413,9 @@ export class ApplicationController {
           ...job,
           closingDate: job.closingDate.toLocaleDateString("en-GB"),
         },
-        application: {
-          ...application,
-          applicationDate: application.applicationDate.toLocaleDateString("en-GB"),
-        },
-        successMessage,
+        application: formattedApplication,
+        errorDisplay: errorDisplay,
+        successDisplay: successDisplay,
       });
     } catch (error) {
       console.error("Error showing application detail:", error);
@@ -275,7 +451,7 @@ export class ApplicationController {
       res.redirect(`/jobs/${jobId}/applications/${applicationId}?success=accepted`);
     } catch (error) {
       console.error("Error accepting application:", error);
-      res.redirect(`/jobs/${req.params.id}/applications?error=update-failed`);
+      res.redirect(`/jobs/${req.params.id}/applications?error=server-error`);
     }
   };
 
@@ -307,7 +483,7 @@ export class ApplicationController {
       res.redirect(`/jobs/${jobId}/applications/${applicationId}?success=rejected`);
     } catch (error) {
       console.error("Error rejecting application:", error);
-      res.redirect(`/jobs/${req.params.id}/applications?error=update-failed`);
+      res.redirect(`/jobs/${req.params.id}/applications?error=server-error`);
     }
   };
 }

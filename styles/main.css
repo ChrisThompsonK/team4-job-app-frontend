@@ -32,6 +32,20 @@
    ======================================== */
 
 /**
+ * Universal font family declaration
+ * Ensures Galano Grotesque is applied to all elements
+ */
+* {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+
+/**
  * Root HTML element styling
  * Enables smooth scrolling for better UX
  */
@@ -40,25 +54,18 @@ html {
 }
 
 /**
- * Global body styling with system font stack
+ * Global body styling with Galano Grotesque font
  * Includes font smoothing for better text rendering
  */
 body {
   font-family:
-    ui-sans-serif,
-    system-ui,
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    "Noto Sans",
-    sans-serif,
-    "Apple Color Emoji",
-    "Segoe UI Emoji",
-    "Segoe UI Symbol",
-    "Noto Color Emoji";
+    sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
@@ -67,8 +74,8 @@ body {
 }
 
 /**
- * Consistent heading styles
- * All headings use semibold weight for professional appearance
+ * Consistent heading styles with Galano Grotesque font
+ * All headers are bold as requested
  */
 h1,
 h2,
@@ -76,7 +83,14 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 600;
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-weight: 700; /* Bold for all headers */
   line-height: 1.2;
   margin-bottom: 0.5em;
   color: rgb(17 24 39);
@@ -111,9 +125,17 @@ h6 {
 }
 
 /**
- * Improved paragraph spacing and readability
+ * Improved paragraph spacing and readability with Galano Grotesque
  */
 p {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-weight: 400; /* Regular weight for body text */
   margin-bottom: 1rem;
   color: rgb(75 85 99);
 }
@@ -158,11 +180,18 @@ a:focus {
    Professional Component Styles
    ======================================== */
 
-/* Professional button styles */
+/* Professional button styles with Galano Grotesque */
 .btn {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
-  font-weight: 500;
+  font-weight: 600; /* Semi-bold for button importance */
   transition: all 200ms ease;
   display: inline-flex;
   align-items: center;
@@ -221,11 +250,13 @@ a:focus {
 .btn-lg {
   padding: 0.75rem 2rem;
   font-size: 1.125rem;
+  font-weight: 700; /* Bold for large buttons (high importance) */
 }
 
 .btn-sm {
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
+  font-weight: 500; /* Medium weight for small buttons */
 }
 
 .btn-wide {
@@ -252,13 +283,28 @@ a:focus {
 }
 
 .card-title {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: 700; /* Bold for card titles (important content) */
   margin-bottom: 0.5rem;
 }
 
-/* Professional navbar styles */
+/* Professional navbar styles with Galano Grotesque */
 .navbar {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-weight: 500; /* Medium weight for navigation */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -295,14 +341,21 @@ a:focus {
   flex-direction: row;
 }
 
-/* Professional badge styles */
+/* Professional badge styles with Galano Grotesque */
 .badge {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   display: inline-flex;
   align-items: center;
   padding: 0.125rem 0.625rem;
   border-radius: 9999px;
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 600; /* Semi-bold for badges (status importance) */
 }
 
 .badge-primary {
@@ -319,10 +372,19 @@ a:focus {
 .badge-lg {
   padding: 0.25rem 0.75rem;
   font-size: 0.875rem;
+  font-weight: 700; /* Bold for large badges (higher importance) */
 }
 
-/* Professional alert styles */
+/* Professional alert styles with Galano Grotesque */
 .alert {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-weight: 500; /* Medium weight for alert messages */
   padding: 1rem;
   border-radius: 0.375rem;
   border-left: 4px solid;
@@ -372,15 +434,30 @@ a:focus {
 }
 
 .stat-title {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   font-size: 0.75rem;
+  font-weight: 500; /* Medium weight for stat labels */
   color: var(--muted-foreground);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .stat-value {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
   font-size: 1.125rem;
-  font-weight: 700;
+  font-weight: 700; /* Bold for stat values (important data) */
 }
 
 /* Divider styles */
@@ -401,8 +478,16 @@ a:focus {
   background-color: var(--primary);
 }
 
-/* Link styles */
+/* Link styles with Galano Grotesque */
 .link {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-weight: 500; /* Medium weight for links */
   color: #2563eb;
   transition: color 200ms ease;
 }
@@ -511,4 +596,96 @@ footer a:hover {
   box-shadow:
     0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* ========================================
+   Form Elements with Galano Grotesque
+   ======================================== */
+
+/* Input fields styling */
+input,
+textarea,
+select {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-weight: 400; /* Regular weight for input text */
+}
+
+/* Input placeholders */
+input::placeholder,
+textarea::placeholder {
+  font-weight: 300; /* Light weight for placeholder text */
+  opacity: 0.7;
+}
+
+/* Labels with appropriate weight */
+label {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-weight: 600; /* Semi-bold for labels (important for form structure) */
+}
+
+/* Table elements */
+table,
+th,
+td {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+}
+
+th {
+  font-weight: 700; /* Bold for table headers */
+}
+
+td {
+  font-weight: 400; /* Regular for table data */
+}
+
+/* Menu items */
+.menu li a {
+  font-weight: 500; /* Medium weight for menu items */
+}
+
+/* Strong and emphasis elements */
+strong,
+b {
+  font-weight: 700; /* Bold for emphasis */
+}
+
+em,
+i {
+  font-style: italic;
+  font-weight: 500; /* Medium weight for italics */
+}
+
+/* Small text */
+small {
+  font-weight: 400; /* Regular weight for small text */
+  font-size: 0.875rem;
+}
+
+/* Code elements (if any) */
+code,
+pre {
+  font-family:
+    "Galano Grotesque",
+    "Galano-Grotesque",
+    "GalanoGrotesque",
+    monospace; /* Keep some monospace fallback for code */
+  font-weight: 400;
 }

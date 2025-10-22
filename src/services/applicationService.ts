@@ -45,6 +45,16 @@ export class ApplicationService {
     return result.data.map((app: any) => this.mapBackendToFrontend(app));
   }
 
+  async hasUserAppliedForJob(userId: number, jobId: number): Promise<boolean> {
+    try {
+      const userApplications = await this.getApplicationsByUserId(userId);
+      return userApplications.some((app) => app.jobId === jobId);
+    } catch (error) {
+      console.error("Error checking if user has applied:", error);
+      return false;
+    }
+  }
+
   async createApplication(applicationData: CreateApplicationRequest): Promise<Application> {
     // Map frontend data to backend format
     const backendData = {

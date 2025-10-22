@@ -78,6 +78,10 @@ export class FormController {
         message: "Failed to submit application. Please try again.",
         type: "error",
       },
+      "already-applied": {
+        message: "You have already applied for this job. You cannot apply for the same job twice.",
+        type: "warning",
+      },
       "file-upload-failed": {
         message: "Failed to upload file. Please try again with a different file.",
         type: "error",

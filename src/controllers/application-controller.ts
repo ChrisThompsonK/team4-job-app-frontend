@@ -251,14 +251,17 @@ export class ApplicationController {
       }
 
       // Create the application
-      await this.applicationService.createApplication({
+      const applicationData = {
         jobId,
         applicantName: finalApplicantName,
         email: finalEmail,
         phoneNumber: phoneNumber?.trim() || "",
         coverLetter,
         ...(user?.id && { userId: user.id }), // Include user ID if logged in
-      });
+      };
+
+      console.log("Creating application with data:", applicationData);
+      await this.applicationService.createApplication(applicationData);
 
       // Redirect to success page
       res.redirect(`/jobs/${jobId}/apply/success`);
@@ -484,6 +487,143 @@ export class ApplicationController {
     } catch (error) {
       console.error("Error rejecting application:", error);
       res.redirect(`/jobs/${req.params.id}/applications?error=server-error`);
+    }
+  };
+
+  // Show user's own applications
+  showMyApplications = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = req.session?.user;
+
+      if (!user) {
+        res.redirect("/login");
+        return;
+      }
+
+      // Get all applications for this user
+      const userApplications = await this.applicationService.getApplicationsByUserId(user.id);
+
+      // Get job details for each application
+      const applicationsWithJobDetails = await Promise.all(
+        userApplications.map(async (app) => {
+          try {
+            const job = await this.jobService.getJobById(app.jobId);
+            return {
+              ...app,
+              jobTitle: job.name,
+              location: job.location,
+              capability: job.capability,
+              applicationDate: app.applicationDate.toLocaleDateString("en-GB"),
+              status: app.status,
+            };
+          } catch (error) {
+            console.error(`Error fetching job ${app.jobId}:`, error);
+            return {
+              ...app,
+              jobTitle: "Job Not Found",
+              location: "N/A",
+              capability: "N/A",
+              applicationDate: app.applicationDate.toLocaleDateString("en-GB"),
+              status: app.status,
+            };
+          }
+        })
+      );
+
+      // Handle error and success messages
+      const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
+      const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+
+      res.render("my-applications", {
+        title: "My Applications",
+        applications: applicationsWithJobDetails,
+        errorDisplay: errorDisplay,
+        successDisplay: successDisplay,
+      });
+    } catch (error) {
+      console.error("Error showing user applications:", error);
+      res.redirect("/jobs?error=server-error");
+    }
+  };
+
+  // Show a single application detail for the logged-in member
+  showMyApplicationDetail = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const applicationIdParam = req.params.applicationId;
+      const user = req.session?.user;
+
+      if (!user) {
+        res.redirect("/login");
+        return;
+      }
+
+      if (!applicationIdParam) {
+        res.redirect("/my-applications?error=invalid-id");
+        return;
+      }
+
+      const applicationId = parseInt(applicationIdParam, 10);
+
+      if (Number.isNaN(applicationId)) {
+        res.redirect("/my-applications?error=invalid-id");
+        return;
+      }
+
+      // Get the application
+      const application = await this.applicationService.getApplicationById(applicationId);
+
+      console.log(
+        `User ID: ${user.id}, Application userId: ${application.userId}, User email: ${user.email}, Application email: ${application.email}`
+      );
+
+      // Verify the application belongs to this user
+      // If userId is undefined, it means it was created before we added user tracking
+      // or it wasn't properly set when created
+      if (application.userId && application.userId !== user.id) {
+        console.error(
+          `Unauthorized access attempt: User ${user.id} tried to access application ${applicationId} owned by user ${application.userId}`
+        );
+        res.redirect("/my-applications?error=unauthorized");
+        return;
+      }
+
+      // If userId is not set, we can't verify ownership, but for backward compatibility
+      // we could check if the email matches (optional security measure)
+      if (!application.userId && application.email !== user.email) {
+        console.error(
+          `Unauthorized access attempt: User ${user.email} tried to access application ${applicationId} with email ${application.email}`
+        );
+        res.redirect("/my-applications?error=unauthorized");
+        return;
+      }
+
+      // Get the job details
+      const job = await this.jobService.getJobById(application.jobId);
+
+      // Handle error and success messages
+      const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
+      const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+
+      // Format application with status display
+      const formattedApplication = {
+        ...application,
+        applicationDate: application.applicationDate.toLocaleDateString("en-GB"),
+        statusDisplay: ApplicationController.getApplicationStatusDisplay(application.status),
+      };
+
+      res.render("my-application-detail", {
+        title: `Application for ${job.name}`,
+        job: {
+          ...job,
+          closingDate: job.closingDate.toLocaleDateString("en-GB"),
+        },
+        application: formattedApplication,
+        errorDisplay: errorDisplay,
+        successDisplay: successDisplay,
+      });
+    } catch (error) {
+      console.error("Error showing application detail:", error);
+      res.redirect("/my-applications?error=not-found");
     }
   };
 }

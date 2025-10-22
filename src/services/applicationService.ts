@@ -1,40 +1,76 @@
 import type { Application, CreateApplicationRequest } from "../models/application.js";
 
 export class ApplicationService {
-  private applications: Application[] = [];
-  private nextId = 1;
+  private apiBaseUrl: string;
 
-  constructor() {
-    // Initialize with some sample applications for demonstration
-    this.applications = this.createSampleApplications();
+  constructor(apiBaseUrl?: string) {
+    this.apiBaseUrl = apiBaseUrl || process.env.API_BASE_URL || "http://localhost:8080";
   }
 
   async getAllApplications(): Promise<Application[]> {
-    return [...this.applications];
+    // This would require a backend endpoint - not currently available
+    throw new Error("Getting all applications is not supported");
   }
 
   async getApplicationById(id: number): Promise<Application> {
-    const application = this.applications.find((app) => app.id === id);
-    if (!application) {
+    const response = await fetch(`${this.apiBaseUrl}/api/applications/${id}`);
+
+    if (!response.ok) {
       throw new Error(`Application with id ${id} not found`);
     }
-    return application;
+
+    const result = await response.json();
+    return this.mapBackendToFrontend(result.data);
   }
 
   async getApplicationsByJobId(jobId: number): Promise<Application[]> {
-    return this.applications.filter((app) => app.jobId === jobId);
+    const response = await fetch(`${this.apiBaseUrl}/api/applications/job/${jobId}`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch applications for job ${jobId}`);
+    }
+
+    const result = await response.json();
+    return result.data.map((app: any) => this.mapBackendToFrontend(app));
+  }
+
+  async getApplicationsByUserId(userId: number): Promise<Application[]> {
+    const response = await fetch(`${this.apiBaseUrl}/api/applications/user/${userId}`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch applications for user ${userId}`);
+    }
+
+    const result = await response.json();
+    return result.data.map((app: any) => this.mapBackendToFrontend(app));
   }
 
   async createApplication(applicationData: CreateApplicationRequest): Promise<Application> {
-    const newApplication: Application = {
-      id: this.nextId++,
-      ...applicationData,
-      applicationDate: new Date(),
-      status: "pending",
+    // Map frontend data to backend format
+    const backendData = {
+      userId: applicationData.userId,
+      jobRoleId: applicationData.jobId,
+      applicantName: applicationData.applicantName,
+      email: applicationData.email,
+      phoneNumber: applicationData.phoneNumber || "",
+      cvText: applicationData.coverLetter || "",
     };
 
-    this.applications.push(newApplication);
-    return newApplication;
+    const response = await fetch(`${this.apiBaseUrl}/api/applications`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(backendData),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || "Failed to create application");
+    }
+
+    const result = await response.json();
+    return this.mapBackendToFrontend(result.data);
   }
 
   async updateApplicationStatus(
@@ -42,54 +78,62 @@ export class ApplicationService {
     status: Application["status"],
     notes?: string
   ): Promise<Application> {
-    const application = await this.getApplicationById(id);
-    application.status = status;
-    if (notes) {
-      application.notes = notes;
+    // Map frontend status to backend status
+    let endpoint = "";
+    if (status === "accepted") {
+      endpoint = "hire";
+    } else if (status === "rejected") {
+      endpoint = "reject";
+    } else {
+      throw new Error(`Status ${status} cannot be updated via API`);
     }
-    return application;
+
+    const response = await fetch(`${this.apiBaseUrl}/api/applications/${id}/${endpoint}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ notes }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update application status`);
+    }
+
+    const result = await response.json();
+    return this.mapBackendToFrontend(result.data);
   }
 
   async deleteApplication(id: number): Promise<void> {
-    const index = this.applications.findIndex((app) => app.id === id);
-    if (index === -1) {
-      throw new Error(`Application with id ${id} not found`);
-    }
-    this.applications.splice(index, 1);
+    throw new Error("Deleting applications is not supported");
   }
 
-  private createSampleApplications(): Application[] {
-    return [
-      {
-        id: 1,
-        jobId: 1,
-        applicantName: "John Doe",
-        email: "john.doe@email.com",
-        phoneNumber: "07712345678",
-        coverLetter: "I am very interested in this Software Engineering role...",
-        applicationDate: new Date("2024-12-01"),
-        status: "pending",
-      },
-      {
-        id: 2,
-        jobId: 1,
-        applicantName: "Jane Smith",
-        email: "jane.smith@email.com",
-        phoneNumber: "07787654321",
-        coverLetter: "As an experienced developer, I would love to contribute...",
-        applicationDate: new Date("2024-12-02"),
-        status: "reviewed",
-      },
-      {
-        id: 3,
-        jobId: 3,
-        applicantName: "Mike Johnson",
-        email: "mike.johnson@email.com",
-        phoneNumber: "07798765432",
-        coverLetter: "I have extensive experience in data analysis...",
-        applicationDate: new Date("2024-12-03"),
-        status: "accepted",
-      },
-    ];
+  // Helper method to map backend application to frontend format
+  private mapBackendToFrontend(backendApp: any): Application {
+    return {
+      id: backendApp.id,
+      jobId: backendApp.jobRoleId,
+      applicantName: backendApp.applicantName || "Applicant",
+      email: backendApp.email || "Not provided",
+      phoneNumber: backendApp.phoneNumber || "",
+      coverLetter: backendApp.cvText,
+      applicationDate: new Date(backendApp.createdAt),
+      status: this.mapBackendStatus(backendApp.status),
+      userId: backendApp.userId,
+    };
+  }
+
+  // Map backend status to frontend status
+  private mapBackendStatus(backendStatus: string): Application["status"] {
+    switch (backendStatus) {
+      case "in progress":
+        return "pending";
+      case "hired":
+        return "accepted";
+      case "rejected":
+        return "rejected";
+      default:
+        return "pending";
+    }
   }
 }

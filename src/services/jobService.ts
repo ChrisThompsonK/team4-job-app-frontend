@@ -140,6 +140,55 @@ export class JobService implements JobRoleService {
       throw error;
     }
   }
+
+  /**
+   * Update an existing job role
+   */
+  async updateJob(id: number, jobData: Omit<JobRole, "id">): Promise<JobRole> {
+    try {
+      const response = await this.axiosInstance.put(`/api/jobs/${id}`, {
+        ...jobData,
+        closingDate:
+          jobData.closingDate instanceof Date
+            ? jobData.closingDate.toISOString().split("T")[0]
+            : jobData.closingDate,
+      });
+
+      // Extract job data from the response
+      const updatedJob = response.data;
+
+      // Convert date string to Date object
+      return {
+        ...updatedJob,
+        closingDate: new Date(updatedJob.closingDate),
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        throw new Error(`Job with ID ${id} not found`);
+      }
+      if (axios.isAxiosError(error) && error.response?.data?.error) {
+        throw new Error(error.response.data.error);
+      }
+      throw error;
+    }
+  }
+
+  /**
+   * Delete a job role
+   */
+  async deleteJob(id: number): Promise<void> {
+    try {
+      await this.axiosInstance.delete(`/api/jobs/${id}`);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        throw new Error(`Job with ID ${id} not found`);
+      }
+      if (axios.isAxiosError(error) && error.response?.data?.error) {
+        throw new Error(error.response.data.error);
+      }
+      throw error;
+    }
+  }
 }
 
 // Export a default instance

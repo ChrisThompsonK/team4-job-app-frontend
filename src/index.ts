@@ -171,6 +171,17 @@ app.get("/jobs/create", requireAuth, requireAdmin, (req, res) => {
 // Create job form submission
 app.post("/jobs/create", requireAuth, requireAdmin, jobController.createJob);
 
+// Edit job form page
+app.get("/jobs/:id/edit", requireAuth, requireAdmin, jobController.showEditJob);
+
+// Edit job form submission
+app.put("/jobs/:id/edit", requireAuth, requireAdmin, jobController.updateJob);
+app.post("/jobs/:id/edit", requireAuth, requireAdmin, jobController.updateJob); // Support for forms that can't use PUT
+
+// Delete job
+app.delete("/jobs/:id/delete", requireAuth, requireAdmin, jobController.deleteJob);
+app.post("/jobs/:id/delete", requireAuth, requireAdmin, jobController.deleteJob); // Support for forms that can't use DELETE
+
 // Job detail endpoint
 app.get("/jobs/:id", async (req, res) => {
   const jobIdParam = req.params.id;

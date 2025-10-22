@@ -5,6 +5,8 @@ export interface JobRoleService {
   getAllJobs(limit?: number, offset?: number): Promise<JobRole[]>;
   getJobById(id: number): Promise<JobRole>;
   createJob(jobData: Omit<JobRole, "id">): Promise<JobRole>;
+  updateJob(id: number, jobData: Omit<JobRole, "id">): Promise<JobRole>;
+  deleteJob(id: number): Promise<void>;
   getJobsWithPagination(
     limit?: number,
     offset?: number

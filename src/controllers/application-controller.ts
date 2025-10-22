@@ -161,6 +161,16 @@ export class ApplicationController {
         return;
       }
 
+      // Check if the user has already applied for this job
+      const user = req.session?.user;
+      if (user && user.id) {
+        const hasApplied = await this.applicationService.hasUserAppliedForJob(user.id, jobId);
+        if (hasApplied) {
+          res.redirect(`/jobs/${jobId}?error=already-applied`);
+          return;
+        }
+      }
+
       // Handle error and success messages using FormController
       const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
       const successDisplay = FormController.getSuccessDisplay(req.query.success as string);

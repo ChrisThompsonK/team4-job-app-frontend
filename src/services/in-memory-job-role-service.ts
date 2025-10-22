@@ -60,6 +60,37 @@ export class InMemoryJobRoleService implements JobRoleService {
     return Promise.resolve(newJob);
   }
 
+  /**
+   * Update an existing job role in in-memory storage
+   */
+  async updateJob(id: number, jobData: Omit<JobRole, "id">): Promise<JobRole> {
+    const jobIndex = this.jobRoles.findIndex((job) => job.id === id);
+    if (jobIndex === -1) {
+      throw new Error(`Job with ID ${id} not found`);
+    }
+
+    const updatedJob: JobRole = {
+      id,
+      ...jobData,
+    };
+
+    this.jobRoles[jobIndex] = updatedJob;
+    return Promise.resolve(updatedJob);
+  }
+
+  /**
+   * Delete a job role from in-memory storage
+   */
+  async deleteJob(id: number): Promise<void> {
+    const jobIndex = this.jobRoles.findIndex((job) => job.id === id);
+    if (jobIndex === -1) {
+      throw new Error(`Job with ID ${id} not found`);
+    }
+
+    this.jobRoles.splice(jobIndex, 1);
+    return Promise.resolve();
+  }
+
   private createSampleJobRoles(): JobRole[] {
     return [
       {

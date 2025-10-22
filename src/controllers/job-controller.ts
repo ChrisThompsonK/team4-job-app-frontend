@@ -261,4 +261,109 @@ export class JobController {
       res.redirect("/jobs/create?error=server-error");
     }
   };
+
+  showEditJob = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const jobIdParam = req.params.id;
+      if (!jobIdParam) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      const jobId = parseInt(jobIdParam, 10);
+      if (Number.isNaN(jobId)) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      const job = await this.jobRoleService.getJobById(jobId);
+
+      // Format the date for the form (YYYY-MM-DD format)
+      const formattedJob = {
+        ...job,
+        closingDate: job.closingDate.toISOString().split("T")[0],
+      };
+
+      res.render("edit-job", {
+        title: `Edit ${job.name}`,
+        job: formattedJob,
+        errorMessage: req.query.error ? String(req.query.error) : "",
+      });
+    } catch (error) {
+      console.error("Error showing edit job form:", error);
+      res.redirect("/jobs?error=not-found");
+    }
+  };
+
+  updateJob = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const jobIdParam = req.params.id;
+      if (!jobIdParam) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      const jobId = parseInt(jobIdParam, 10);
+      if (Number.isNaN(jobId)) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      // Validate required fields
+      const requiredFields = [
+        "name",
+        "location",
+        "capability",
+        "band",
+        "summary",
+        "keyResponsibilities",
+        "numberOfOpenPositions",
+        "closingDate",
+      ];
+      const formErrors = FormController.validateRequiredFields(req.body, requiredFields);
+
+      if (Object.keys(formErrors).length > 0) {
+        res.redirect(`/jobs/${jobId}/edit?error=missing-fields`);
+        return;
+      }
+
+      // Additional validation for numerical fields
+      const numberOfPositions = parseInt(req.body.numberOfOpenPositions, 10);
+      if (Number.isNaN(numberOfPositions) || numberOfPositions < 1) {
+        res.redirect(`/jobs/${jobId}/edit?error=validation-failed`);
+        return;
+      }
+
+      const jobData = CreateJobRole.fromRequestBody(req.body);
+      await this.jobRoleService.updateJob(jobId, jobData);
+      res.redirect(`/jobs/${jobId}?success=updated`);
+    } catch (error) {
+      console.error("Error updating job role:", error);
+      const jobId = req.params.id;
+      res.redirect(`/jobs/${jobId}/edit?error=server-error`);
+    }
+  };
+
+  deleteJob = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const jobIdParam = req.params.id;
+      if (!jobIdParam) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      const jobId = parseInt(jobIdParam, 10);
+      if (Number.isNaN(jobId)) {
+        res.redirect("/jobs?error=invalid-id");
+        return;
+      }
+
+      await this.jobRoleService.deleteJob(jobId);
+      res.redirect("/jobs?success=deleted");
+    } catch (error) {
+      console.error("Error deleting job role:", error);
+      const jobId = req.params.id;
+      res.redirect(`/jobs/${jobId}?error=delete-failed`);
+    }
+  };
 }

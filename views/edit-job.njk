@@ -1,0 +1,204 @@
+{% extends "layout.njk" %}
+
+{% block title %}Edit {{ job.name }} - Kainos Job Portal{% endblock %}
+
+{% block content %}
+    <!-- Edit Job Role Form Section -->
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold text-gray-800 mb-4">Edit Job Role</h1>
+                <p class="text-xl text-gray-600">Update the details for this career opportunity</p>
+            </div>
+
+            {% if errorMessage %}
+                <div class="mb-8">
+                    <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-700" role="alert">
+                        <div class="flex items-center">
+                            <i data-lucide="alert-circle" class="h-5 w-5 mr-2"></i>
+                            <span>{{ errorMessage }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <form method="POST" action="/jobs/{{ job.id }}/edit" class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
+                <!-- Job Title -->
+                <div class="mb-6">
+                    <label for="name" class="block text-gray-700 font-semibold mb-2">
+                        Job Title <span class="text-red-600">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        value="{{ job.name }}"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g., Senior Software Engineer"
+                    />
+                </div>
+
+                <!-- Location -->
+                <div class="mb-6">
+                    <label for="location" class="block text-gray-700 font-semibold mb-2">
+                        Location <span class="text-red-600">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="location" 
+                        name="location" 
+                        value="{{ job.location }}"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g., Belfast, Edinburgh, London"
+                    />
+                </div>
+
+                <!-- Capability -->
+                <div class="mb-6">
+                    <label for="capability" class="block text-gray-700 font-semibold mb-2">
+                        Capability <span class="text-red-600">*</span>
+                    </label>
+                    <select 
+                        id="capability" 
+                        name="capability" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="">Select Capability</option>
+                        <option value="Engineering" {% if job.capability == "Engineering" %}selected{% endif %}>Engineering</option>
+                        <option value="Data Science" {% if job.capability == "Data Science" %}selected{% endif %}>Data Science</option>
+                        <option value="Product" {% if job.capability == "Product" %}selected{% endif %}>Product</option>
+                        <option value="Design" {% if job.capability == "Design" %}selected{% endif %}>Design</option>
+                        <option value="Testing" {% if job.capability == "Testing" %}selected{% endif %}>Testing</option>
+                        <option value="DevOps" {% if job.capability == "DevOps" %}selected{% endif %}>DevOps</option>
+                        <option value="Security" {% if job.capability == "Security" %}selected{% endif %}>Security</option>
+                        <option value="Business Analysis" {% if job.capability == "Business Analysis" %}selected{% endif %}>Business Analysis</option>
+                        <option value="Delivery Management" {% if job.capability == "Delivery Management" %}selected{% endif %}>Delivery Management</option>
+                        <option value="Sales" {% if job.capability == "Sales" %}selected{% endif %}>Sales</option>
+                        <option value="Marketing" {% if job.capability == "Marketing" %}selected{% endif %}>Marketing</option>
+                        <option value="Operations" {% if job.capability == "Operations" %}selected{% endif %}>Operations</option>
+                        <option value="Finance" {% if job.capability == "Finance" %}selected{% endif %}>Finance</option>
+                        <option value="HR" {% if job.capability == "HR" %}selected{% endif %}>HR</option>
+                        <option value="Legal" {% if job.capability == "Legal" %}selected{% endif %}>Legal</option>
+                    </select>
+                </div>
+
+                <!-- Band -->
+                <div class="mb-6">
+                    <label for="band" class="block text-gray-700 font-semibold mb-2">
+                        Band <span class="text-red-600">*</span>
+                    </label>
+                    <select 
+                        id="band" 
+                        name="band" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="">Select Band</option>
+                        <option value="Trainee" {% if job.band == "Trainee" %}selected{% endif %}>Trainee</option>
+                        <option value="Apprentice" {% if job.band == "Apprentice" %}selected{% endif %}>Apprentice</option>
+                        <option value="Associate" {% if job.band == "Associate" %}selected{% endif %}>Associate</option>
+                        <option value="Senior Associate" {% if job.band == "Senior Associate" %}selected{% endif %}>Senior Associate</option>
+                        <option value="Consultant" {% if job.band == "Consultant" %}selected{% endif %}>Consultant</option>
+                        <option value="Senior Consultant" {% if job.band == "Senior Consultant" %}selected{% endif %}>Senior Consultant</option>
+                        <option value="Principal Consultant" {% if job.band == "Principal Consultant" %}selected{% endif %}>Principal Consultant</option>
+                        <option value="Manager" {% if job.band == "Manager" %}selected{% endif %}>Manager</option>
+                        <option value="Senior Manager" {% if job.band == "Senior Manager" %}selected{% endif %}>Senior Manager</option>
+                        <option value="Director" {% if job.band == "Director" %}selected{% endif %}>Director</option>
+                    </select>
+                </div>
+
+                <!-- Job Summary -->
+                <div class="mb-6">
+                    <label for="summary" class="block text-gray-700 font-semibold mb-2">
+                        Job Summary <span class="text-red-600">*</span>
+                    </label>
+                    <textarea 
+                        id="summary" 
+                        name="summary" 
+                        rows="4"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Provide a compelling overview of the role and what the successful candidate will achieve..."
+                    >{{ job.summary }}</textarea>
+                </div>
+
+                <!-- Key Responsibilities -->
+                <div class="mb-6">
+                    <label for="keyResponsibilities" class="block text-gray-700 font-semibold mb-2">
+                        Key Responsibilities <span class="text-red-600">*</span>
+                    </label>
+                    <textarea 
+                        id="keyResponsibilities" 
+                        name="keyResponsibilities" 
+                        rows="6"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="List the main responsibilities and duties for this role..."
+                    >{{ job.keyResponsibilities }}</textarea>
+                </div>
+
+                <!-- Number of Open Positions -->
+                <div class="mb-6">
+                    <label for="numberOfOpenPositions" class="block text-gray-700 font-semibold mb-2">
+                        Number of Open Positions <span class="text-red-600">*</span>
+                    </label>
+                    <input 
+                        type="number" 
+                        id="numberOfOpenPositions" 
+                        name="numberOfOpenPositions" 
+                        value="{{ job.numberOfOpenPositions }}"
+                        min="0"
+                        max="50"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g., 2"
+                    />
+                </div>
+
+                <!-- Closing Date -->
+                <div class="mb-6">
+                    <label for="closingDate" class="block text-gray-700 font-semibold mb-2">
+                        Application Closing Date <span class="text-red-600">*</span>
+                    </label>
+                    <input 
+                        type="date" 
+                        id="closingDate" 
+                        name="closingDate" 
+                        value="{{ job.closingDate }}"
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
+
+                <!-- Status -->
+                <div class="mb-8">
+                    <label for="status" class="block text-gray-700 font-semibold mb-2">
+                        Job Status <span class="text-red-600">*</span>
+                    </label>
+                    <select 
+                        id="status" 
+                        name="status" 
+                        required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="open" {% if job.status == "open" %}selected{% endif %}>Open</option>
+                        <option value="closed" {% if job.status == "closed" %}selected{% endif %}>Closed</option>
+                    </select>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-between">
+                    <a href="/jobs/{{ job.id }}" class="btn bg-gray-500 hover:bg-gray-600 text-white border-none px-8 py-3 rounded-lg font-semibold text-center">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none px-8 py-3 rounded-lg font-semibold">
+                        Update Job Role
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

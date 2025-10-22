@@ -35,7 +35,7 @@ if (!process.env.SESSION_SECRET) {
 // Initialize services and controllers
 const jobRoleService = new JobService(API_BASE_URL);
 const jobController = new JobController(jobRoleService);
-const applicationService = new ApplicationService();
+const applicationService = new ApplicationService(API_BASE_URL);
 const applicationController = new ApplicationController(applicationService, jobRoleService);
 const authService = new AuthService(API_BASE_URL);
 const authController = new AuthController(authService);
@@ -171,6 +171,17 @@ app.get("/jobs/create", requireAuth, requireAdmin, (req, res) => {
 // Create job form submission
 app.post("/jobs/create", requireAuth, requireAdmin, jobController.createJob);
 
+// Edit job form page
+app.get("/jobs/:id/edit", requireAuth, requireAdmin, jobController.showEditJob);
+
+// Edit job form submission
+app.put("/jobs/:id/edit", requireAuth, requireAdmin, jobController.updateJob);
+app.post("/jobs/:id/edit", requireAuth, requireAdmin, jobController.updateJob); // Support for forms that can't use PUT
+
+// Delete job
+app.delete("/jobs/:id/delete", requireAuth, requireAdmin, jobController.deleteJob);
+app.post("/jobs/:id/delete", requireAuth, requireAdmin, jobController.deleteJob); // Support for forms that can't use DELETE
+
 // Job detail endpoint
 app.get("/jobs/:id", async (req, res) => {
   const jobIdParam = req.params.id;
@@ -225,6 +236,8 @@ app.get("/jobs/:id", async (req, res) => {
 // Authentication routes
 app.get("/login", authController.showLogin);
 app.post("/login", authController.login);
+app.get("/register", authController.showRegister);
+app.post("/register", authController.register);
 app.post("/logout", authController.logout);
 
 // Application routes - require authentication and prevent admin access
@@ -245,6 +258,20 @@ app.get(
   requireAuth,
   preventAdminAccess,
   applicationController.showApplicationSuccess
+);
+
+// User's own applications - require authentication and prevent admin access
+app.get(
+  "/my-applications",
+  requireAuth,
+  preventAdminAccess,
+  applicationController.showMyApplications
+);
+app.get(
+  "/my-applications/:applicationId",
+  requireAuth,
+  preventAdminAccess,
+  applicationController.showMyApplicationDetail
 );
 
 // Admin routes - require admin access

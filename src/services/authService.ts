@@ -1,5 +1,13 @@
 import axios from "axios";
-import type { BackendLoginResponse, LoginRequest, LoginResponse, User } from "../models/user.js";
+import type {
+  BackendLoginResponse,
+  BackendRegistrationResponse,
+  LoginRequest,
+  LoginResponse,
+  RegistrationRequest,
+  RegistrationResponse,
+  User,
+} from "../models/user.js";
 
 export class AuthService {
   constructor(private baseUrl: string) {}
@@ -53,6 +61,69 @@ export class AuthService {
       return {
         success: false,
         message: "Login failed. Please try again.",
+      };
+    }
+  }
+
+  async register(userData: RegistrationRequest): Promise<RegistrationResponse> {
+    try {
+      const response = await axios.post<BackendRegistrationResponse>(
+        `${this.baseUrl}/api/auth/register`,
+        {
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          password: userData.password,
+          // Note: confirmPassword is not sent to backend, it's for frontend validation only
+        }
+      );
+
+      console.log("Registration response:", response.status, response.data);
+
+      // Transform backend response to frontend format
+      // Check for successful response (status 200/201) and presence of user data
+      if ((response.status === 200 || response.status === 201) && response.data.user) {
+        return {
+          success: true,
+          data: {
+            user: {
+              id: response.data.user.id,
+              username: `${response.data.user.firstName} ${response.data.user.lastName}`,
+              email: response.data.user.email,
+              // Always set role as "member" for registered users - no admin registration allowed
+              role: "member",
+              createdAt: new Date(),
+            },
+            token: response.data.token,
+          },
+        };
+      }
+
+      return {
+        success: false,
+        message: "Registration failed. Please try again.",
+      };
+    } catch (error) {
+      console.error("Registration error:", error);
+
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 400) {
+          return {
+            success: false,
+            message: "Please provide all required fields",
+          };
+        }
+        if (error.response?.status === 422) {
+          return {
+            success: false,
+            message: "Please check your input and try again",
+          };
+        }
+      }
+
+      return {
+        success: false,
+        message: "Registration failed. Please try again.",
       };
     }
   }

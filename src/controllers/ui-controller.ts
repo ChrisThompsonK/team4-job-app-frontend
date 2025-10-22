@@ -49,6 +49,15 @@ export class UiController {
       });
     }
 
+    // Add member-only navigation items
+    if (isAuthenticated && currentUser?.role === "member") {
+      baseNavigation.splice(2, 0, {
+        text: "View Applications",
+        href: "/my-applications",
+        visible: true,
+      });
+    }
+
     return baseNavigation;
   }
 

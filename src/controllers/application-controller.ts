@@ -194,7 +194,7 @@ export class ApplicationController {
       }
 
       const jobId = parseInt(jobIdParam, 10);
-      const { applicantName, email, phoneNumber, coverLetter } = req.body;
+      const { coverLetter } = req.body;
       const user = req.session?.user || null;
 
       if (Number.isNaN(jobId)) {
@@ -202,33 +202,10 @@ export class ApplicationController {
         return;
       }
 
-      // Get applicant details - either from logged-in user or form submission
-      let finalApplicantName: string;
-      let finalEmail: string;
-
-      if (user) {
-        // User is logged in - use their information
-        finalApplicantName = user.username;
-        finalEmail = user.email;
-      } else {
-        // User is not logged in - use form data
-        finalApplicantName = applicantName;
-        finalEmail = email;
-
-        // Validate required fields for non-logged-in users using FormController
-        const requiredFields = ["applicantName", "email"];
-        const formErrors = FormController.validateRequiredFields(req.body, requiredFields);
-
-        if (Object.keys(formErrors).length > 0) {
-          res.redirect(`/jobs/${jobId}/apply?error=missing-fields`);
-          return;
-        }
-
-        // Validate email format
-        if (!FormController.validateEmail(email)) {
-          res.redirect(`/jobs/${jobId}/apply?error=validation-failed`);
-          return;
-        }
+      // Check if user is logged in - required for backend API
+      if (!user || !user.id) {
+        res.redirect(`/login?redirectTo=/jobs/${jobId}/apply`);
+        return;
       }
 
       // Validate cover letter (required for all users)
@@ -250,14 +227,13 @@ export class ApplicationController {
         return;
       }
 
-      // Create the application
+      // Create the application with logged-in user's ID
       const applicationData = {
         jobId,
-        applicantName: finalApplicantName,
-        email: finalEmail,
-        phoneNumber: phoneNumber?.trim() || "",
+        applicantName: user.username, // Backend doesn't use this, gets it from users table
+        email: user.email, // Backend doesn't use this, gets it from users table
         coverLetter,
-        ...(user?.id && { userId: user.id }), // Include user ID if logged in
+        userId: user.id, // Required by backend API
       };
 
       await this.applicationService.createApplication(applicationData);

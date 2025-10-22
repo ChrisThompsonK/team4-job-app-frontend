@@ -47,12 +47,11 @@ export class ApplicationService {
 
   async createApplication(applicationData: CreateApplicationRequest): Promise<Application> {
     // Map frontend data to backend format
+    // Backend only requires userId, jobRoleId, and cvText
+    // The applicantName and email are retrieved from the users table via userId
     const backendData = {
       userId: applicationData.userId,
       jobRoleId: applicationData.jobId,
-      applicantName: applicationData.applicantName,
-      email: applicationData.email,
-      phoneNumber: applicationData.phoneNumber || "",
       cvText: applicationData.coverLetter || "",
     };
 
@@ -110,10 +109,18 @@ export class ApplicationService {
 
   // Helper method to map backend application to frontend format
   private mapBackendToFrontend(backendApp: any): Application {
-    if (!backendApp.applicantName || typeof backendApp.applicantName !== "string" || backendApp.applicantName.trim() === "") {
+    if (
+      !backendApp.applicantName ||
+      typeof backendApp.applicantName !== "string" ||
+      backendApp.applicantName.trim() === ""
+    ) {
       throw new Error("Critical data missing: applicantName is required in backend response");
     }
-    if (!backendApp.email || typeof backendApp.email !== "string" || backendApp.email.trim() === "") {
+    if (
+      !backendApp.email ||
+      typeof backendApp.email !== "string" ||
+      backendApp.email.trim() === ""
+    ) {
       throw new Error("Critical data missing: email is required in backend response");
     }
     return {

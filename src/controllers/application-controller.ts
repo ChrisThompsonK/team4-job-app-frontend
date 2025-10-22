@@ -254,8 +254,6 @@ export class ApplicationController {
       console.error("Error submitting application:", error);
       if (error instanceof Error && error.message.includes("not found")) {
         res.redirect("/jobs?error=not-found");
-      } else if (error instanceof Error && error.message.includes("already applied")) {
-        res.redirect(`/jobs/${req.params.id}?error=already-applied`);
       } else {
         res.redirect(`/jobs/${req.params.id}/apply?error=submission-failed`);
       }

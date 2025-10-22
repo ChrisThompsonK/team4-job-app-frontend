@@ -58,7 +58,7 @@ export class ApplicationService {
         return false;
       }
       console.error("Error checking if user has applied:", error);
-      return false;
+      throw error;
     }
   }
 

@@ -683,9 +683,9 @@ small {
 code,
 pre {
   font-family:
+    monospace,
     "Galano Grotesque",
     "Galano-Grotesque",
-    "GalanoGrotesque",
-    monospace; /* Keep some monospace fallback for code */
+    "GalanoGrotesque"; /* Keep some monospace fallback for code */
   font-weight: 400;
 }

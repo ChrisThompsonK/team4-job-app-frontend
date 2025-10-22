@@ -47,8 +47,6 @@ export class ApplicationService {
 
   async createApplication(applicationData: CreateApplicationRequest): Promise<Application> {
     // Map frontend data to backend format
-    // Backend only requires userId, jobRoleId, and cvText
-    // The applicantName and email are retrieved from the users table via userId
     const backendData = {
       userId: applicationData.userId,
       jobRoleId: applicationData.jobId,

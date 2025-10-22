@@ -35,7 +35,7 @@ if (!process.env.SESSION_SECRET) {
 // Initialize services and controllers
 const jobRoleService = new JobService(API_BASE_URL);
 const jobController = new JobController(jobRoleService);
-const applicationService = new ApplicationService();
+const applicationService = new ApplicationService(API_BASE_URL);
 const applicationController = new ApplicationController(applicationService, jobRoleService);
 const authService = new AuthService(API_BASE_URL);
 const authController = new AuthController(authService);
@@ -247,6 +247,20 @@ app.get(
   requireAuth,
   preventAdminAccess,
   applicationController.showApplicationSuccess
+);
+
+// User's own applications - require authentication and prevent admin access
+app.get(
+  "/my-applications",
+  requireAuth,
+  preventAdminAccess,
+  applicationController.showMyApplications
+);
+app.get(
+  "/my-applications/:applicationId",
+  requireAuth,
+  preventAdminAccess,
+  applicationController.showMyApplicationDetail
 );
 
 // Admin routes - require admin access

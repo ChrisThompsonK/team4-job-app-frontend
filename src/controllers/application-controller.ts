@@ -260,7 +260,6 @@ export class ApplicationController {
         ...(user?.id && { userId: user.id }), // Include user ID if logged in
       };
 
-      console.log("Creating application with data:", applicationData);
       await this.applicationService.createApplication(applicationData);
 
       // Redirect to success page

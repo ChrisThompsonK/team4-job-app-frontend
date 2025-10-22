@@ -83,6 +83,15 @@ export class FormController {
         type: "error",
       },
 
+      // Registration errors
+      "invalid-email": { message: "Please enter a valid email address.", type: "error" },
+      "password-mismatch": { message: "Passwords do not match.", type: "error" },
+      "weak-password": {
+        message: "Password must be at least 8 characters with uppercase, lowercase, and number.",
+        type: "error",
+      },
+      "registration-failed": { message: "Registration failed. Please try again.", type: "error" },
+
       // General errors
       "server-error": {
         message: "An unexpected error occurred. Please try again later.",
@@ -129,6 +138,7 @@ export class FormController {
       rejected: "Application rejected.",
       login: "Login successful!",
       logout: "Logged out successfully!",
+      registration: "Welcome! Your account has been created successfully!",
     };
 
     const message = successMessages[successCode] || "Operation completed successfully!";
@@ -195,6 +205,26 @@ export class FormController {
   static validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
+  }
+
+  /**
+   * Validate password match
+   */
+  static validatePasswordMatch(password: string, confirmPassword: string): boolean {
+    return password === confirmPassword;
+  }
+
+  /**
+   * Validate password strength
+   */
+  static validatePasswordStrength(password: string): boolean {
+    // At least 8 characters, 1 uppercase, 1 lowercase, 1 number
+    const minLength = password.length >= 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+
+    return minLength && hasUppercase && hasLowercase && hasNumber;
   }
 
   /**

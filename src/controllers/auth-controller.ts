@@ -68,6 +68,81 @@ export class AuthController {
     }
   };
 
+  // Show registration page
+  showRegister = (req: Request, res: Response): void => {
+    // Redirect to home if already logged in
+    if (req.session.isAuthenticated) {
+      res.redirect("/");
+      return;
+    }
+
+    const errorDisplay = FormController.getErrorDisplay(req.query.error as string);
+    const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+
+    res.render("register", {
+      title: "Register - Kainos Job Portal",
+      errorDisplay,
+      successDisplay,
+    });
+  };
+
+  // Handle registration form submission
+  register = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { firstName, lastName, email, password, confirmPassword } = req.body;
+
+      // Validate required fields
+      const requiredFields = ["firstName", "lastName", "email", "password", "confirmPassword"];
+      const formErrors = FormController.validateRequiredFields(req.body, requiredFields);
+      if (Object.keys(formErrors).length > 0) {
+        res.redirect("/register?error=missing-fields");
+        return;
+      }
+
+      // Validate email format
+      if (!FormController.validateEmail(email)) {
+        res.redirect("/register?error=invalid-email");
+        return;
+      }
+
+      // Validate password match
+      if (!FormController.validatePasswordMatch(password, confirmPassword)) {
+        res.redirect("/register?error=password-mismatch");
+        return;
+      }
+
+      // Validate password strength
+      if (!FormController.validatePasswordStrength(password)) {
+        res.redirect("/register?error=weak-password");
+        return;
+      }
+
+      // Attempt registration
+      const registrationResult = await this.authService.register({
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+      });
+
+      if (registrationResult.success && registrationResult.data?.user) {
+        // Set session data (auto-login after registration)
+        req.session.user = registrationResult.data.user;
+        req.session.isAuthenticated = true;
+
+        // Redirect to home with success message
+        res.redirect("/?success=registration");
+      } else {
+        // Generic error message for security (no email enumeration)
+        res.redirect("/register?error=registration-failed");
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      res.redirect("/register?error=server-error");
+    }
+  };
+
   // Handle logout
   logout = async (req: Request, res: Response): Promise<void> => {
     try {

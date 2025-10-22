@@ -196,7 +196,7 @@ team4-job-app-frontend/
 │   └── main.css                  # TailwindCSS entry point
 ├── public/                       # Static assets
 │   └── images/
-│       └── Kainos-logo.jpg
+│       └── Kainos-logo.png
 ├── js/                           # Client-side JavaScript
 │   └── index.js
 ├── instructions/                 # 📚 Comprehensive project documentation

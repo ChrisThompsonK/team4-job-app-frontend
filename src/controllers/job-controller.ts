@@ -75,7 +75,7 @@ export class JobController {
           show: true,
           text: "Apply Now",
           href: `/jobs/${job.id}/apply`,
-          className: "btn bg-blue-600 hover:bg-blue-700 text-white border-none",
+          className: "btn kainos-blue-btn text-white border-none",
         };
       }
 
@@ -85,7 +85,7 @@ export class JobController {
           show: true,
           text: "Login to Apply",
           href: `/login?redirectTo=/jobs/${job.id}/apply`,
-          className: "btn bg-blue-600 hover:bg-blue-700 text-white border-none",
+          className: "btn kainos-blue-btn text-white border-none",
         };
       }
     }
@@ -145,14 +145,14 @@ export class JobController {
           show: true,
           text: "Apply Now",
           href: `/jobs/${job.id}/apply`,
-          className: "btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full",
+          className: "btn kainos-blue-btn text-white border-none w-full",
         };
       } else if (!isAuthenticated) {
         applyAction = {
           show: true,
           text: "Login to Apply",
           href: `/login?redirectTo=/jobs/${job.id}/apply`,
-          className: "btn bg-blue-600 hover:bg-blue-700 text-white border-none w-full",
+          className: "btn kainos-blue-btn text-white border-none w-full",
         };
       }
     } else if (job.status === "open" && job.numberOfOpenPositions === 0) {

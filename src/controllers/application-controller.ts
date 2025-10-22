@@ -571,9 +571,7 @@ export class ApplicationController {
       // Get the application
       const application = await this.applicationService.getApplicationById(applicationId);
 
-      console.log(
-        `User ID: ${user.id}, Application userId: ${application.userId}, User email: ${user.email}, Application email: ${application.email}`
-      );
+      // Removed logging of sensitive user information for security reasons.
 
       // Verify the application belongs to this user
       // If userId is undefined, it means it was created before we added user tracking

@@ -225,6 +225,8 @@ app.get("/jobs/:id", async (req, res) => {
 // Authentication routes
 app.get("/login", authController.showLogin);
 app.post("/login", authController.login);
+app.get("/register", authController.showRegister);
+app.post("/register", authController.register);
 app.post("/logout", authController.logout);
 
 // Application routes - require authentication and prevent admin access

@@ -110,11 +110,17 @@ export class ApplicationService {
 
   // Helper method to map backend application to frontend format
   private mapBackendToFrontend(backendApp: any): Application {
+    if (!backendApp.applicantName || typeof backendApp.applicantName !== "string" || backendApp.applicantName.trim() === "") {
+      throw new Error("Critical data missing: applicantName is required in backend response");
+    }
+    if (!backendApp.email || typeof backendApp.email !== "string" || backendApp.email.trim() === "") {
+      throw new Error("Critical data missing: email is required in backend response");
+    }
     return {
       id: backendApp.id,
       jobId: backendApp.jobRoleId,
-      applicantName: backendApp.applicantName || "Applicant",
-      email: backendApp.email || "Not provided",
+      applicantName: backendApp.applicantName,
+      email: backendApp.email,
       phoneNumber: backendApp.phoneNumber || "",
       coverLetter: backendApp.cvText,
       applicationDate: new Date(backendApp.createdAt),

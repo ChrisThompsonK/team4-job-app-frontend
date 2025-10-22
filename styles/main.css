@@ -6,7 +6,7 @@
 /* ========================================
    Font Imports
    ======================================== */
-@import url('/fonts/galano-grotesque.css');
+@import url("/fonts/galano-grotesque.css");
 
 /* ========================================
    Tailwind CSS Framework
@@ -42,11 +42,7 @@
  */
 * {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
 }
 
@@ -64,11 +60,7 @@ html {
  */
 body {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
@@ -89,11 +81,7 @@ h4,
 h5,
 h6 {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-weight: 700; /* Bold for all headers */
   line-height: 1.2;
@@ -134,11 +122,7 @@ h6 {
  */
 p {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-weight: 400; /* Regular weight for body text */
   margin-bottom: 1rem;
@@ -188,11 +172,7 @@ a:focus {
 /* Professional button styles with Galano Grotesque */
 .btn {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
@@ -289,11 +269,7 @@ a:focus {
 
 .card-title {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-size: 1.125rem;
   font-weight: 700; /* Bold for card titles (important content) */
@@ -303,11 +279,7 @@ a:focus {
 /* Professional navbar styles with Galano Grotesque */
 .navbar {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-weight: 500; /* Medium weight for navigation */
   display: flex;
@@ -349,11 +321,7 @@ a:focus {
 /* Professional badge styles with Galano Grotesque */
 .badge {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   display: inline-flex;
   align-items: center;
@@ -383,11 +351,7 @@ a:focus {
 /* Professional alert styles with Galano Grotesque */
 .alert {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-weight: 500; /* Medium weight for alert messages */
   padding: 1rem;
@@ -440,11 +404,7 @@ a:focus {
 
 .stat-title {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-size: 0.75rem;
   font-weight: 500; /* Medium weight for stat labels */
@@ -455,11 +415,7 @@ a:focus {
 
 .stat-value {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-size: 1.125rem;
   font-weight: 700; /* Bold for stat values (important data) */
@@ -486,11 +442,7 @@ a:focus {
 /* Link styles with Galano Grotesque */
 .link {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-weight: 500; /* Medium weight for links */
   color: #2563eb;
@@ -612,11 +564,7 @@ input,
 textarea,
 select {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-weight: 400; /* Regular weight for input text */
 }
@@ -631,11 +579,7 @@ textarea::placeholder {
 /* Labels with appropriate weight */
 label {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
   font-weight: 600; /* Semi-bold for labels (important for form structure) */
 }
@@ -645,11 +589,7 @@ table,
 th,
 td {
   font-family:
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque",
-    -apple-system,
-    BlinkMacSystemFont,
+    "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque", -apple-system, BlinkMacSystemFont,
     sans-serif;
 }
 
@@ -688,9 +628,6 @@ small {
 code,
 pre {
   font-family:
-    monospace,
-    "Galano Grotesque",
-    "Galano-Grotesque",
-    "GalanoGrotesque"; /* Keep some monospace fallback for code */
+    monospace, "Galano Grotesque", "Galano-Grotesque", "GalanoGrotesque"; /* Keep some monospace fallback for code */
   font-weight: 400;
 }

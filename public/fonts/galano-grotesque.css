@@ -5,8 +5,8 @@
 
 /* Galano Grotesque Light */
 @font-face {
-  font-family: 'Galano Grotesque';
-  src: url('./GalanoGrotesqueLight.otf') format('opentype');
+  font-family: "Galano Grotesque";
+  src: url("./GalanoGrotesqueLight.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -14,8 +14,8 @@
 
 /* Galano Grotesque Regular */
 @font-face {
-  font-family: 'Galano Grotesque';
-  src: url('./GalanoGrotesqueRegular.otf') format('opentype');
+  font-family: "Galano Grotesque";
+  src: url("./GalanoGrotesqueRegular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -23,8 +23,8 @@
 
 /* Galano Grotesque Medium */
 @font-face {
-  font-family: 'Galano Grotesque';
-  src: url('./GalanoGrotesqueMedium.otf') format('opentype');
+  font-family: "Galano Grotesque";
+  src: url("./GalanoGrotesqueMedium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -32,8 +32,8 @@
 
 /* Galano Grotesque SemiBold */
 @font-face {
-  font-family: 'Galano Grotesque';
-  src: url('./GalanoGrotesqueSemiBold.otf') format('opentype');
+  font-family: "Galano Grotesque";
+  src: url("./GalanoGrotesqueSemiBold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -41,8 +41,8 @@
 
 /* Galano Grotesque Bold */
 @font-face {
-  font-family: 'Galano Grotesque';
-  src: url('./GalanoGrotesqueBold.otf') format('opentype');
+  font-family: "Galano Grotesque";
+  src: url("./GalanoGrotesqueBold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -50,8 +50,8 @@
 
 /* Galano Grotesque Black */
 @font-face {
-  font-family: 'Galano Grotesque';
-  src: url('./GalanoGrotesqueBlack.otf') format('opentype');
+  font-family: "Galano Grotesque";
+  src: url("./GalanoGrotesqueBlack.otf") format("opentype");
   font-weight: 900;
   font-style: normal;
   font-display: swap;

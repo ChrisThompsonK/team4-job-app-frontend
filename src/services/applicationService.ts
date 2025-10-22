@@ -45,16 +45,38 @@ export class ApplicationService {
     return result.data.map((app: any) => this.mapBackendToFrontend(app));
   }
 
+  /**
+   * Checks if a user has applied for a specific job by querying the backend directly.
+   * Returns true if an application exists, false otherwise.
+   */
   async hasUserAppliedForJob(userId: number, jobId: number): Promise<boolean> {
     try {
-      const userApplications = await this.getApplicationsByUserId(userId);
-      return userApplications.some((app) => app.jobId === jobId);
-    } catch (error) {
+      const application = await this.getApplicationByUserIdAndJobId(userId, jobId);
+      return !!application;
+    } catch (error: any) {
+      if (error instanceof Error && error.message === "Application not found") {
+        return false;
+      }
       console.error("Error checking if user has applied:", error);
       return false;
     }
   }
 
+  /**
+   * Fetches an application by userId and jobId.
+   * Throws an error if not found or on other errors.
+   */
+  async getApplicationByUserIdAndJobId(userId: number, jobId: number): Promise<Application> {
+    const response = await fetch(`${this.apiBaseUrl}/api/applications/user/${userId}/job/${jobId}`);
+    if (response.status === 404) {
+      throw new Error("Application not found");
+    }
+    if (!response.ok) {
+      throw new Error(`Failed to fetch application for user ${userId} and job ${jobId}`);
+    }
+    const result = await response.json();
+    return this.mapBackendToFrontend(result.data);
+  }
   async createApplication(applicationData: CreateApplicationRequest): Promise<Application> {
     // Map frontend data to backend format
     const backendData = {

@@ -110,7 +110,6 @@ export class ApplicationService {
     }
 
     const result = await response.json();
-    console.log('Application created successfully:', result);
     
     // Use the original application data from the frontend for user details
     // since the backend response doesn't include user name and email

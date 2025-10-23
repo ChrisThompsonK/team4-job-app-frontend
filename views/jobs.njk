@@ -157,7 +157,7 @@
                         <!-- Pagination Controls -->
                         {% if pagination and pagination.totalPages > 1 %}
                         {% if searchQuery %}
-                            {% set searchParam = '&search=' + searchQuery %}
+                            {% set searchParam = '&search=' + (searchQuery | urlencode) %}
                         {% else %}
                             {% set searchParam = '' %}
                         {% endif %}

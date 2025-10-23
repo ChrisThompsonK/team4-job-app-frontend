@@ -95,8 +95,15 @@ function applyJobFilters() {
   const currentParams = new URLSearchParams(window.location.search);
 
   // Preserve search if it exists
-  const searchValue = searchInput?.value ?? currentParams.get("search");
-  if (searchValue) {
+  let searchValue;
+  if (searchInput) {
+    // If the input is present, use its value (even if empty)
+    searchValue = searchInput.value;
+  } else {
+    // If the input is not present, fall back to the current URL param
+    searchValue = currentParams.get("search");
+  }
+  if (searchValue && searchValue !== "") {
     params.append("search", searchValue);
   }
 

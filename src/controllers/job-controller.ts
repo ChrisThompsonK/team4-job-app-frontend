@@ -50,6 +50,25 @@ export class JobController {
   }
 
   /**
+   * Extract unique filter values from all jobs
+   */
+  static extractFilterOptions(jobs: JobRole[]): {
+    uniqueLocations: string[];
+    uniqueCapabilities: string[];
+    uniqueBands: string[];
+  } {
+    const uniqueLocations = [...new Set(jobs.map((job) => job.location))].sort();
+    const uniqueCapabilities = [...new Set(jobs.map((job) => job.capability))].sort();
+    const uniqueBands = [...new Set(jobs.map((job) => job.band))].sort();
+
+    return {
+      uniqueLocations,
+      uniqueCapabilities,
+      uniqueBands,
+    };
+  }
+
+  /**
    * Determines what action button should be shown for a job based on user authentication and role
    */
   static getJobActionButton(

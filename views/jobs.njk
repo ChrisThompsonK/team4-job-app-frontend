@@ -100,7 +100,7 @@
                                     <i data-lucide="map-pin" class="h-4 w-4 inline mr-1"></i>
                                     Location
                                 </label>
-                                <select id="location-filter" class="select select-bordered w-full select-sm">
+                                <select id="location-filter" name="location" class="select select-bordered w-full select-sm">
                                     <option value="">All Locations</option>
                                 </select>
                             </div>
@@ -111,7 +111,7 @@
                                     <i data-lucide="building" class="h-4 w-4 inline mr-1"></i>
                                     Capability
                                 </label>
-                                <select id="capability-filter" class="select select-bordered w-full select-sm">
+                                <select id="capability-filter" name="capability" class="select select-bordered w-full select-sm">
                                     <option value="">All Capabilities</option>
                                 </select>
                             </div>
@@ -122,7 +122,7 @@
                                     <i data-lucide="badge" class="h-4 w-4 inline mr-1"></i>
                                     Band
                                 </label>
-                                <select id="band-filter" class="select select-bordered w-full select-sm">
+                                <select id="band-filter" name="band" class="select select-bordered w-full select-sm">
                                     <option value="">All Bands</option>
                                 </select>
                             </div>
@@ -134,9 +134,6 @@
                                 <i data-lucide="x-circle" class="h-4 w-4 mr-1"></i>
                                 Clear All Filters
                             </button>
-                            <div class="text-center">
-                                <span id="results-count" class="text-sm text-gray-600"></span>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -158,16 +155,32 @@
                         {% else %}
                             {% set searchParam = '' %}
                         {% endif %}
+                        {% if filters.location %}
+                            {% set locationParam = '&location=' + (filters.location | urlencode) %}
+                        {% else %}
+                            {% set locationParam = '' %}
+                        {% endif %}
+                        {% if filters.capability %}
+                            {% set capabilityParam = '&capability=' + (filters.capability | urlencode) %}
+                        {% else %}
+                            {% set capabilityParam = '' %}
+                        {% endif %}
+                        {% if filters.band %}
+                            {% set bandParam = '&band=' + (filters.band | urlencode) %}
+                        {% else %}
+                            {% set bandParam = '' %}
+                        {% endif %}
+                        {% set filterParams = searchParam + locationParam + capabilityParam + bandParam %}
                         <div class="mt-8">
                             <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-lg">
                                 <div class="flex flex-1 justify-between sm:hidden">
                                     {% if pagination.hasPrevious %}
-                                    <a href="/jobs?page={{ pagination.currentPage - 1 }}{{ searchParam }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
+                                    <a href="/jobs?page={{ pagination.currentPage - 1 }}{{ filterParams }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
                                     {% else %}
                                     <span class="relative inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">Previous</span>
                                     {% endif %}
                                     {% if pagination.hasNext %}
-                                    <a href="/jobs?page={{ pagination.currentPage + 1 }}{{ searchParam }}" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
+                                    <a href="/jobs?page={{ pagination.currentPage + 1 }}{{ filterParams }}" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
                                     {% else %}
                                     <span class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">Next</span>
                                     {% endif %}
@@ -183,7 +196,7 @@
                                         <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                                             <!-- First Page -->
                                             {% if pagination.hasPrevious %}
-                                            <a href="/jobs?page=1{{ searchParam }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                            <a href="/jobs?page=1{{ filterParams }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <span class="sr-only">First</span>
                                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                     <path fill-rule="evenodd" d="M15.79 14.77a.75.75 0 01-1.06.02l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 111.04 1.08L11.832 10l3.938 3.71a.75.75 0 01.02 1.06zm-6 0a.75.75 0 01-1.06.02l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 111.04 1.08L5.832 10l3.938 3.71a.75.75 0 01.02 1.06z" clip-rule="evenodd" />
@@ -200,7 +213,7 @@
                                             
                                             <!-- Previous Page -->
                                             {% if pagination.hasPrevious %}
-                                            <a href="/jobs?page={{ pagination.currentPage - 1 }}{{ searchParam }}" class="relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                            <a href="/jobs?page={{ pagination.currentPage - 1 }}{{ filterParams }}" class="relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <span class="sr-only">Previous</span>
                                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                     <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
@@ -222,7 +235,7 @@
                                             
                                             <!-- Next Page -->
                                             {% if pagination.hasNext %}
-                                            <a href="/jobs?page={{ pagination.currentPage + 1 }}{{ searchParam }}" class="relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                            <a href="/jobs?page={{ pagination.currentPage + 1 }}{{ filterParams }}" class="relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <span class="sr-only">Next</span>
                                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                     <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
@@ -239,7 +252,7 @@
                                             
                                             <!-- Last Page -->
                                             {% if pagination.hasNext %}
-                                            <a href="/jobs?page={{ pagination.totalPages }}{{ searchParam }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                            <a href="/jobs?page={{ pagination.totalPages }}{{ filterParams }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <span class="sr-only">Last</span>
                                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                     <path fill-rule="evenodd" d="M10.21 14.77a.75.75 0 01.02-1.06L14.168 10 10.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02zm-6 0a.75.75 0 01.02-1.06L8.168 10 4.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
@@ -279,143 +292,23 @@
         </div>
     </div>
     
-    <!-- Filter Script -->
+    <!-- Job Filter Script -->
+    <script src="/js/job-filters.js"></script>
     <script>
-        // Initialize filter options from job cards
-        function initializeFilters() {
-            const jobCards = document.querySelectorAll('.job-card');
-            const locations = new Set();
-            const capabilities = new Set();
-            const bands = new Set();
-            
-            jobCards.forEach(card => {
-                if (card.dataset.location) locations.add(card.dataset.location);
-                if (card.dataset.capability) capabilities.add(card.dataset.capability);
-                if (card.dataset.band) bands.add(card.dataset.band);
-            });
-            
-            // Populate location filter
-            const locationFilter = document.getElementById('location-filter');
-            if (locationFilter) {
-                Array.from(locations).sort().forEach(location => {
-                    const option = document.createElement('option');
-                    option.value = location;
-                    option.textContent = location;
-                    locationFilter.appendChild(option);
-                });
-            }
-            
-            // Populate capability filter
-            const capabilityFilter = document.getElementById('capability-filter');
-            if (capabilityFilter) {
-                Array.from(capabilities).sort().forEach(capability => {
-                    const option = document.createElement('option');
-                    option.value = capability;
-                    option.textContent = capability;
-                    capabilityFilter.appendChild(option);
-                });
-            }
-            
-            // Populate band filter
-            const bandFilter = document.getElementById('band-filter');
-            if (bandFilter) {
-                Array.from(bands).sort().forEach(band => {
-                    const option = document.createElement('option');
-                    option.value = band;
-                    option.textContent = band;
-                    bandFilter.appendChild(option);
-                });
-            }
-            
-            updateResultsCount();
-        }
-        
-        // Filter jobs based on selected criteria (client-side filters only)
-        function filterJobs() {
-            const locationFilter = document.getElementById('location-filter');
-            const capabilityFilter = document.getElementById('capability-filter');
-            const bandFilter = document.getElementById('band-filter');
-            
-            if (!locationFilter || !capabilityFilter || !bandFilter) {
-                return; // Elements not found, exit early
-            }
-            
-            const locationValue = locationFilter.value;
-            const capabilityValue = capabilityFilter.value;
-            const bandValue = bandFilter.value;
-            
-            const jobCards = document.querySelectorAll('.job-card');
-            let visibleCount = 0;
-            
-            jobCards.forEach(card => {
-                const location = card.dataset.location || '';
-                const capability = card.dataset.capability || '';
-                const band = card.dataset.band || '';
-                
-                const locationMatch = !locationValue || location === locationValue;
-                const capabilityMatch = !capabilityValue || capability === capabilityValue;
-                const bandMatch = !bandValue || band === bandValue;
-                
-                if (locationMatch && capabilityMatch && bandMatch) {
-                    card.style.display = 'block';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
+        // Initialize filters when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeJobFilters({
+                uniqueLocations: {{ uniqueLocations | dump | safe }},
+                uniqueCapabilities: {{ uniqueCapabilities | dump | safe }},
+                uniqueBands: {{ uniqueBands | dump | safe }},
+                currentFilters: {
+                    location: '{{ filters.location or "" }}',
+                    capability: '{{ filters.capability or "" }}',
+                    band: '{{ filters.band or "" }}'
                 }
             });
             
-            // Show/hide no results message
-            const noResults = document.getElementById('no-results');
-            const jobsContainer = document.getElementById('jobs-container');
-            if (visibleCount === 0) {
-                if (noResults) noResults.classList.remove('hidden');
-                if (jobsContainer) jobsContainer.classList.add('hidden');
-            } else {
-                if (noResults) noResults.classList.add('hidden');
-                if (jobsContainer) jobsContainer.classList.remove('hidden');
-            }
-            
-            updateResultsCount();
-        }
-        
-        // Update results count
-        function updateResultsCount() {
-            const visibleCards = document.querySelectorAll('.job-card[style*="display: block"], .job-card:not([style*="display: none"])');
-            const count = visibleCards.length;
-            const resultsCount = document.getElementById('results-count');
-            if (resultsCount) {
-                resultsCount.textContent = `Showing ${count} job${count !== 1 ? 's' : ''}`;
-            }
-        }
-        
-        // Clear all client-side filters (search is handled separately via form)
-        function clearFilters() {
-            const locationFilter = document.getElementById('location-filter');
-            const capabilityFilter = document.getElementById('capability-filter');
-            const bandFilter = document.getElementById('band-filter');
-            
-            if (locationFilter) locationFilter.value = '';
-            if (capabilityFilter) capabilityFilter.value = '';
-            if (bandFilter) bandFilter.value = '';
-            
-            filterJobs();
-        }
-        
-        // Initialize when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeFilters();
-            
-            // Add event listeners with null checks for client-side filters only
-            // Search is now handled server-side via form submission
-            const locationFilter = document.getElementById('location-filter');
-            const capabilityFilter = document.getElementById('capability-filter');
-            const bandFilter = document.getElementById('band-filter');
-            const clearFiltersBtn = document.getElementById('clear-filters');
-            
-            if (locationFilter) locationFilter.addEventListener('change', filterJobs);
-            if (capabilityFilter) capabilityFilter.addEventListener('change', filterJobs);
-            if (bandFilter) bandFilter.addEventListener('change', filterJobs);
-            if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
+            setupJobFilterListeners();
         });
     </script>
     

@@ -155,9 +155,11 @@ export class ApplicationService {
   private mapBackendToFrontend(backendApp: any): Application {
     // Backend doesn't always return applicantName and email directly
     // For newly created applications, we might need to use fallback values
-    const applicantName = backendApp.applicantName || backendApp.firstName && backendApp.lastName 
-      ? `${backendApp.firstName} ${backendApp.lastName}` 
-      : "Unknown Applicant";
+    const applicantName = backendApp.applicantName || (
+      backendApp.firstName && backendApp.lastName
+        ? `${backendApp.firstName} ${backendApp.lastName}`
+        : "Unknown Applicant"
+    );
     
     const email = backendApp.email || "unknown@example.com";
     

@@ -53,8 +53,7 @@ export class JobService implements JobRoleService {
    */
   async getJobsWithPagination(
     limit?: number,
-    offset?: number,
-    search?: string
+    offset?: number
   ): Promise<{ jobs: JobRole[]; total: number }> {
     try {
       const params = new URLSearchParams();
@@ -63,9 +62,6 @@ export class JobService implements JobRoleService {
       }
       if (offset !== undefined) {
         params.append("offset", offset.toString());
-      }
-      if (search && search.trim()) {
-        params.append("search", search.trim());
       }
 
       const url = `/api/jobs${params.toString() ? `?${params.toString()}` : ""}`;

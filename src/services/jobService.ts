@@ -65,16 +65,16 @@ export class JobService implements JobRoleService {
       if (offset !== undefined) {
         params.append("offset", offset.toString());
       }
-      if (search && search.trim()) {
+      if (search?.trim()) {
         params.append("search", search.trim());
       }
-      if (filters?.location && filters.location.trim()) {
+      if (filters?.location?.trim()) {
         params.append("location", filters.location.trim());
       }
-      if (filters?.capability && filters.capability.trim()) {
+      if (filters?.capability?.trim()) {
         params.append("capability", filters.capability.trim());
       }
-      if (filters?.band && filters.band.trim()) {
+      if (filters?.band?.trim()) {
         params.append("band", filters.band.trim());
       }
 

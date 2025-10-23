@@ -154,7 +154,7 @@
                         <!-- Pagination Controls -->
                         {% if pagination and pagination.totalPages > 1 %}
                         {% if searchQuery %}
-                            {% set searchParam = '&search=' + searchQuery %}
+                            {% set searchParam = '&search=' + (searchQuery | urlencode) %}
                         {% else %}
                             {% set searchParam = '' %}
                         {% endif %}
@@ -176,7 +176,7 @@
                                     <div>
                                         <p class="text-sm text-gray-700">
                                             Showing page <span class="font-medium">{{ pagination.currentPage }}</span> of <span class="font-medium">{{ pagination.totalPages }}</span>
-                                            ({{ pagination.total }} total jobs{% if searchQuery %} matching "{{ searchQuery }}"{% endif %})
+                                            ({{ pagination.total }} total jobs{% if searchQuery %} matching "{{ searchQuery | escape }}"{% endif %})
                                         </p>
                                     </div>
                                     <div>

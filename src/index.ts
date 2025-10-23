@@ -107,9 +107,14 @@ app.get("/jobs", async (req, res) => {
   const page = parseInt(req.query.page as string, 10) || 1;
   const limit = 10;
   const offset = (page - 1) * limit;
+  const searchQuery = typeof req.query.search === "string" ? req.query.search : undefined;
 
-  // Get job roles from our service with pagination
-  const { jobs: jobRoles, total } = await jobRoleService.getJobsWithPagination(limit, offset);
+  // Get job roles from our service with pagination and search
+  const { jobs: jobRoles, total } = await jobRoleService.getJobsWithPagination(
+    limit,
+    offset,
+    searchQuery
+  );
 
   // Calculate pagination info
   const totalPages = Math.ceil(total / limit);
@@ -144,6 +149,7 @@ app.get("/jobs", async (req, res) => {
     errorDisplay: errorDisplay,
     successDisplay: successDisplay,
     isAdmin: isAdmin,
+    searchQuery: searchQuery || "",
     pagination: {
       currentPage: page,
       totalPages: totalPages,

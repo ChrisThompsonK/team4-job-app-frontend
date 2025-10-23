@@ -417,15 +417,16 @@ a:focus {
 }
 
 .hero-title {
-  font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif;
+  font-family: "Century Gothic", "CenturyGothic", "AppleGothic", sans-serif;
   font-size: 4rem;
   font-weight: 900;
   color: rgb(52, 86, 126);
   text-align: right;
   line-height: 1.1;
   letter-spacing: -0.02em;
-  text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.9),
-               -1px -1px 4px rgba(255, 255, 255, 0.9);
+  text-shadow:
+    2px 2px 8px rgba(255, 255, 255, 0.9),
+    -1px -1px 4px rgba(255, 255, 255, 0.9);
 }
 
 /* Responsive adjustments for hero section */
@@ -433,7 +434,7 @@ a:focus {
   .hero-title {
     font-size: 3rem;
   }
-  
+
   .hero-text-overlay {
     right: 5%;
     max-width: 500px;
@@ -444,18 +445,18 @@ a:focus {
   .hero-section {
     min-height: 300px;
   }
-  
+
   .hero-title {
     font-size: 2rem;
   }
-  
+
   .hero-text-overlay {
     right: 50%;
     transform: translate(50%, -50%);
     text-align: center;
     max-width: 90%;
   }
-  
+
   .hero-title {
     text-align: center;
   }
@@ -465,7 +466,7 @@ a:focus {
   .hero-section {
     min-height: 250px;
   }
-  
+
   .hero-title {
     font-size: 1.5rem;
   }

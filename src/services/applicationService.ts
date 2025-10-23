@@ -161,7 +161,7 @@ export class ApplicationService {
         : "Unknown Applicant"
     );
     
-    const email = backendApp.email || "unknown@example.com";
+    const email = backendApp.email ?? null;
     
     return {
       id: backendApp.id,

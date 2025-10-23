@@ -85,7 +85,6 @@ export class ApplicationService {
       cvText: applicationData.coverLetter || "",
     };
 
-    console.log('Creating application with data:', backendData);
 
     const response = await fetch(`${this.apiBaseUrl}/api/applications`, {
       method: "POST",

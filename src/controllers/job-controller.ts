@@ -10,6 +10,7 @@ interface JobActionButton {
   href: string;
   className: string;
   disabled?: boolean;
+  style?: string;
 }
 
 interface JobDetailActions {
@@ -94,7 +95,9 @@ export class JobController {
           show: true,
           text: "Apply Now",
           href: `/jobs/${job.id}/apply`,
-          className: "btn kainos-blue-btn text-white border-none",
+          className:
+            "btn text-white font-bold shadow-lg hover:shadow-xl border-none transform hover:scale-105 transition-all duration-200",
+          style: "background-color: rgb(52, 86, 126)",
         };
       }
 
@@ -104,7 +107,9 @@ export class JobController {
           show: true,
           text: "Login to Apply",
           href: `/login?redirectTo=/jobs/${job.id}/apply`,
-          className: "btn kainos-blue-btn text-white border-none",
+          className:
+            "btn text-white font-bold shadow-lg hover:shadow-xl border-none transform hover:scale-105 transition-all duration-200",
+          style: "background-color: rgb(52, 86, 126)",
         };
       }
     }
@@ -164,14 +169,18 @@ export class JobController {
           show: true,
           text: "Apply Now",
           href: `/jobs/${job.id}/apply`,
-          className: "btn kainos-blue-btn text-white border-none w-full",
+          className:
+            "btn text-white font-bold shadow-lg hover:shadow-xl border-none w-full transform hover:scale-105 transition-all duration-200",
+          style: "background-color: rgb(52, 86, 126)",
         };
       } else if (!isAuthenticated) {
         applyAction = {
           show: true,
           text: "Login to Apply",
           href: `/login?redirectTo=/jobs/${job.id}/apply`,
-          className: "btn kainos-blue-btn text-white border-none w-full",
+          className:
+            "btn text-white font-bold shadow-lg hover:shadow-xl border-none w-full transform hover:scale-105 transition-all duration-200",
+          style: "background-color: rgb(52, 86, 126)",
         };
       }
     } else if (job.status === "open" && job.numberOfOpenPositions === 0) {

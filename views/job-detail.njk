@@ -72,9 +72,9 @@
             {% if job.actions.headerAction.show %}
             <div class="flex justify-end">
                 {% if job.actions.headerAction.disabled %}
-                    <button class="{{ job.actions.headerAction.className }} px-8 py-3 text-lg" disabled>{{ job.actions.headerAction.text }}</button>
+                    <button class="{{ job.actions.headerAction.className }} px-8 py-3 text-lg" {% if job.actions.headerAction.style %}style="{{ job.actions.headerAction.style }}"{% endif %} disabled>{{ job.actions.headerAction.text }}</button>
                 {% else %}
-                    <a href="{{ job.actions.headerAction.href }}" class="{{ job.actions.headerAction.className }} px-8 py-3 text-lg">{{ job.actions.headerAction.text }}</a>
+                    <a href="{{ job.actions.headerAction.href }}" class="{{ job.actions.headerAction.className }} px-8 py-3 text-lg" {% if job.actions.headerAction.style %}style="{{ job.actions.headerAction.style }}"{% endif %}>{{ job.actions.headerAction.text }}</a>
                 {% endif %}
             </div>
             {% endif %}
@@ -167,9 +167,9 @@
                             {% endif %}
                             
                             {% if job.actions.sidebarContent.applyAction.disabled %}
-                                <button class="{{ job.actions.sidebarContent.applyAction.className }}" disabled>{{ job.actions.sidebarContent.applyAction.text }}</button>
+                                <button class="{{ job.actions.sidebarContent.applyAction.className }}" {% if job.actions.sidebarContent.applyAction.style %}style="{{ job.actions.sidebarContent.applyAction.style }}"{% endif %} disabled>{{ job.actions.sidebarContent.applyAction.text }}</button>
                             {% else %}
-                                <a href="{{ job.actions.sidebarContent.applyAction.href }}" class="{{ job.actions.sidebarContent.applyAction.className }}">{{ job.actions.sidebarContent.applyAction.text }}</a>
+                                <a href="{{ job.actions.sidebarContent.applyAction.href }}" class="{{ job.actions.sidebarContent.applyAction.className }}" {% if job.actions.sidebarContent.applyAction.style %}style="{{ job.actions.sidebarContent.applyAction.style }}"{% endif %}>{{ job.actions.sidebarContent.applyAction.text }}</a>
                             {% endif %}
                         {% endif %}
                     </div>

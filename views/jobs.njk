@@ -6,18 +6,15 @@
 {% block content %}
 
 <!-- Hero Section with Custom Background -->
-    <div class="hero min-h-96 relative overflow-hidden">
-
-        <div class="absolute inset-0 w-full h-full">
+    <div class="hero-section relative overflow-hidden">
+        <div class="hero-image-container">
             <img src="/images/Opportunity.jpg" 
                  alt="Kainos team members with motivational text about growth and opportunities" 
-                 class="w-full h-full object-contain" />
-        </div> 
-
-        <div class="hero-content relative z-10 w-full">
-            <div class="absolute left-3/4 top-0 transform -translate-x-1/2">
-                <h1 class="text-7xl pl-36 md:text-8xl lg:text-9xl font-black mb-6 text-right tracking-tight leading-none" style="color: rgb(52, 86, 126); font-family: 'Century Gothic', 'CenturyGothic', 'AppleGothic', sans-serif; letter-spacing: -0.02em;">Find your new career today at Kainos!</h1>
-            </div>
+                 class="hero-image" />
+        </div>
+        
+        <div class="hero-text-overlay">
+            <h1 class="hero-title">Find your new career today at Kainos!</h1>
         </div>
     </div>
     <!-- Jobs Content Section -->
@@ -61,12 +58,26 @@
                     <label for="job-search" class="block text-sm font-medium text-gray-700 mb-2">
                         Search by Job Title
                     </label>
-                    <input 
-                        type="text" 
-                        id="job-search" 
-                        placeholder="e.g. Software Engineer, Data Scientist, DevOps..." 
-                        class="input input-bordered w-full kainos-blue-input"
-                    />
+                    <form action="/jobs" method="GET" id="search-form">
+                        <div class="flex gap-2">
+                            <input 
+                                type="text" 
+                                id="job-search" 
+                                name="search"
+                                value="{{ searchQuery }}"
+                                placeholder="e.g. Software Engineer, Data Scientist, DevOps..." 
+                                class="input input-bordered w-full kainos-blue-input"
+                            />
+                            <button type="submit" class="btn kainos-blue-btn text-white">
+                                <i data-lucide="search" class="h-5 w-5"></i>
+                            </button>
+                            {% if searchQuery %}
+                            <a href="/jobs" class="btn btn-outline">
+                                <i data-lucide="x" class="h-5 w-5"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -142,16 +153,21 @@
                         
                         <!-- Pagination Controls -->
                         {% if pagination and pagination.totalPages > 1 %}
+                        {% if searchQuery %}
+                            {% set searchParam = '&search=' + searchQuery %}
+                        {% else %}
+                            {% set searchParam = '' %}
+                        {% endif %}
                         <div class="mt-8">
                             <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 rounded-lg">
                                 <div class="flex flex-1 justify-between sm:hidden">
                                     {% if pagination.hasPrevious %}
-                                    <a href="/jobs?page={{ pagination.currentPage - 1 }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
+                                    <a href="/jobs?page={{ pagination.currentPage - 1 }}{{ searchParam }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Previous</a>
                                     {% else %}
                                     <span class="relative inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">Previous</span>
                                     {% endif %}
                                     {% if pagination.hasNext %}
-                                    <a href="/jobs?page={{ pagination.currentPage + 1 }}" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
+                                    <a href="/jobs?page={{ pagination.currentPage + 1 }}{{ searchParam }}" class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Next</a>
                                     {% else %}
                                     <span class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-gray-100 px-4 py-2 text-sm font-medium text-gray-400 cursor-not-allowed">Next</span>
                                     {% endif %}
@@ -160,14 +176,14 @@
                                     <div>
                                         <p class="text-sm text-gray-700">
                                             Showing page <span class="font-medium">{{ pagination.currentPage }}</span> of <span class="font-medium">{{ pagination.totalPages }}</span>
-                                            ({{ pagination.total }} total jobs)
+                                            ({{ pagination.total }} total jobs{% if searchQuery %} matching "{{ searchQuery }}"{% endif %})
                                         </p>
                                     </div>
                                     <div>
                                         <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
                                             <!-- First Page -->
                                             {% if pagination.hasPrevious %}
-                                            <a href="/jobs?page=1" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                            <a href="/jobs?page=1{{ searchParam }}" class="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <span class="sr-only">First</span>
                                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                     <path fill-rule="evenodd" d="M15.79 14.77a.75.75 0 01-1.06.02l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 111.04 1.08L11.832 10l3.938 3.71a.75.75 0 01.02 1.06zm-6 0a.75.75 0 01-1.06.02l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 111.04 1.08L5.832 10l3.938 3.71a.75.75 0 01.02 1.06z" clip-rule="evenodd" />
@@ -184,7 +200,7 @@
                                             
                                             <!-- Previous Page -->
                                             {% if pagination.hasPrevious %}
-                                            <a href="/jobs?page={{ pagination.currentPage - 1 }}" class="relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                            <a href="/jobs?page={{ pagination.currentPage - 1 }}{{ searchParam }}" class="relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <span class="sr-only">Previous</span>
                                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                     <path fill-rule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clip-rule="evenodd" />
@@ -206,7 +222,7 @@
                                             
                                             <!-- Next Page -->
                                             {% if pagination.hasNext %}
-                                            <a href="/jobs?page={{ pagination.currentPage + 1 }}" class="relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                            <a href="/jobs?page={{ pagination.currentPage + 1 }}{{ searchParam }}" class="relative inline-flex items-center px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <span class="sr-only">Next</span>
                                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                     <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
@@ -223,7 +239,7 @@
                                             
                                             <!-- Last Page -->
                                             {% if pagination.hasNext %}
-                                            <a href="/jobs?page={{ pagination.totalPages }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                            <a href="/jobs?page={{ pagination.totalPages }}{{ searchParam }}" class="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                                 <span class="sr-only">Last</span>
                                                 <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                     <path fill-rule="evenodd" d="M10.21 14.77a.75.75 0 01.02-1.06L14.168 10 10.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02zm-6 0a.75.75 0 01.02-1.06L8.168 10 4.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
@@ -314,18 +330,16 @@
             updateResultsCount();
         }
         
-        // Filter jobs based on selected criteria
+        // Filter jobs based on selected criteria (client-side filters only)
         function filterJobs() {
-            const searchInput = document.getElementById('job-search');
             const locationFilter = document.getElementById('location-filter');
             const capabilityFilter = document.getElementById('capability-filter');
             const bandFilter = document.getElementById('band-filter');
             
-            if (!searchInput || !locationFilter || !capabilityFilter || !bandFilter) {
+            if (!locationFilter || !capabilityFilter || !bandFilter) {
                 return; // Elements not found, exit early
             }
             
-            const searchTerm = searchInput.value.toLowerCase();
             const locationValue = locationFilter.value;
             const capabilityValue = capabilityFilter.value;
             const bandValue = bandFilter.value;
@@ -334,17 +348,15 @@
             let visibleCount = 0;
             
             jobCards.forEach(card => {
-                const name = (card.dataset.name || '').toLowerCase();
                 const location = card.dataset.location || '';
                 const capability = card.dataset.capability || '';
                 const band = card.dataset.band || '';
                 
-                const searchMatch = !searchTerm || name.includes(searchTerm);
                 const locationMatch = !locationValue || location === locationValue;
                 const capabilityMatch = !capabilityValue || capability === capabilityValue;
                 const bandMatch = !bandValue || band === bandValue;
                 
-                if (searchMatch && locationMatch && capabilityMatch && bandMatch) {
+                if (locationMatch && capabilityMatch && bandMatch) {
                     card.style.display = 'block';
                     visibleCount++;
                 } else {
@@ -376,14 +388,12 @@
             }
         }
         
-        // Clear all filters
+        // Clear all client-side filters (search is handled separately via form)
         function clearFilters() {
-            const searchInput = document.getElementById('job-search');
             const locationFilter = document.getElementById('location-filter');
             const capabilityFilter = document.getElementById('capability-filter');
             const bandFilter = document.getElementById('band-filter');
             
-            if (searchInput) searchInput.value = '';
             if (locationFilter) locationFilter.value = '';
             if (capabilityFilter) capabilityFilter.value = '';
             if (bandFilter) bandFilter.value = '';
@@ -395,14 +405,13 @@
         document.addEventListener('DOMContentLoaded', () => {
             initializeFilters();
             
-            // Add event listeners with null checks
-            const searchInput = document.getElementById('job-search');
+            // Add event listeners with null checks for client-side filters only
+            // Search is now handled server-side via form submission
             const locationFilter = document.getElementById('location-filter');
             const capabilityFilter = document.getElementById('capability-filter');
             const bandFilter = document.getElementById('band-filter');
             const clearFiltersBtn = document.getElementById('clear-filters');
             
-            if (searchInput) searchInput.addEventListener('input', filterJobs);
             if (locationFilter) locationFilter.addEventListener('change', filterJobs);
             if (capabilityFilter) capabilityFilter.addEventListener('change', filterJobs);
             if (bandFilter) bandFilter.addEventListener('change', filterJobs);

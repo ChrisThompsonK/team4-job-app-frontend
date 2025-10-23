@@ -109,12 +109,29 @@ app.get("/jobs", async (req, res) => {
   const offset = (page - 1) * limit;
   const searchQuery = typeof req.query.search === "string" ? req.query.search : undefined;
 
-  // Get job roles from our service with pagination and search
+  // Get filter parameters from query string - only include defined values
+  const filters: { location?: string; capability?: string; band?: string } = {};
+  if (typeof req.query.location === "string") {
+    filters.location = req.query.location;
+  }
+  if (typeof req.query.capability === "string") {
+    filters.capability = req.query.capability;
+  }
+  if (typeof req.query.band === "string") {
+    filters.band = req.query.band;
+  }
+
+  // Get job roles from our service with pagination, search, and filters
   const { jobs: jobRoles, total } = await jobRoleService.getJobsWithPagination(
     limit,
     offset,
-    searchQuery
+    searchQuery,
+    filters
   );
+
+  // Fetch ALL jobs (without filters/search) to get unique values for filter dropdowns
+  const allJobs = await jobRoleService.getAllJobs();
+  const filterOptions = JobController.extractFilterOptions(allJobs);
 
   // Calculate pagination info
   const totalPages = Math.ceil(total / limit);
@@ -150,6 +167,8 @@ app.get("/jobs", async (req, res) => {
     successDisplay: successDisplay,
     isAdmin: isAdmin,
     searchQuery: searchQuery || "",
+    filters: filters,
+    ...filterOptions,
     pagination: {
       currentPage: page,
       totalPages: totalPages,

@@ -36,8 +36,8 @@ export class UiController {
     const baseNavigation: NavigationItem[] = [
       { text: "Home", href: "/", visible: true },
       { text: "Jobs", href: "/jobs", visible: true },
-      { text: "About", href: "#", visible: true },
-      { text: "Contact", href: "#", visible: true },
+      { text: "About", href: "https://www.kainos.com/about-us", visible: true },
+      { text: "Contact", href: "https://www.kainos.com/contact-us", visible: true },
     ];
 
     // Add admin-only navigation items

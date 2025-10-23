@@ -1,5 +1,19 @@
 import type { Application, CreateApplicationRequest } from "../models/application.js";
 
+interface BackendApplication {
+  id: number;
+  userId: number;
+  jobRoleId: number;
+  cvText: string;
+  status: string;
+  createdAt: string;
+  applicantName?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phoneNumber?: string;
+}
+
 export class ApplicationService {
   private apiBaseUrl: string;
 
@@ -31,7 +45,7 @@ export class ApplicationService {
     }
 
     const result = await response.json();
-    return result.data.map((app: any) => this.mapBackendToFrontend(app));
+    return result.data.map((app: BackendApplication) => this.mapBackendToFrontend(app));
   }
 
   async getApplicationsByUserId(userId: number): Promise<Application[]> {
@@ -42,7 +56,7 @@ export class ApplicationService {
     }
 
     const result = await response.json();
-    return result.data.map((app: any) => this.mapBackendToFrontend(app));
+    return result.data.map((app: BackendApplication) => this.mapBackendToFrontend(app));
   }
 
   /**
@@ -53,11 +67,10 @@ export class ApplicationService {
     try {
       const application = await this.getApplicationByUserIdAndJobId(userId, jobId);
       return !!application;
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (error instanceof Error && error.message === "Application not found") {
         return false;
       }
-      console.error("Error checking if user has applied:", error);
       throw error;
     }
   }
@@ -94,12 +107,24 @@ export class ApplicationService {
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || "Failed to create application");
+      const errorText = await response.text();
+
+      let errorMessage: string;
+      try {
+        const errorJson = JSON.parse(errorText);
+        errorMessage = errorJson.error || errorJson.message || "Failed to create application";
+      } catch {
+        errorMessage = errorText || "Failed to create application";
+      }
+
+      throw new Error(errorMessage);
     }
 
     const result = await response.json();
-    return this.mapBackendToFrontend(result.data);
+
+    // Use the original application data from the frontend for user details
+    // since the backend response doesn't include user name and email
+    return this.mapBackendToFrontendWithUserData(result.data, applicationData);
   }
 
   async updateApplicationStatus(
@@ -133,32 +158,48 @@ export class ApplicationService {
     return this.mapBackendToFrontend(result.data);
   }
 
-  async deleteApplication(id: number): Promise<void> {
+  async deleteApplication(_id: number): Promise<void> {
     throw new Error("Deleting applications is not supported");
   }
 
   // Helper method to map backend application to frontend format
-  private mapBackendToFrontend(backendApp: any): Application {
-    if (
-      !backendApp.applicantName ||
-      typeof backendApp.applicantName !== "string" ||
-      backendApp.applicantName.trim() === ""
-    ) {
-      throw new Error("Critical data missing: applicantName is required in backend response");
+  private mapBackendToFrontend(backendApp: BackendApplication): Application {
+    // Determine applicant name from backend data
+    let applicantName: string;
+    if (backendApp.applicantName) {
+      applicantName = backendApp.applicantName;
+    } else if (backendApp.firstName && backendApp.lastName) {
+      applicantName = `${backendApp.firstName} ${backendApp.lastName}`;
+    } else {
+      throw new Error("Cannot determine applicant name from backend data");
     }
-    if (
-      !backendApp.email ||
-      typeof backendApp.email !== "string" ||
-      backendApp.email.trim() === ""
-    ) {
-      throw new Error("Critical data missing: email is required in backend response");
-    }
+
+    const email = backendApp.email || "unknown@example.com";
+
     return {
       id: backendApp.id,
       jobId: backendApp.jobRoleId,
-      applicantName: backendApp.applicantName,
-      email: backendApp.email,
+      applicantName: applicantName,
+      email: email,
       phoneNumber: backendApp.phoneNumber || "",
+      coverLetter: backendApp.cvText,
+      applicationDate: new Date(backendApp.createdAt),
+      status: this.mapBackendStatus(backendApp.status),
+      userId: backendApp.userId,
+    };
+  }
+
+  // Helper method to map backend application to frontend format using frontend user data
+  private mapBackendToFrontendWithUserData(
+    backendApp: BackendApplication,
+    frontendData: CreateApplicationRequest
+  ): Application {
+    return {
+      id: backendApp.id,
+      jobId: backendApp.jobRoleId,
+      applicantName: frontendData.applicantName, // Use the name from frontend
+      email: frontendData.email, // Use the email from frontend
+      phoneNumber: frontendData.phoneNumber || "",
       coverLetter: backendApp.cvText,
       applicationDate: new Date(backendApp.createdAt),
       status: this.mapBackendStatus(backendApp.status),

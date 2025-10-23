@@ -163,7 +163,7 @@ export class ApplicationController {
 
       // Check if the user has already applied for this job
       const user = req.session?.user;
-      if (user && user.id) {
+      if (user?.id) {
         const hasApplied = await this.applicationService.hasUserAppliedForJob(user.id, jobId);
         if (hasApplied) {
           res.redirect(`/jobs/${jobId}?error=already-applied`);
@@ -214,9 +214,16 @@ export class ApplicationController {
 
       // Check if user is logged in - required for backend API
       if (!user || !user.id) {
+        console.log("No user found in session, redirecting to login");
         res.redirect(`/login?redirectTo=/jobs/${jobId}/apply`);
         return;
       }
+
+      console.log("User from session:", {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+      });
 
       // Validate cover letter (required for all users)
       if (!coverLetter || coverLetter.trim().length === 0) {
@@ -246,6 +253,7 @@ export class ApplicationController {
         userId: user.id, // Required by backend API
       };
 
+      console.log("Submitting application data:", applicationData);
       await this.applicationService.createApplication(applicationData);
 
       // Redirect to success page

@@ -133,7 +133,7 @@
                                 <i data-lucide="edit" class="h-4 w-4 mr-2"></i>
                                 Edit Job Role
                             </a>
-                            <button onclick="confirmDelete({{ job.id }})" class="btn bg-red-600 hover:bg-red-700 text-white border-none w-full flex items-center justify-center">
+                            <button data-job-id="{{ job.id }}" class="delete-job-btn btn bg-red-600 hover:bg-red-700 text-white border-none w-full flex items-center justify-center">
                                 <i data-lucide="trash-2" class="h-4 w-4 mr-2"></i>
                                 Delete Job Role
                             </button>
@@ -208,6 +208,16 @@
 
 {% block scripts %}
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const deleteButton = document.querySelector('.delete-job-btn');
+    if (deleteButton) {
+        deleteButton.addEventListener('click', function() {
+            const jobId = this.getAttribute('data-job-id');
+            confirmDelete(jobId);
+        });
+    }
+});
+
 function confirmDelete(jobId) {
     if (confirm('Are you sure you want to delete this job role? This action cannot be undone and will also delete all associated applications.')) {
         // Create a form and submit it for DELETE request

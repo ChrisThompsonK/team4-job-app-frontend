@@ -32,8 +32,8 @@
 
     <!-- Success Messages -->
     {% if successDisplay.show %}
-        <div class="container mx-auto px-6 -mt-6 mb-8">
-            <div class="{{ successDisplay.containerClass }}">
+        <div class="container mx-auto px-6 py-8 relative z-20">
+            <div class="{{ successDisplay.containerClass }} shadow-lg">
                 <div class="flex items-center justify-center">
                     <i data-lucide="{{ successDisplay.iconClass }}" class="h-5 w-5 mr-2"></i>
                     {{ successDisplay.message }}

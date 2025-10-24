@@ -243,16 +243,9 @@ export class ApplicationController {
 
       // Check if user is logged in - required for backend API
       if (!user || !user.id) {
-        console.log("No user found in session, redirecting to login");
         res.redirect(`/login?redirectTo=/jobs/${jobId}/apply`);
         return;
       }
-
-      console.log("User from session:", {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-      });
 
       // Validate CV file upload (required for all users)
       if (!uploadedFile) {
@@ -275,13 +268,6 @@ export class ApplicationController {
         cvFile: uploadedFile, // File object for upload
         userId: user.id, // Required by backend API
       };
-
-      console.log("Submitting application data:", {
-        ...applicationData,
-        cvFile: uploadedFile
-          ? `${uploadedFile.originalname} (${uploadedFile.size} bytes)`
-          : "No file",
-      });
 
       await this.applicationService.createApplication(applicationData);
 

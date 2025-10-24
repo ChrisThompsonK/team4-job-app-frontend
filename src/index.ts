@@ -333,30 +333,30 @@ app.get("/uploads/cvs/:year/:month/:filename", async (req, res) => {
     const { year, month, filename } = req.params;
     const filePath = `/uploads/cvs/${year}/${month}/${filename}`;
     const backendUrl = `${API_BASE_URL}${filePath}`;
-    
+
     console.log(`[File Download] Proxying request: ${req.path} -> ${backendUrl}`);
-    
+
     // Use axios to stream the file from the backend
     const response = await axios.get(backendUrl, {
-      responseType: 'stream',
+      responseType: "stream",
       timeout: 10000, // 10 second timeout
     });
-    
+
     // Set appropriate headers for file download
     res.set({
-      'Content-Type': response.headers['content-type'] || 'application/octet-stream',
-      'Content-Length': response.headers['content-length'],
-      'Content-Disposition': response.headers['content-disposition'] || 'attachment',
+      "Content-Type": response.headers["content-type"] || "application/octet-stream",
+      "Content-Length": response.headers["content-length"],
+      "Content-Disposition": response.headers["content-disposition"] || "attachment",
     });
-    
+
     // Pipe the file stream to the response
     response.data.pipe(res);
   } catch (error) {
     console.error(`Error proxying file download for ${req.path}:`, error);
     if (axios.isAxiosError(error) && error.response?.status === 404) {
-      res.status(404).send('File not found');
+      res.status(404).send("File not found");
     } else {
-      res.status(500).send('Error downloading file');
+      res.status(500).send("Error downloading file");
     }
   }
 });

@@ -10,6 +10,7 @@ interface JobActionButton {
   href: string;
   className: string;
   disabled?: boolean;
+  style?: string;
 }
 
 interface JobDetailActions {
@@ -44,6 +45,11 @@ interface User {
 
 export class JobController {
   private jobRoleService: JobService;
+
+  // Style constants for consistent button appearance
+  private static readonly PRIMARY_BUTTON_COLOR = "background-color: rgb(52, 86, 126)";
+  private static readonly PRIMARY_BUTTON_BASE_CLASS =
+    "btn text-white font-bold shadow-lg hover:shadow-xl border-none transform hover:scale-105 transition-all duration-200";
 
   constructor(jobRoleService: JobService) {
     this.jobRoleService = jobRoleService;
@@ -94,7 +100,8 @@ export class JobController {
           show: true,
           text: "Apply Now",
           href: `/jobs/${job.id}/apply`,
-          className: "btn kainos-blue-btn text-white border-none",
+          className: JobController.PRIMARY_BUTTON_BASE_CLASS,
+          style: JobController.PRIMARY_BUTTON_COLOR,
         };
       }
 
@@ -104,7 +111,8 @@ export class JobController {
           show: true,
           text: "Login to Apply",
           href: `/login?redirectTo=/jobs/${job.id}/apply`,
-          className: "btn kainos-blue-btn text-white border-none",
+          className: JobController.PRIMARY_BUTTON_BASE_CLASS,
+          style: JobController.PRIMARY_BUTTON_COLOR,
         };
       }
     }
@@ -164,14 +172,16 @@ export class JobController {
           show: true,
           text: "Apply Now",
           href: `/jobs/${job.id}/apply`,
-          className: "btn kainos-blue-btn text-white border-none w-full",
+          className: `${JobController.PRIMARY_BUTTON_BASE_CLASS} w-full`,
+          style: JobController.PRIMARY_BUTTON_COLOR,
         };
       } else if (!isAuthenticated) {
         applyAction = {
           show: true,
           text: "Login to Apply",
           href: `/login?redirectTo=/jobs/${job.id}/apply`,
-          className: "btn kainos-blue-btn text-white border-none w-full",
+          className: `${JobController.PRIMARY_BUTTON_BASE_CLASS} w-full`,
+          style: JobController.PRIMARY_BUTTON_COLOR,
         };
       }
     } else if (job.status === "open" && job.numberOfOpenPositions === 0) {

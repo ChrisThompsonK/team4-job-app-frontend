@@ -42,9 +42,9 @@
             <div class="flex items-center space-x-2">
                 {% if job.actionButton.show %}
                     {% if job.actionButton.disabled %}
-                        <button class="{{ job.actionButton.className }}" disabled>{{ job.actionButton.text }}</button>
+                        <button class="{{ job.actionButton.className }}" {% if job.actionButton.style %}style="{{ job.actionButton.style }}"{% endif %} disabled>{{ job.actionButton.text }}</button>
                     {% else %}
-                        <a href="{{ job.actionButton.href }}" class="{{ job.actionButton.className }}">{{ job.actionButton.text }}</a>
+                        <a href="{{ job.actionButton.href }}" class="{{ job.actionButton.className }}" {% if job.actionButton.style %}style="{{ job.actionButton.style }}"{% endif %}>{{ job.actionButton.text }}</a>
                     {% endif %}
                 {% endif %}
             </div>

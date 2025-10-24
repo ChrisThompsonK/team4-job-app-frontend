@@ -25,7 +25,7 @@ function decodeHTML(html) {
  * @param {string} config.currentFilters.capability - Current capability filter
  * @param {string} config.currentFilters.band - Current band filter
  */
-function _initializeJobFilters(config) {
+function initializeJobFilters(config) {
   const { uniqueLocations, uniqueCapabilities, uniqueBands, currentFilters } = config;
 
   // Get current filter values (decode HTML entities)
@@ -40,11 +40,12 @@ function _initializeJobFilters(config) {
       const option = document.createElement("option");
       option.value = location;
       option.textContent = location;
-      if (currentLocation === location) {
-        option.selected = true;
-      }
       locationFilter.appendChild(option);
     });
+    // Set the selected value after all options are added
+    if (currentLocation) {
+      locationFilter.value = currentLocation;
+    }
   }
 
   // Populate capability filter
@@ -54,11 +55,12 @@ function _initializeJobFilters(config) {
       const option = document.createElement("option");
       option.value = capability;
       option.textContent = capability;
-      if (currentCapability === capability) {
-        option.selected = true;
-      }
       capabilityFilter.appendChild(option);
     });
+    // Set the selected value after all options are added
+    if (currentCapability) {
+      capabilityFilter.value = currentCapability;
+    }
   }
 
   // Populate band filter
@@ -68,11 +70,12 @@ function _initializeJobFilters(config) {
       const option = document.createElement("option");
       option.value = band;
       option.textContent = band;
-      if (currentBand === band) {
-        option.selected = true;
-      }
       bandFilter.appendChild(option);
     });
+    // Set the selected value after all options are added
+    if (currentBand) {
+      bandFilter.value = currentBand;
+    }
   }
 }
 
@@ -88,17 +91,38 @@ function applyJobFilters() {
   // Build query parameters
   const params = new URLSearchParams();
 
-  if (searchInput?.value) {
-    params.append("search", searchInput.value);
+  // Get current URL params to preserve existing filters
+  const currentParams = new URLSearchParams(window.location.search);
+
+  // Preserve search if it exists
+  let searchValue;
+  if (searchInput) {
+    // If the input is present, use its value (even if empty)
+    searchValue = searchInput.value;
+  } else {
+    // If the input is not present, fall back to the current URL param
+    searchValue = currentParams.get("search");
   }
-  if (locationFilter?.value) {
-    params.append("location", locationFilter.value);
+  if (searchValue && searchValue !== "") {
+    params.append("search", searchValue);
   }
-  if (capabilityFilter?.value) {
-    params.append("capability", capabilityFilter.value);
+
+  // Add location filter
+  const locationValue = locationFilter?.value;
+  if (locationValue) {
+    params.append("location", locationValue);
   }
-  if (bandFilter?.value) {
-    params.append("band", bandFilter.value);
+
+  // Add capability filter
+  const capabilityValue = capabilityFilter?.value;
+  if (capabilityValue) {
+    params.append("capability", capabilityValue);
+  }
+
+  // Add band filter
+  const bandValue = bandFilter?.value;
+  if (bandValue) {
+    params.append("band", bandValue);
   }
 
   // Navigate to the filtered URL
@@ -115,7 +139,7 @@ function clearJobFilters() {
 /**
  * Set up event listeners for filter controls
  */
-function _setupJobFilterListeners() {
+function setupJobFilterListeners() {
   const locationFilter = document.getElementById("location-filter");
   const capabilityFilter = document.getElementById("capability-filter");
   const bandFilter = document.getElementById("band-filter");

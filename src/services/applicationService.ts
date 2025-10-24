@@ -170,8 +170,9 @@ export class ApplicationService {
 
     const email = backendApp.email || "unknown@example.com";
 
+    // Use frontend proxy URL for file downloads instead of direct backend URL
     const cvUrl = backendApp.cvFilePath
-      ? `${this.apiBaseUrl}/${backendApp.cvFilePath}`
+      ? `/${backendApp.cvFilePath}` // This will be proxied by our frontend /uploads/* route
       : backendApp.cvText || undefined;
 
     return {

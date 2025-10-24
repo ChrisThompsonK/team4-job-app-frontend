@@ -1,4 +1,5 @@
 import path from "node:path";
+import axios from "axios";
 import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
@@ -326,11 +327,45 @@ app.post(
   applicationController.rejectApplication
 );
 
+// File download proxy route - proxy CV downloads to backend
+app.get("/uploads/cvs/:year/:month/:filename", async (req, res) => {
+  try {
+    const { year, month, filename } = req.params;
+    const filePath = `/uploads/cvs/${year}/${month}/${filename}`;
+    const backendUrl = `${API_BASE_URL}${filePath}`;
+    
+    console.log(`[File Download] Proxying request: ${req.path} -> ${backendUrl}`);
+    
+    // Use axios to stream the file from the backend
+    const response = await axios.get(backendUrl, {
+      responseType: 'stream',
+      timeout: 10000, // 10 second timeout
+    });
+    
+    // Set appropriate headers for file download
+    res.set({
+      'Content-Type': response.headers['content-type'] || 'application/octet-stream',
+      'Content-Length': response.headers['content-length'],
+      'Content-Disposition': response.headers['content-disposition'] || 'attachment',
+    });
+    
+    // Pipe the file stream to the response
+    response.data.pipe(res);
+  } catch (error) {
+    console.error(`Error proxying file download for ${req.path}:`, error);
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      res.status(404).send('File not found');
+    } else {
+      res.status(500).send('Error downloading file');
+    }
+  }
+});
+
 // Start the server
 const main = async (): Promise<void> => {
   try {
     app.listen(PORT, () => {
-      console.log(`🚀 Server is running on http://localhost:${PORT}`);
+      console.log(`Server is running on http://localhost:${PORT}`);
     });
   } catch (error) {
     console.error("Failed to start server:", error);

@@ -385,7 +385,7 @@ a:focus {
 .hero-section {
   position: relative;
   width: 100%;
-  min-height: 400px;
+  min-height: 635px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -403,7 +403,7 @@ a:focus {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: top;
 }
 
 .hero-text-overlay {

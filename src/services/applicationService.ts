@@ -25,7 +25,6 @@ export class ApplicationService {
 
   constructor(apiBaseUrl?: string) {
     this.apiBaseUrl = apiBaseUrl || process.env.API_BASE_URL || "http://localhost:8080";
-    console.log("ApplicationService initialized with API_BASE_URL:", this.apiBaseUrl);
   }
 
   async getAllApplications(): Promise<Application[]> {
@@ -174,13 +173,6 @@ export class ApplicationService {
     const cvUrl = backendApp.cvFilePath
       ? `${this.apiBaseUrl}/${backendApp.cvFilePath}`
       : backendApp.cvText || undefined;
-
-    console.log("Mapping application:", {
-      id: backendApp.id,
-      cvFilePath: backendApp.cvFilePath,
-      apiBaseUrl: this.apiBaseUrl,
-      constructedUrl: cvUrl,
-    });
 
     return {
       id: backendApp.id,

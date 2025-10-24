@@ -74,6 +74,15 @@ export class FormController {
 
       // Application form errors
       "missing-fields": { message: "Please fill in all required fields.", type: "error" },
+      "missing-cv-file": { message: "Please upload your CV file.", type: "error" },
+      "invalid-file-type": {
+        message: "Please upload a CV in PDF, DOC, or DOCX format only.",
+        type: "error",
+      },
+      "file-too-large": {
+        message: "CV file is too large. Please upload a file smaller than 5MB.",
+        type: "error",
+      },
       "submission-failed": {
         message: "Failed to submit application. Please try again.",
         type: "error",

@@ -1,10 +1,16 @@
+import axios from "axios";
+import FormData from "form-data";
 import type { Application, CreateApplicationRequest } from "../models/application.js";
 
 interface BackendApplication {
   id: number;
   userId: number;
   jobRoleId: number;
-  cvText: string;
+  cvFileName?: string;
+  cvFilePath?: string;
+  cvFileType?: string;
+  cvFileSize?: number;
+  cvText?: string; // Legacy field for backward compatibility
   status: string;
   createdAt: string;
   applicantName?: string;
@@ -19,6 +25,7 @@ export class ApplicationService {
 
   constructor(apiBaseUrl?: string) {
     this.apiBaseUrl = apiBaseUrl || process.env.API_BASE_URL || "http://localhost:8080";
+    console.log('ApplicationService initialized with API_BASE_URL:', this.apiBaseUrl);
   }
 
   async getAllApplications(): Promise<Application[]> {
@@ -27,36 +34,30 @@ export class ApplicationService {
   }
 
   async getApplicationById(id: number): Promise<Application> {
-    const response = await fetch(`${this.apiBaseUrl}/api/applications/${id}`);
-
-    if (!response.ok) {
+    try {
+      const response = await axios.get(`${this.apiBaseUrl}/api/applications/${id}`);
+      return this.mapBackendToFrontend(response.data.data);
+    } catch (_error) {
       throw new Error(`Application with id ${id} not found`);
     }
-
-    const result = await response.json();
-    return this.mapBackendToFrontend(result.data);
   }
 
   async getApplicationsByJobId(jobId: number): Promise<Application[]> {
-    const response = await fetch(`${this.apiBaseUrl}/api/applications/job/${jobId}`);
-
-    if (!response.ok) {
+    try {
+      const response = await axios.get(`${this.apiBaseUrl}/api/applications/job/${jobId}`);
+      return response.data.data.map((app: BackendApplication) => this.mapBackendToFrontend(app));
+    } catch (_error) {
       throw new Error(`Failed to fetch applications for job ${jobId}`);
     }
-
-    const result = await response.json();
-    return result.data.map((app: BackendApplication) => this.mapBackendToFrontend(app));
   }
 
   async getApplicationsByUserId(userId: number): Promise<Application[]> {
-    const response = await fetch(`${this.apiBaseUrl}/api/applications/user/${userId}`);
-
-    if (!response.ok) {
+    try {
+      const response = await axios.get(`${this.apiBaseUrl}/api/applications/user/${userId}`);
+      return response.data.data.map((app: BackendApplication) => this.mapBackendToFrontend(app));
+    } catch (_error) {
       throw new Error(`Failed to fetch applications for user ${userId}`);
     }
-
-    const result = await response.json();
-    return result.data.map((app: BackendApplication) => this.mapBackendToFrontend(app));
   }
 
   /**
@@ -80,51 +81,51 @@ export class ApplicationService {
    * Throws an error if not found or on other errors.
    */
   async getApplicationByUserIdAndJobId(userId: number, jobId: number): Promise<Application> {
-    const response = await fetch(`${this.apiBaseUrl}/api/applications/user/${userId}/job/${jobId}`);
-    if (response.status === 404) {
-      throw new Error("Application not found");
-    }
-    if (!response.ok) {
+    try {
+      const response = await axios.get(
+        `${this.apiBaseUrl}/api/applications/user/${userId}/job/${jobId}`
+      );
+      return this.mapBackendToFrontend(response.data.data);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        throw new Error("Application not found");
+      }
       throw new Error(`Failed to fetch application for user ${userId} and job ${jobId}`);
     }
-    const result = await response.json();
-    return this.mapBackendToFrontend(result.data);
   }
   async createApplication(applicationData: CreateApplicationRequest): Promise<Application> {
-    // Map frontend data to backend format
-    const backendData = {
-      userId: applicationData.userId,
-      jobRoleId: applicationData.jobId,
-      cvText: applicationData.coverLetter || "",
-    };
+    // Create FormData for file upload
+    const formData = new FormData();
+    formData.append("userId", applicationData.userId?.toString() || "");
+    formData.append("jobRoleId", applicationData.jobId.toString());
 
-    const response = await fetch(`${this.apiBaseUrl}/api/applications`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(backendData),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-
-      let errorMessage: string;
-      try {
-        const errorJson = JSON.parse(errorText);
-        errorMessage = errorJson.error || errorJson.message || "Failed to create application";
-      } catch {
-        errorMessage = errorText || "Failed to create application";
-      }
-
-      throw new Error(errorMessage);
+    // Add the CV file if present
+    if (applicationData.cvFile) {
+      // Append the file buffer directly to form-data
+      formData.append("cvFile", applicationData.cvFile.buffer, {
+        filename: applicationData.cvFile.originalname,
+        contentType: applicationData.cvFile.mimetype,
+      });
     }
 
-    const result = await response.json();
+    try {
+      const response = await axios.post(`${this.apiBaseUrl}/api/applications`, formData, {
+        headers: formData.getHeaders(),
+      });
 
-    // Use the original application data from the frontend for user details
-    // since the backend response doesn't include user name and email
-    return this.mapBackendToFrontendWithUserData(result.data, applicationData);
+      // Use the original application data from the frontend for user details
+      // since the backend response doesn't include user name and email
+      return this.mapBackendToFrontendWithUserData(response.data.data, applicationData);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage =
+          error.response.data?.error ||
+          error.response.data?.message ||
+          "Failed to create application";
+        throw new Error(errorMessage);
+      }
+      throw new Error("Failed to create application");
+    }
   }
 
   async updateApplicationStatus(
@@ -142,20 +143,14 @@ export class ApplicationService {
       throw new Error(`Status ${status} cannot be updated via API`);
     }
 
-    const response = await fetch(`${this.apiBaseUrl}/api/applications/${id}/${endpoint}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ notes }),
-    });
-
-    if (!response.ok) {
+    try {
+      const response = await axios.put(`${this.apiBaseUrl}/api/applications/${id}/${endpoint}`, {
+        notes,
+      });
+      return this.mapBackendToFrontend(response.data.data);
+    } catch (_error) {
       throw new Error(`Failed to update application status`);
     }
-
-    const result = await response.json();
-    return this.mapBackendToFrontend(result.data);
   }
 
   async deleteApplication(_id: number): Promise<void> {
@@ -175,6 +170,17 @@ export class ApplicationService {
     }
 
     const email = backendApp.email || "unknown@example.com";
+    
+    const cvUrl = backendApp.cvFilePath
+      ? `${this.apiBaseUrl}/${backendApp.cvFilePath}`
+      : backendApp.cvText || undefined;
+    
+    console.log('Mapping application:', {
+      id: backendApp.id,
+      cvFilePath: backendApp.cvFilePath,
+      apiBaseUrl: this.apiBaseUrl,
+      constructedUrl: cvUrl
+    });
 
     return {
       id: backendApp.id,
@@ -182,7 +188,8 @@ export class ApplicationService {
       applicantName: applicantName,
       email: email,
       phoneNumber: backendApp.phoneNumber || "",
-      coverLetter: backendApp.cvText,
+      cvUrl: cvUrl,
+      cvFileName: backendApp.cvFileName || undefined,
       applicationDate: new Date(backendApp.createdAt),
       status: this.mapBackendStatus(backendApp.status),
       userId: backendApp.userId,
@@ -200,7 +207,10 @@ export class ApplicationService {
       applicantName: frontendData.applicantName, // Use the name from frontend
       email: frontendData.email, // Use the email from frontend
       phoneNumber: frontendData.phoneNumber || "",
-      coverLetter: backendApp.cvText,
+      cvUrl: backendApp.cvFilePath
+        ? `${this.apiBaseUrl}/${backendApp.cvFilePath}`
+        : backendApp.cvText || undefined,
+      cvFileName: backendApp.cvFileName || frontendData.cvFile?.originalname || undefined,
       applicationDate: new Date(backendApp.createdAt),
       status: this.mapBackendStatus(backendApp.status),
       userId: backendApp.userId,

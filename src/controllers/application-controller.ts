@@ -1,4 +1,6 @@
-import type { Request, Response } from "express";
+import path from "node:path";
+import type { Request, RequestHandler, Response } from "express";
+import multer from "multer";
 import type { ApplicationService } from "../services/applicationService.js";
 import type { JobService } from "../services/jobService.js";
 import { FormController } from "./form-controller.js";
@@ -41,10 +43,37 @@ interface ApplicationData {
 }
 
 export class ApplicationController {
+  private upload: multer.Multer;
+  public uploadCV: RequestHandler;
+
   constructor(
     private applicationService: ApplicationService,
     private jobService: JobService
-  ) {}
+  ) {
+    // Configure multer for CV file uploads
+    const storage = multer.memoryStorage(); // Store files in memory for upload to backend
+
+    this.upload = multer({
+      storage,
+      limits: {
+        fileSize: 5 * 1024 * 1024, // 5MB limit
+      },
+      fileFilter: (_req, file, cb) => {
+        // Only allow PDF, DOC, and DOCX files
+        const allowedTypes = [".pdf", ".doc", ".docx"];
+        const fileExtension = path.extname(file.originalname).toLowerCase();
+
+        if (allowedTypes.includes(fileExtension)) {
+          cb(null, true);
+        } else {
+          cb(new Error("Only PDF, DOC, and DOCX files are allowed"));
+        }
+      },
+    });
+
+    // Initialize multer middleware for single CV file upload
+    this.uploadCV = this.upload.single("cvFile");
+  }
 
   /**
    * Get application status display information
@@ -204,8 +233,8 @@ export class ApplicationController {
       }
 
       const jobId = parseInt(jobIdParam, 10);
-      const { coverLetter } = req.body;
       const user = req.session?.user || null;
+      const uploadedFile = req.file; // File uploaded by multer
 
       if (Number.isNaN(jobId)) {
         res.redirect("/jobs?error=invalid-id");
@@ -225,15 +254,9 @@ export class ApplicationController {
         username: user.username,
       });
 
-      // Validate cover letter (required for all users)
-      if (!coverLetter || coverLetter.trim().length === 0) {
-        res.redirect(`/jobs/${jobId}/apply?error=missing-fields`);
-        return;
-      }
-
-      // Validate cover letter length (minimum 50 characters)
-      if (coverLetter.trim().length < 50) {
-        res.redirect(`/jobs/${jobId}/apply?error=validation-failed`);
+      // Validate CV file upload (required for all users)
+      if (!uploadedFile) {
+        res.redirect(`/jobs/${jobId}/apply?error=missing-cv-file`);
         return;
       }
 
@@ -244,16 +267,22 @@ export class ApplicationController {
         return;
       }
 
-      // Create the application with logged-in user's ID
+      // Create the application with logged-in user's ID and CV file
       const applicationData = {
         jobId,
         applicantName: user.username, // Backend doesn't use this, gets it from users table
         email: user.email, // Backend doesn't use this, gets it from users table
-        coverLetter,
+        cvFile: uploadedFile, // File object for upload
         userId: user.id, // Required by backend API
       };
 
-      console.log("Submitting application data:", applicationData);
+      console.log("Submitting application data:", {
+        ...applicationData,
+        cvFile: uploadedFile
+          ? `${uploadedFile.originalname} (${uploadedFile.size} bytes)`
+          : "No file",
+      });
+
       await this.applicationService.createApplication(applicationData);
 
       // Redirect to success page
@@ -262,6 +291,8 @@ export class ApplicationController {
       console.error("Error submitting application:", error);
       if (error instanceof Error && error.message.includes("not found")) {
         res.redirect("/jobs?error=not-found");
+      } else if (error instanceof Error && error.message.includes("PDF, DOC, and DOCX")) {
+        res.redirect(`/jobs/${req.params.id}/apply?error=invalid-file-type`);
       } else {
         res.redirect(`/jobs/${req.params.id}/apply?error=submission-failed`);
       }

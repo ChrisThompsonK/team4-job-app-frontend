@@ -276,6 +276,7 @@ app.post(
   "/jobs/:id/apply",
   requireAuth,
   preventAdminAccess,
+  applicationController.uploadCV,
   applicationController.submitApplication
 );
 app.get(

@@ -88,30 +88,25 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Main Content -->
             <div class="lg:col-span-2 space-y-8">
-                <!-- Cover Letter -->
-                {% if application.coverLetter %}
-                    <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
-                        <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-                            <i data-lucide="file-text" class="h-6 w-6 mr-3 text-blue-600"></i>
-                            Cover Letter
-                        </h2>
-                        <div class="prose max-w-none">
-                            <p class="text-gray-700 leading-relaxed whitespace-pre-wrap">{{ application.coverLetter }}</p>
-                        </div>
-                    </div>
-                {% endif %}
-
-                <!-- CV Section (Placeholder) -->
-                {% if application.cv %}
+                <!-- CV Section -->
+                {% if application.cvUrl %}
                     <div class="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
                         <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
                             <i data-lucide="paperclip" class="h-6 w-6 mr-3 text-green-600"></i>
                             Curriculum Vitae
                         </h2>
-                        <a href="{{ application.cv }}" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none" target="_blank">
-                            <i data-lucide="download" class="h-4 w-4 mr-2"></i>
-                            Download CV
-                        </a>
+                        <div class="flex items-center space-x-4">
+                            {% if application.cvFileName %}
+                                <div class="flex items-center bg-gray-50 px-4 py-2 rounded-lg">
+                                    <i data-lucide="file" class="h-5 w-5 mr-2 text-gray-600"></i>
+                                    <span class="text-gray-700 font-medium">{{ application.cvFileName }}</span>
+                                </div>
+                            {% endif %}
+                            <a href="{{ application.cvUrl }}" class="btn bg-blue-600 hover:bg-blue-700 text-white border-none" target="_blank">
+                                <i data-lucide="download" class="h-4 w-4 mr-2"></i>
+                                Download CV
+                            </a>
+                        </div>
                     </div>
                 {% endif %}
 

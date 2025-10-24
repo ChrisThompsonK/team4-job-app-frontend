@@ -70,7 +70,7 @@
                     </div>
                 {% endif %}
                 
-                <form method="POST" action="/jobs/{{ job.id }}/apply" class="space-y-6">
+                <form method="POST" action="/jobs/{{ job.id }}/apply" enctype="multipart/form-data" class="space-y-6">
                     {% if not user %}
                         <!-- Applicant Name - Only shown if not logged in -->
                         <div>
@@ -118,20 +118,21 @@
                         />
                     </div>
 
-                    <!-- Cover Letter -->
+                    <!-- CV Upload -->
                     <div>
-                        <label for="coverLetter" class="block text-sm font-medium text-gray-700 mb-2">
-                            Cover Letter
+                        <label for="cvFile" class="block text-sm font-medium text-gray-700 mb-2">
+                            Upload Your CV <span class="text-red-500">*</span>
                         </label>
-                        <textarea 
-                            id="coverLetter" 
-                            name="coverLetter" 
-                            rows="6"
-                            class="textarea textarea-bordered w-full"
-                            placeholder="Tell us why you're interested in this role and what makes you a great fit..."
-                        ></textarea>
+                        <input 
+                            type="file" 
+                            id="cvFile" 
+                            name="cvFile" 
+                            accept=".pdf,.doc,.docx"
+                            required
+                            class="file-input file-input-bordered w-full"
+                        />
                         <p class="text-sm text-gray-500 mt-1">
-                            Optional: Share your motivation and relevant experience for this position.
+                            Please upload your CV in PDF, DOC, or DOCX format (max 5MB).
                         </p>
                     </div>
 

@@ -4,8 +4,8 @@ export interface Application {
   applicantName: string;
   email: string;
   phoneNumber?: string;
-  cv?: string; // File path or URL to CV
-  coverLetter?: string;
+  cvUrl?: string | undefined; // URL to uploaded CV file
+  cvFileName?: string | undefined; // Original filename of uploaded CV
   applicationDate: Date;
   status: "pending" | "reviewed" | "accepted" | "rejected";
   notes?: string;
@@ -17,7 +17,6 @@ export interface CreateApplicationRequest {
   applicantName: string;
   email: string;
   phoneNumber?: string;
-  cv?: string;
-  coverLetter?: string;
+  cvFile?: Express.Multer.File; // Multer file object for CV upload
   userId?: number; // ID of the logged-in user who submitted the application
 }

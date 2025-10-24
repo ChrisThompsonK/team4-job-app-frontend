@@ -32,6 +32,7 @@
     "@tailwindcss/cli": "^4.1.0",
     "@types/express": "^5.0.3",
     "@types/express-session": "^1.18.2",
+    "@types/multer": "^2.0.0",
     "@types/node": "^24.6.0",
     "@types/nunjucks": "^3.2.6",
     "@types/pa11y": "^5.3.7",
@@ -53,6 +54,8 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
+    "form-data": "^4.0.4",
+    "multer": "^2.0.2",
     "nunjucks": "^3.2.4"
   }
 }

@@ -472,6 +472,30 @@ a:focus {
   }
 }
 
+/* Hero Content Box Styles */
+.hero-content-box {
+  background-color: #1a2332;
+  position: relative;
+  z-index: 20;
+}
+
+.hero-content-title {
+  color: #ffffff;
+}
+
+.hero-content-text {
+  color: #ffffff;
+  background-color: #1a2332;
+}
+
+.kainos-primary-btn {
+  background-color: rgb(52, 86, 126);
+}
+
+.kainos-primary-btn:hover {
+  background-color: rgb(42, 71, 105);
+}
+
 /* Footer styles */
 .footer {
   padding: 2rem 0;

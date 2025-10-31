@@ -14,17 +14,17 @@
         
         <!-- Hero Content -->
         <div class="hero-content text-center relative z-10">
-            <div class="max-w-2xl rounded-2xl p-8" style="background-color: #1a2332; position: relative; z-index: 20;">
+            <div class="max-w-2xl rounded-2xl p-8 hero-content-box">
                 <div class="flex justify-center mb-8">
                     <div class=" p-2 rounded-lg w-48 h-24 md:w-64 md:h-32 pl-4">
                         <img src="/images/Kainos-logo.png" alt="Kainos Logo" class="w-full h-full object-contain transform scale-300" loading="lazy">
                     </div>
                 </div>
                 {% if title %}
-                <h1 class="text-4xl md:text-5xl font-bold mb-6" style="color: #ffffff !important;">{{ title }}</h1>
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 hero-content-title">{{ title }}</h1>
                 {% endif %}
-                <p class="text-xl mb-8 leading-relaxed" style="color: #ffffff !important; background-color: #1a2332 !important;">{{ message }}</p>
-                <a href="/jobs" class="btn border-none btn-lg rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 px-12 py-4 text-lg font-semibold !text-white" style="background-color: rgb(52, 86, 126);"
+                <p class="text-xl mb-8 leading-relaxed hero-content-text">{{ message }}</p>
+                <a href="/jobs" class="btn border-none btn-lg rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-200 px-12 py-4 text-lg font-semibold text-white kainos-primary-btn"
                     <span class="mr-2">🔍</span>
                     Explore Jobs
                 </a>

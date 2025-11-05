@@ -9,6 +9,8 @@ export class JobService implements JobRoleService {
   private axiosInstance: AxiosInstance;
 
   constructor(baseURL = process.env.API_BASE_URL || "http://localhost:8080") {
+    console.log("JobService constructor - API_BASE_URL:", process.env.API_BASE_URL);
+    console.log("JobService constructor - baseURL being used:", baseURL);
     this.axiosInstance = axios.create({
       baseURL,
     });
@@ -205,5 +207,4 @@ export class JobService implements JobRoleService {
   }
 }
 
-// Export a default instance
-export const jobService = new JobService();
+// Note: Default instance removed to avoid early instantiation before env vars are loaded

@@ -1,6 +1,9 @@
+// Load environment variables first, before any other imports
+import dotenv from "dotenv";
+dotenv.config();
+
 import path from "node:path";
 import axios from "axios";
-import dotenv from "dotenv";
 import express from "express";
 import session from "express-session";
 import nunjucks from "nunjucks";
@@ -20,9 +23,6 @@ import type { JobRole } from "./models/job-role.js";
 import { ApplicationService } from "./services/applicationService.js";
 import { AuthService } from "./services/authService.js";
 import { JobService } from "./services/jobService.js";
-
-// Load environment variables
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;

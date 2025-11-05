@@ -1,0 +1,94 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e4]:
+      - img "Kainos Logo" [ref=e6]
+      - navigation [ref=e7]:
+        - link "Home" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - link "Jobs" [ref=e9] [cursor=pointer]:
+          - /url: /jobs
+        - link "About" [ref=e10] [cursor=pointer]:
+          - /url: https://www.kainos.com/about-us
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: https://www.kainos.com/contact-us
+      - link "Login" [ref=e13] [cursor=pointer]:
+        - /url: /login
+  - generic [ref=e15]:
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - img "Kainos Logo" [ref=e20]
+        - heading "Join Kainos" [level=1] [ref=e21]
+        - paragraph [ref=e22]: Create your account to get started
+      - generic [ref=e23]:
+        - generic [ref=e24]:
+          - generic [ref=e25]: First Name *
+          - textbox "First Name *" [ref=e26]:
+            - /placeholder: Enter your first name
+        - generic [ref=e27]:
+          - generic [ref=e28]: Last Name *
+          - textbox "Last Name *" [ref=e29]:
+            - /placeholder: Enter your last name
+        - generic [ref=e30]:
+          - generic [ref=e31]: Email *
+          - textbox "Email *" [ref=e32]:
+            - /placeholder: Enter your email address
+        - generic [ref=e33]:
+          - generic [ref=e34]: Password *
+          - textbox "Password *" [ref=e35]:
+            - /placeholder: Create a strong password
+          - paragraph [ref=e36]: Must be at least 8 characters with uppercase, lowercase, and number
+        - generic [ref=e37]:
+          - generic [ref=e38]: Confirm Password *
+          - textbox "Confirm Password *" [ref=e39]:
+            - /placeholder: Confirm your password
+        - button "Create Account" [ref=e41] [cursor=pointer]:
+          - img [ref=e42]
+          - text: Create Account
+    - paragraph [ref=e46]:
+      - text: Already have an account?
+      - link "Sign in" [ref=e47] [cursor=pointer]:
+        - /url: /login
+  - contentinfo [ref=e48]:
+    - generic [ref=e49]:
+      - generic [ref=e50]:
+        - generic [ref=e51]:
+          - img "Kainos Logo" [ref=e53]
+          - paragraph [ref=e54]: Leading software and digital services company based in Belfast, Northern Ireland. Empowering careers through innovative technology solutions.
+          - generic [ref=e55]:
+            - img [ref=e56]
+            - generic [ref=e59]: Belfast, Northern Ireland
+        - generic [ref=e60]:
+          - heading "Services" [level=6] [ref=e61]
+          - navigation [ref=e62]:
+            - link "Digital Services" [ref=e63] [cursor=pointer]:
+              - /url: https://www.kainos.com/digital-services
+            - link "Workday" [ref=e64] [cursor=pointer]:
+              - /url: https://www.kainos.com/workday
+            - link "Cloud & Engineering" [ref=e65] [cursor=pointer]:
+              - /url: https://www.kainos.com/digital-services/services/cloud-and-engineering
+            - link "Data & AI" [ref=e66] [cursor=pointer]:
+              - /url: https://www.kainos.com/digital-services/services/ai-and-data
+        - generic [ref=e67]:
+          - heading "Company" [level=6] [ref=e68]
+          - navigation [ref=e69]:
+            - link "About Kainos" [ref=e70] [cursor=pointer]:
+              - /url: https://www.kainos.com/about-us
+            - link "Our Culture" [ref=e71] [cursor=pointer]:
+              - /url: https://careers.kainos.com/gb/en/life-at-kainos
+            - link "Careers at Kainos" [ref=e72] [cursor=pointer]:
+              - /url: https://careers.kainos.com/gb/en
+            - link "Contact Us" [ref=e73] [cursor=pointer]:
+              - /url: https://www.kainos.com/contact-us
+      - generic [ref=e75]:
+        - paragraph [ref=e77]: © 2025 Kainos Group Limited. All rights reserved.
+        - generic [ref=e78]:
+          - link "Privacy Notice" [ref=e79] [cursor=pointer]:
+            - /url: https://www.kainos.com/information/privacy-notice
+          - link "Corporate Information" [ref=e80] [cursor=pointer]:
+            - /url: https://www.kainos.com/information/corporate-information
+          - link "Modern Slavery Statement" [ref=e81] [cursor=pointer]:
+            - /url: https://www.kainos.com/information/modern-slavery-statement
+```

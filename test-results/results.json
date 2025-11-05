@@ -1,0 +1,832 @@
+{
+  "config": {
+    "configFile": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/playwright.config.ts",
+    "rootDir": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend",
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 6
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "./playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./test-results/results.json"
+        }
+      ],
+      [
+        "list",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend",
+        "testIgnore": [],
+        "testMatch": [
+          "**/pom.spec.ts",
+          "**/workflows.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "firefox",
+        "name": "firefox",
+        "testDir": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend",
+        "testIgnore": [],
+        "testMatch": [
+          "**/pom.spec.ts",
+          "**/workflows.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 6
+        },
+        "id": "webkit",
+        "name": "webkit",
+        "testDir": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend",
+        "testIgnore": [],
+        "testMatch": [
+          "**/pom.spec.ts",
+          "**/workflows.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.1",
+    "workers": 6,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "tests/pom.spec.ts",
+      "file": "tests/pom.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "POM: User Registration and Navigation",
+          "file": "tests/pom.spec.ts",
+          "line": 12,
+          "column": 6,
+          "specs": [
+            {
+              "title": "User should successfully register and navigate",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 1614,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:27:62",
+                        "location": {
+                          "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                          "column": 62,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 25 |\u001b[39m         \u001b[90m// Navigate to registration page and verify it's displayed\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39mnavigateToRegister()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m         expect(\u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39misRegisterPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m\n \u001b[90m 29 |\u001b[39m         \u001b[90m// Generate unique email\u001b[39m\n \u001b[90m 30 |\u001b[39m         \u001b[36mconst\u001b[39m uniqueEmail \u001b[33m=\u001b[39m \u001b[32m`testuser${Date.now()}@test.com`\u001b[39m\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                            "column": 62,
+                            "line": 27
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 25 |\u001b[39m         \u001b[90m// Navigate to registration page and verify it's displayed\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39mnavigateToRegister()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m         expect(\u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39misRegisterPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m\n \u001b[90m 29 |\u001b[39m         \u001b[90m// Generate unique email\u001b[39m\n \u001b[90m 30 |\u001b[39m         \u001b[36mconst\u001b[39m uniqueEmail \u001b[33m=\u001b[39m \u001b[32m`testuser${Date.now()}@test.com`\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:27:62\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:16.734Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-User-Registr-7adab-fully-register-and-navigate-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-User-Registr-7adab-fully-register-and-navigate-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-User-Registr-7adab-fully-register-and-navigate-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                        "column": 62,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 1806,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:27:62",
+                        "location": {
+                          "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                          "column": 62,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 25 |\u001b[39m         \u001b[90m// Navigate to registration page and verify it's displayed\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39mnavigateToRegister()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m         expect(\u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39misRegisterPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m\n \u001b[90m 29 |\u001b[39m         \u001b[90m// Generate unique email\u001b[39m\n \u001b[90m 30 |\u001b[39m         \u001b[36mconst\u001b[39m uniqueEmail \u001b[33m=\u001b[39m \u001b[32m`testuser${Date.now()}@test.com`\u001b[39m\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                            "column": 62,
+                            "line": 27
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 25 |\u001b[39m         \u001b[90m// Navigate to registration page and verify it's displayed\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39mnavigateToRegister()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m         expect(\u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39misRegisterPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m\n \u001b[90m 29 |\u001b[39m         \u001b[90m// Generate unique email\u001b[39m\n \u001b[90m 30 |\u001b[39m         \u001b[36mconst\u001b[39m uniqueEmail \u001b[33m=\u001b[39m \u001b[32m`testuser${Date.now()}@test.com`\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:27:62\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:16.734Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-User-Registr-7adab-fully-register-and-navigate-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-User-Registr-7adab-fully-register-and-navigate-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-User-Registr-7adab-fully-register-and-navigate-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                        "column": 62,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 7,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 1816,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:27:62",
+                        "location": {
+                          "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                          "column": 62,
+                          "line": 27
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 25 |\u001b[39m         \u001b[90m// Navigate to registration page and verify it's displayed\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39mnavigateToRegister()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m         expect(\u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39misRegisterPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m\n \u001b[90m 29 |\u001b[39m         \u001b[90m// Generate unique email\u001b[39m\n \u001b[90m 30 |\u001b[39m         \u001b[36mconst\u001b[39m uniqueEmail \u001b[33m=\u001b[39m \u001b[32m`testuser${Date.now()}@test.com`\u001b[39m\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                            "column": 62,
+                            "line": 27
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 25 |\u001b[39m         \u001b[90m// Navigate to registration page and verify it's displayed\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39mnavigateToRegister()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 27 |\u001b[39m         expect(\u001b[36mawait\u001b[39m registerPage\u001b[33m.\u001b[39misRegisterPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 28 |\u001b[39m\n \u001b[90m 29 |\u001b[39m         \u001b[90m// Generate unique email\u001b[39m\n \u001b[90m 30 |\u001b[39m         \u001b[36mconst\u001b[39m uniqueEmail \u001b[33m=\u001b[39m \u001b[32m`testuser${Date.now()}@test.com`\u001b[39m\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:27:62\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:20.720Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-User-Registr-7adab-fully-register-and-navigate-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-User-Registr-7adab-fully-register-and-navigate-webkit/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-User-Registr-7adab-fully-register-and-navigate-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                        "column": 62,
+                        "line": 27
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "241558be73f2f765d99c-c32cc6f754be8a44f7e0",
+              "file": "tests/pom.spec.ts",
+              "line": 21,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "POM: Home Page Navigation and Job Browsing",
+          "file": "tests/pom.spec.ts",
+          "line": 48,
+          "column": 6,
+          "specs": [
+            {
+              "title": "User should view home page and navigate to jobs",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 1599,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:63:54",
+                        "location": {
+                          "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                          "column": 54,
+                          "line": 63
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 61 |\u001b[39m         \u001b[90m// Navigate to home page\u001b[39m\n \u001b[90m 62 |\u001b[39m         \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mnavigateToHome()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m         expect(\u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39misHomePageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m\n \u001b[90m 65 |\u001b[39m         \u001b[90m// Verify job cards are displayed on home page\u001b[39m\n \u001b[90m 66 |\u001b[39m         \u001b[36mconst\u001b[39m jobCardsCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mgetJobCardsCount()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                            "column": 54,
+                            "line": 63
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 61 |\u001b[39m         \u001b[90m// Navigate to home page\u001b[39m\n \u001b[90m 62 |\u001b[39m         \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mnavigateToHome()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m         expect(\u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39misHomePageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m\n \u001b[90m 65 |\u001b[39m         \u001b[90m// Verify job cards are displayed on home page\u001b[39m\n \u001b[90m 66 |\u001b[39m         \u001b[36mconst\u001b[39m jobCardsCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mgetJobCardsCount()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:63:54\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:16.734Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Home-Page-Na-26921-e-page-and-navigate-to-jobs-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Home-Page-Na-26921-e-page-and-navigate-to-jobs-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Home-Page-Na-26921-e-page-and-navigate-to-jobs-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                        "column": 54,
+                        "line": 63
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 5,
+                      "status": "failed",
+                      "duration": 2103,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:63:54",
+                        "location": {
+                          "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                          "column": 54,
+                          "line": 63
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 61 |\u001b[39m         \u001b[90m// Navigate to home page\u001b[39m\n \u001b[90m 62 |\u001b[39m         \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mnavigateToHome()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m         expect(\u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39misHomePageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m\n \u001b[90m 65 |\u001b[39m         \u001b[90m// Verify job cards are displayed on home page\u001b[39m\n \u001b[90m 66 |\u001b[39m         \u001b[36mconst\u001b[39m jobCardsCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mgetJobCardsCount()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                            "column": 54,
+                            "line": 63
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 61 |\u001b[39m         \u001b[90m// Navigate to home page\u001b[39m\n \u001b[90m 62 |\u001b[39m         \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mnavigateToHome()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m         expect(\u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39misHomePageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m\n \u001b[90m 65 |\u001b[39m         \u001b[90m// Verify job cards are displayed on home page\u001b[39m\n \u001b[90m 66 |\u001b[39m         \u001b[36mconst\u001b[39m jobCardsCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mgetJobCardsCount()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:63:54\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:16.735Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Home-Page-Na-26921-e-page-and-navigate-to-jobs-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Home-Page-Na-26921-e-page-and-navigate-to-jobs-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Home-Page-Na-26921-e-page-and-navigate-to-jobs-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                        "column": 54,
+                        "line": 63
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 9,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 1995,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:63:54",
+                        "location": {
+                          "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                          "column": 54,
+                          "line": 63
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 61 |\u001b[39m         \u001b[90m// Navigate to home page\u001b[39m\n \u001b[90m 62 |\u001b[39m         \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mnavigateToHome()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m         expect(\u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39misHomePageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m\n \u001b[90m 65 |\u001b[39m         \u001b[90m// Verify job cards are displayed on home page\u001b[39m\n \u001b[90m 66 |\u001b[39m         \u001b[36mconst\u001b[39m jobCardsCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mgetJobCardsCount()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                            "column": 54,
+                            "line": 63
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 61 |\u001b[39m         \u001b[90m// Navigate to home page\u001b[39m\n \u001b[90m 62 |\u001b[39m         \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mnavigateToHome()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 63 |\u001b[39m         expect(\u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39misHomePageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 64 |\u001b[39m\n \u001b[90m 65 |\u001b[39m         \u001b[90m// Verify job cards are displayed on home page\u001b[39m\n \u001b[90m 66 |\u001b[39m         \u001b[36mconst\u001b[39m jobCardsCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m homePage\u001b[33m.\u001b[39mgetJobCardsCount()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:63:54\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:20.721Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Home-Page-Na-26921-e-page-and-navigate-to-jobs-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Home-Page-Na-26921-e-page-and-navigate-to-jobs-webkit/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Home-Page-Na-26921-e-page-and-navigate-to-jobs-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                        "column": 54,
+                        "line": 63
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "241558be73f2f765d99c-3291e63feb85c7f0f2d1",
+              "file": "tests/pom.spec.ts",
+              "line": 57,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "POM: Jobs Search and Filtering",
+          "file": "tests/pom.spec.ts",
+          "line": 79,
+          "column": 6,
+          "specs": [
+            {
+              "title": "User should search for jobs and view results",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 1627,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:93:54",
+                        "location": {
+                          "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                          "column": 54,
+                          "line": 93
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 91 |\u001b[39m         \u001b[90m// Navigate to jobs page\u001b[39m\n \u001b[90m 92 |\u001b[39m         \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mnavigateToJobs()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m         expect(\u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39misJobsPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m         \u001b[90m// Get initial job count\u001b[39m\n \u001b[90m 96 |\u001b[39m         \u001b[36mconst\u001b[39m initialJobCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mgetJobItemsCount()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                            "column": 54,
+                            "line": 93
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 91 |\u001b[39m         \u001b[90m// Navigate to jobs page\u001b[39m\n \u001b[90m 92 |\u001b[39m         \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mnavigateToJobs()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m         expect(\u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39misJobsPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m         \u001b[90m// Get initial job count\u001b[39m\n \u001b[90m 96 |\u001b[39m         \u001b[36mconst\u001b[39m initialJobCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mgetJobItemsCount()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:93:54\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:16.734Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Jobs-Search--d335d-h-for-jobs-and-view-results-chromium/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Jobs-Search--d335d-h-for-jobs-and-view-results-chromium/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Jobs-Search--d335d-h-for-jobs-and-view-results-chromium/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                        "column": 54,
+                        "line": 93
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 6,
+                      "parallelIndex": 3,
+                      "status": "failed",
+                      "duration": 1899,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:93:54",
+                        "location": {
+                          "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                          "column": 54,
+                          "line": 93
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 91 |\u001b[39m         \u001b[90m// Navigate to jobs page\u001b[39m\n \u001b[90m 92 |\u001b[39m         \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mnavigateToJobs()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m         expect(\u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39misJobsPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m         \u001b[90m// Get initial job count\u001b[39m\n \u001b[90m 96 |\u001b[39m         \u001b[36mconst\u001b[39m initialJobCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mgetJobItemsCount()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                            "column": 54,
+                            "line": 93
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 91 |\u001b[39m         \u001b[90m// Navigate to jobs page\u001b[39m\n \u001b[90m 92 |\u001b[39m         \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mnavigateToJobs()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m         expect(\u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39misJobsPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m         \u001b[90m// Get initial job count\u001b[39m\n \u001b[90m 96 |\u001b[39m         \u001b[36mconst\u001b[39m initialJobCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mgetJobItemsCount()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:93:54\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:20.720Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Jobs-Search--d335d-h-for-jobs-and-view-results-firefox/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Jobs-Search--d335d-h-for-jobs-and-view-results-firefox/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Jobs-Search--d335d-h-for-jobs-and-view-results-firefox/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                        "column": 54,
+                        "line": 93
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 10,
+                      "parallelIndex": 4,
+                      "status": "failed",
+                      "duration": 1615,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:93:54",
+                        "location": {
+                          "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                          "column": 54,
+                          "line": 93
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 91 |\u001b[39m         \u001b[90m// Navigate to jobs page\u001b[39m\n \u001b[90m 92 |\u001b[39m         \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mnavigateToJobs()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m         expect(\u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39misJobsPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m         \u001b[90m// Get initial job count\u001b[39m\n \u001b[90m 96 |\u001b[39m         \u001b[36mconst\u001b[39m initialJobCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mgetJobItemsCount()\u001b[33m;\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                            "column": 54,
+                            "line": 93
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n\u001b[0m \u001b[90m 91 |\u001b[39m         \u001b[90m// Navigate to jobs page\u001b[39m\n \u001b[90m 92 |\u001b[39m         \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mnavigateToJobs()\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 93 |\u001b[39m         expect(\u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39misJobsPageDisplayed())\u001b[33m.\u001b[39mtoBeTruthy()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                      \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 94 |\u001b[39m\n \u001b[90m 95 |\u001b[39m         \u001b[90m// Get initial job count\u001b[39m\n \u001b[90m 96 |\u001b[39m         \u001b[36mconst\u001b[39m initialJobCount \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m jobsPage\u001b[33m.\u001b[39mgetJobItemsCount()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[2m    at /Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts:93:54\u001b[22m"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:21.852Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Jobs-Search--d335d-h-for-jobs-and-view-results-webkit/test-failed-1.png"
+                        },
+                        {
+                          "name": "video",
+                          "contentType": "video/webm",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Jobs-Search--d335d-h-for-jobs-and-view-results-webkit/video.webm"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/test-results/tests-pom-POM-Jobs-Search--d335d-h-for-jobs-and-view-results-webkit/error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "/Users/alexmarkjones/academy2025/Job App/team4-job-app-frontend/tests/pom.spec.ts",
+                        "column": 54,
+                        "line": 93
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "241558be73f2f765d99c-6b5257341b82578c391c",
+              "file": "tests/pom.spec.ts",
+              "line": 88,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "title": "POM: Login Page Verification",
+          "file": "tests/pom.spec.ts",
+          "line": 111,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Login page should display all required elements",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 3,
+                      "status": "passed",
+                      "duration": 1517,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:16.734Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "firefox",
+                  "projectName": "firefox",
+                  "results": [
+                    {
+                      "workerIndex": 8,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1690,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:20.720Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                },
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "webkit",
+                  "projectName": "webkit",
+                  "results": [
+                    {
+                      "workerIndex": 11,
+                      "parallelIndex": 5,
+                      "status": "passed",
+                      "duration": 1489,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-11-05T12:26:21.854Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "241558be73f2f765d99c-b95b14e159f4a50bb131",
+              "file": "tests/pom.spec.ts",
+              "line": 119,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-11-05T12:26:16.118Z",
+    "duration": 7759.342,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 9,
+    "flaky": 0
+  }
+}

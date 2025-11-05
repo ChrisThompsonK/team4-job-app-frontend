@@ -1,0 +1,406 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e4]:
+      - img "Kainos Logo" [ref=e6]
+      - navigation [ref=e7]:
+        - link "Home" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - link "Jobs" [ref=e9] [cursor=pointer]:
+          - /url: /jobs
+        - link "About" [ref=e10] [cursor=pointer]:
+          - /url: https://www.kainos.com/about-us
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: https://www.kainos.com/contact-us
+      - link "Login" [ref=e13] [cursor=pointer]:
+        - /url: /login
+  - generic [ref=e14]:
+    - img "Kainos team members with motivational text about growth and opportunities" [ref=e16]
+    - heading "Find your new career today at Kainos!" [level=1] [ref=e18]
+  - generic [ref=e19]:
+    - generic [ref=e20]:
+      - heading "Available Job Roles" [level=1] [ref=e21]
+      - paragraph [ref=e22]: Discover exciting career opportunities at Kainos
+    - generic [ref=e24]:
+      - heading "Search Jobs" [level=2] [ref=e25]:
+        - img [ref=e26]
+        - text: Search Jobs
+      - generic [ref=e29]:
+        - generic [ref=e30]: Search by Job Title
+        - generic [ref=e32]:
+          - textbox "Search by Job Title" [ref=e33]:
+            - /placeholder: e.g. Software Engineer, Data Scientist, DevOps...
+          - button [ref=e34] [cursor=pointer]:
+            - img [ref=e35]
+    - generic [ref=e39]:
+      - generic [ref=e41]:
+        - heading "Filter Jobs" [level=2] [ref=e42]:
+          - img [ref=e43]
+          - text: Filter Jobs
+        - generic [ref=e45]:
+          - generic [ref=e46]:
+            - generic [ref=e47]:
+              - img [ref=e48]
+              - text: Location
+            - combobox "Location" [ref=e51]:
+              - option "All Locations" [selected]
+              - option "Amsterdam, Netherlands"
+              - option "Belfast, Northern Ireland"
+              - option "Birmingham, England"
+              - option "Buenos Aires, Argentina"
+              - option "Derry, Northern Ireland"
+              - option "Dublin, Ireland"
+              - option "Gdańsk, Poland"
+              - option "Helsinki, Finland"
+              - option "Indianapolis, United States"
+              - option "Nova Scotia, Canada"
+              - option "Toronto, Canada"
+          - generic [ref=e52]:
+            - generic [ref=e53]:
+              - img [ref=e54]
+              - text: Capability
+            - combobox "Capability" [ref=e66]:
+              - option "All Capabilities" [selected]
+              - option "Business Analysis"
+              - option "Data & Analytics"
+              - option "Design & User Experience"
+              - option "Infrastructure & Operations"
+              - option "Product Management"
+              - option "Quality Assurance"
+              - option "Security & Compliance"
+              - option "Software Development"
+          - generic [ref=e67]:
+            - generic [ref=e68]:
+              - img [ref=e69]
+              - text: Band
+            - combobox "Band" [ref=e71]:
+              - option "All Bands" [selected]
+              - option "Junior Level"
+              - option "Mid Level"
+              - option "Senior Level"
+        - button "Clear All Filters" [ref=e73] [cursor=pointer]:
+          - img [ref=e74]
+          - text: Clear All Filters
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - generic [ref=e80]:
+            - generic [ref=e81]: Frontend Developer
+            - generic [ref=e82]:
+              - generic [ref=e83]:
+                - img [ref=e84]
+                - text: Belfast, Northern Ireland
+              - generic [ref=e87]:
+                - img [ref=e88]
+                - text: Software Development
+              - generic [ref=e100]:
+                - img [ref=e101]
+                - text: Mid Level
+              - generic [ref=e103]:
+                - img [ref=e104]
+                - text: "Closing: 15/11/2025"
+              - generic [ref=e109]:
+                - img [ref=e110]
+                - generic [ref=e113]: Open
+              - generic [ref=e114]:
+                - img [ref=e115]
+                - text: 2 positions available
+            - generic [ref=e120]:
+              - link "View Details" [ref=e121] [cursor=pointer]:
+                - /url: /jobs/16
+              - link "Login to Apply" [ref=e123] [cursor=pointer]:
+                - /url: /login?redirectTo=/jobs/16/apply
+          - generic [ref=e124]:
+            - generic [ref=e125]: Backend Developer
+            - generic [ref=e126]:
+              - generic [ref=e127]:
+                - img [ref=e128]
+                - text: Birmingham, England
+              - generic [ref=e131]:
+                - img [ref=e132]
+                - text: Software Development
+              - generic [ref=e144]:
+                - img [ref=e145]
+                - text: Senior Level
+              - generic [ref=e147]:
+                - img [ref=e148]
+                - text: "Closing: 30/10/2025"
+              - generic [ref=e153]:
+                - img [ref=e154]
+                - generic [ref=e157]: Open
+              - generic [ref=e158]:
+                - img [ref=e159]
+                - text: 1 position available
+            - generic [ref=e164]:
+              - link "View Details" [ref=e165] [cursor=pointer]:
+                - /url: /jobs/17
+              - link "Login to Apply" [ref=e167] [cursor=pointer]:
+                - /url: /login?redirectTo=/jobs/17/apply
+          - generic [ref=e168]:
+            - generic [ref=e169]: Full Stack Developer
+            - generic [ref=e170]:
+              - generic [ref=e171]:
+                - img [ref=e172]
+                - text: Dublin, Ireland
+              - generic [ref=e175]:
+                - img [ref=e176]
+                - text: Software Development
+              - generic [ref=e188]:
+                - img [ref=e189]
+                - text: Junior Level
+              - generic [ref=e191]:
+                - img [ref=e192]
+                - text: "Closing: 01/12/2025"
+              - generic [ref=e197]:
+                - img [ref=e198]
+                - generic [ref=e201]: Open
+              - generic [ref=e202]:
+                - img [ref=e203]
+                - text: 3 positions available
+            - generic [ref=e208]:
+              - link "View Details" [ref=e209] [cursor=pointer]:
+                - /url: /jobs/18
+              - link "Login to Apply" [ref=e211] [cursor=pointer]:
+                - /url: /login?redirectTo=/jobs/18/apply
+          - generic [ref=e212]:
+            - generic [ref=e213]: DevOps Engineer
+            - generic [ref=e214]:
+              - generic [ref=e215]:
+                - img [ref=e216]
+                - text: Amsterdam, Netherlands
+              - generic [ref=e219]:
+                - img [ref=e220]
+                - text: Infrastructure & Operations
+              - generic [ref=e232]:
+                - img [ref=e233]
+                - text: Senior Level
+              - generic [ref=e235]:
+                - img [ref=e236]
+                - text: "Closing: 20/11/2025"
+              - generic [ref=e241]:
+                - img [ref=e242]
+                - generic [ref=e245]: Open
+              - generic [ref=e246]:
+                - img [ref=e247]
+                - text: 1 position available
+            - generic [ref=e252]:
+              - link "View Details" [ref=e253] [cursor=pointer]:
+                - /url: /jobs/19
+              - link "Login to Apply" [ref=e255] [cursor=pointer]:
+                - /url: /login?redirectTo=/jobs/19/apply
+          - generic [ref=e256]:
+            - generic [ref=e257]: Data Scientist
+            - generic [ref=e258]:
+              - generic [ref=e259]:
+                - img [ref=e260]
+                - text: Helsinki, Finland
+              - generic [ref=e263]:
+                - img [ref=e264]
+                - text: Data & Analytics
+              - generic [ref=e276]:
+                - img [ref=e277]
+                - text: Mid Level
+              - generic [ref=e279]:
+                - img [ref=e280]
+                - text: "Closing: 10/12/2025"
+              - generic [ref=e285]:
+                - img [ref=e286]
+                - generic [ref=e289]: Open
+              - generic [ref=e290]:
+                - img [ref=e291]
+                - text: 2 positions available
+            - generic [ref=e296]:
+              - link "View Details" [ref=e297] [cursor=pointer]:
+                - /url: /jobs/20
+              - link "Login to Apply" [ref=e299] [cursor=pointer]:
+                - /url: /login?redirectTo=/jobs/20/apply
+          - generic [ref=e300]:
+            - generic [ref=e301]: UX Designer
+            - generic [ref=e302]:
+              - generic [ref=e303]:
+                - img [ref=e304]
+                - text: Gdańsk, Poland
+              - generic [ref=e307]:
+                - img [ref=e308]
+                - text: Design & User Experience
+              - generic [ref=e320]:
+                - img [ref=e321]
+                - text: Mid Level
+              - generic [ref=e323]:
+                - img [ref=e324]
+                - text: "Closing: 25/11/2025"
+              - generic [ref=e329]:
+                - img [ref=e330]
+                - generic [ref=e333]: Open
+              - generic [ref=e334]:
+                - img [ref=e335]
+                - text: 1 position available
+            - generic [ref=e340]:
+              - link "View Details" [ref=e341] [cursor=pointer]:
+                - /url: /jobs/21
+              - link "Login to Apply" [ref=e343] [cursor=pointer]:
+                - /url: /login?redirectTo=/jobs/21/apply
+          - generic [ref=e344]:
+            - generic [ref=e345]: Product Manager
+            - generic [ref=e346]:
+              - generic [ref=e347]:
+                - img [ref=e348]
+                - text: Toronto, Canada
+              - generic [ref=e351]:
+                - img [ref=e352]
+                - text: Product Management
+              - generic [ref=e364]:
+                - img [ref=e365]
+                - text: Senior Level
+              - generic [ref=e367]:
+                - img [ref=e368]
+                - text: "Closing: 30/11/2025"
+              - generic [ref=e373]:
+                - img [ref=e374]
+                - generic [ref=e377]: Open
+              - generic [ref=e378]:
+                - img [ref=e379]
+                - text: 1 position available
+            - generic [ref=e384]:
+              - link "View Details" [ref=e385] [cursor=pointer]:
+                - /url: /jobs/22
+              - link "Login to Apply" [ref=e387] [cursor=pointer]:
+                - /url: /login?redirectTo=/jobs/22/apply
+          - generic [ref=e388]:
+            - generic [ref=e389]: Mobile Developer
+            - generic [ref=e390]:
+              - generic [ref=e391]:
+                - img [ref=e392]
+                - text: Buenos Aires, Argentina
+              - generic [ref=e395]:
+                - img [ref=e396]
+                - text: Software Development
+              - generic [ref=e408]:
+                - img [ref=e409]
+                - text: Mid Level
+              - generic [ref=e411]:
+                - img [ref=e412]
+                - text: "Closing: 05/12/2025"
+              - generic [ref=e417]:
+                - img [ref=e418]
+                - generic [ref=e421]: Open
+              - generic [ref=e422]:
+                - img [ref=e423]
+                - text: 2 positions available
+            - generic [ref=e428]:
+              - link "View Details" [ref=e429] [cursor=pointer]:
+                - /url: /jobs/23
+              - link "Login to Apply" [ref=e431] [cursor=pointer]:
+                - /url: /login?redirectTo=/jobs/23/apply
+          - generic [ref=e432]:
+            - generic [ref=e433]: Cybersecurity Analyst
+            - generic [ref=e434]:
+              - generic [ref=e435]:
+                - img [ref=e436]
+                - text: Indianapolis, United States
+              - generic [ref=e439]:
+                - img [ref=e440]
+                - text: Security & Compliance
+              - generic [ref=e452]:
+                - img [ref=e453]
+                - text: Senior Level
+              - generic [ref=e455]:
+                - img [ref=e456]
+                - text: "Closing: 18/11/2025"
+              - generic [ref=e461]:
+                - img [ref=e462]
+                - generic [ref=e465]: Open
+              - generic [ref=e466]:
+                - img [ref=e467]
+                - text: 1 position available
+            - generic [ref=e472]:
+              - link "View Details" [ref=e473] [cursor=pointer]:
+                - /url: /jobs/24
+              - link "Login to Apply" [ref=e475] [cursor=pointer]:
+                - /url: /login?redirectTo=/jobs/24/apply
+          - generic [ref=e476]:
+            - generic [ref=e477]: Cloud Architect
+            - generic [ref=e478]:
+              - generic [ref=e479]:
+                - img [ref=e480]
+                - text: Nova Scotia, Canada
+              - generic [ref=e483]:
+                - img [ref=e484]
+                - text: Infrastructure & Operations
+              - generic [ref=e496]:
+                - img [ref=e497]
+                - text: Senior Level
+              - generic [ref=e499]:
+                - img [ref=e500]
+                - text: "Closing: 15/12/2025"
+              - generic [ref=e505]:
+                - img [ref=e506]
+                - generic [ref=e509]: Open
+              - generic [ref=e510]:
+                - img [ref=e511]
+                - text: 1 position available
+            - generic [ref=e516]:
+              - link "View Details" [ref=e517] [cursor=pointer]:
+                - /url: /jobs/25
+              - link "Login to Apply" [ref=e519] [cursor=pointer]:
+                - /url: /login?redirectTo=/jobs/25/apply
+        - generic [ref=e522]:
+          - paragraph [ref=e524]: Showing page 1 of 2 (15 total jobs)
+          - navigation "Pagination" [ref=e526]:
+            - generic [ref=e527]:
+              - generic [ref=e528]: First
+              - img [ref=e529]
+            - generic [ref=e531]:
+              - generic [ref=e532]: Previous
+              - img [ref=e533]
+            - generic [ref=e535]: "1"
+            - link "Next" [ref=e536] [cursor=pointer]:
+              - /url: /jobs?page=2
+              - generic [ref=e537]: Next
+              - img [ref=e538]
+            - link "Last" [ref=e540] [cursor=pointer]:
+              - /url: /jobs?page=2
+              - generic [ref=e541]: Last
+              - img [ref=e542]
+  - contentinfo [ref=e544]:
+    - generic [ref=e545]:
+      - generic [ref=e546]:
+        - generic [ref=e547]:
+          - img "Kainos Logo" [ref=e549]
+          - paragraph [ref=e550]: Leading software and digital services company based in Belfast, Northern Ireland. Empowering careers through innovative technology solutions.
+          - generic [ref=e551]:
+            - img [ref=e552]
+            - generic [ref=e555]: Belfast, Northern Ireland
+        - generic [ref=e556]:
+          - heading "Services" [level=6] [ref=e557]
+          - navigation [ref=e558]:
+            - link "Digital Services" [ref=e559] [cursor=pointer]:
+              - /url: https://www.kainos.com/digital-services
+            - link "Workday" [ref=e560] [cursor=pointer]:
+              - /url: https://www.kainos.com/workday
+            - link "Cloud & Engineering" [ref=e561] [cursor=pointer]:
+              - /url: https://www.kainos.com/digital-services/services/cloud-and-engineering
+            - link "Data & AI" [ref=e562] [cursor=pointer]:
+              - /url: https://www.kainos.com/digital-services/services/ai-and-data
+        - generic [ref=e563]:
+          - heading "Company" [level=6] [ref=e564]
+          - navigation [ref=e565]:
+            - link "About Kainos" [ref=e566] [cursor=pointer]:
+              - /url: https://www.kainos.com/about-us
+            - link "Our Culture" [ref=e567] [cursor=pointer]:
+              - /url: https://careers.kainos.com/gb/en/life-at-kainos
+            - link "Careers at Kainos" [ref=e568] [cursor=pointer]:
+              - /url: https://careers.kainos.com/gb/en
+            - link "Contact Us" [ref=e569] [cursor=pointer]:
+              - /url: https://www.kainos.com/contact-us
+      - generic [ref=e571]:
+        - paragraph [ref=e573]: © 2025 Kainos Group Limited. All rights reserved.
+        - generic [ref=e574]:
+          - link "Privacy Notice" [ref=e575] [cursor=pointer]:
+            - /url: https://www.kainos.com/information/privacy-notice
+          - link "Corporate Information" [ref=e576] [cursor=pointer]:
+            - /url: https://www.kainos.com/information/corporate-information
+          - link "Modern Slavery Statement" [ref=e577] [cursor=pointer]:
+            - /url: https://www.kainos.com/information/modern-slavery-statement
+```

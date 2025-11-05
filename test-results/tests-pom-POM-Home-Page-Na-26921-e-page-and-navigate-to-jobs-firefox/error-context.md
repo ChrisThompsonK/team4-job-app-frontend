@@ -1,0 +1,143 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e4]:
+      - img "Kainos Logo" [ref=e6]
+      - navigation [ref=e7]:
+        - link "Home" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - link "Jobs" [ref=e9] [cursor=pointer]:
+          - /url: /jobs
+        - link "About" [ref=e10] [cursor=pointer]:
+          - /url: https://www.kainos.com/about-us
+        - link "Contact" [ref=e11] [cursor=pointer]:
+          - /url: https://www.kainos.com/contact-us
+      - link "Login" [ref=e13] [cursor=pointer]:
+        - /url: /login
+  - generic [ref=e14]:
+    - img "Kainos team members with motivational text about growth and opportunities" [ref=e16]
+    - generic [ref=e18]:
+      - img "Kainos Logo" [ref=e21]
+      - heading [level=1]
+      - paragraph [ref=e22]: Find Your Next Career Opportunity
+      - link "🔍 Explore Jobs" [ref=e23] [cursor=pointer]:
+        - /url: /jobs
+  - generic [ref=e24]:
+    - heading "Latest Job Opportunities" [level=2] [ref=e25]
+    - generic [ref=e26]:
+      - generic [ref=e28]:
+        - heading "Cloud Architect" [level=3] [ref=e29]
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - img [ref=e32]
+            - generic [ref=e35]: Nova Scotia, Canada
+          - generic [ref=e36]:
+            - img [ref=e37]
+            - generic [ref=e49]: Infrastructure & Operations
+          - generic [ref=e50]:
+            - img [ref=e51]
+            - generic [ref=e53]: Senior Level
+          - generic [ref=e54]:
+            - img [ref=e55]
+            - generic [ref=e60]: "Closes: 15/12/2025"
+          - generic [ref=e61]:
+            - img [ref=e62]
+            - generic [ref=e65]: Open
+          - generic [ref=e66]:
+            - img [ref=e67]
+            - generic [ref=e72]: 1 position
+        - link "Login to Apply" [ref=e74] [cursor=pointer]:
+          - /url: /login?redirectTo=/jobs/25/apply
+      - generic [ref=e76]:
+        - heading "Site Reliability Engineer" [level=3] [ref=e77]
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - img [ref=e80]
+            - generic [ref=e83]: Toronto, Canada
+          - generic [ref=e84]:
+            - img [ref=e85]
+            - generic [ref=e97]: Infrastructure & Operations
+          - generic [ref=e98]:
+            - img [ref=e99]
+            - generic [ref=e101]: Mid Level
+          - generic [ref=e102]:
+            - img [ref=e103]
+            - generic [ref=e108]: "Closes: 12/12/2025"
+          - generic [ref=e109]:
+            - img [ref=e110]
+            - generic [ref=e113]: Open
+          - generic [ref=e114]:
+            - img [ref=e115]
+            - generic [ref=e120]: 2 positions
+        - link "Login to Apply" [ref=e122] [cursor=pointer]:
+          - /url: /login?redirectTo=/jobs/30/apply
+      - generic [ref=e124]:
+        - heading "Data Scientist" [level=3] [ref=e125]
+        - generic [ref=e126]:
+          - generic [ref=e127]:
+            - img [ref=e128]
+            - generic [ref=e131]: Helsinki, Finland
+          - generic [ref=e132]:
+            - img [ref=e133]
+            - generic [ref=e145]: Data & Analytics
+          - generic [ref=e146]:
+            - img [ref=e147]
+            - generic [ref=e149]: Mid Level
+          - generic [ref=e150]:
+            - img [ref=e151]
+            - generic [ref=e156]: "Closes: 10/12/2025"
+          - generic [ref=e157]:
+            - img [ref=e158]
+            - generic [ref=e161]: Open
+          - generic [ref=e162]:
+            - img [ref=e163]
+            - generic [ref=e168]: 2 positions
+        - link "Login to Apply" [ref=e170] [cursor=pointer]:
+          - /url: /login?redirectTo=/jobs/20/apply
+    - link "View All Jobs" [ref=e172] [cursor=pointer]:
+      - /url: /jobs
+      - generic [ref=e173]: View All Jobs
+      - img [ref=e174]
+  - contentinfo [ref=e177]:
+    - generic [ref=e178]:
+      - generic [ref=e179]:
+        - generic [ref=e180]:
+          - img "Kainos Logo" [ref=e182]
+          - paragraph [ref=e183]: Leading software and digital services company based in Belfast, Northern Ireland. Empowering careers through innovative technology solutions.
+          - generic [ref=e184]:
+            - img [ref=e185]
+            - generic [ref=e188]: Belfast, Northern Ireland
+        - generic [ref=e189]:
+          - heading "Services" [level=6] [ref=e190]
+          - navigation [ref=e191]:
+            - link "Digital Services" [ref=e192] [cursor=pointer]:
+              - /url: https://www.kainos.com/digital-services
+            - link "Workday" [ref=e193] [cursor=pointer]:
+              - /url: https://www.kainos.com/workday
+            - link "Cloud & Engineering" [ref=e194] [cursor=pointer]:
+              - /url: https://www.kainos.com/digital-services/services/cloud-and-engineering
+            - link "Data & AI" [ref=e195] [cursor=pointer]:
+              - /url: https://www.kainos.com/digital-services/services/ai-and-data
+        - generic [ref=e196]:
+          - heading "Company" [level=6] [ref=e197]
+          - navigation [ref=e198]:
+            - link "About Kainos" [ref=e199] [cursor=pointer]:
+              - /url: https://www.kainos.com/about-us
+            - link "Our Culture" [ref=e200] [cursor=pointer]:
+              - /url: https://careers.kainos.com/gb/en/life-at-kainos
+            - link "Careers at Kainos" [ref=e201] [cursor=pointer]:
+              - /url: https://careers.kainos.com/gb/en
+            - link "Contact Us" [ref=e202] [cursor=pointer]:
+              - /url: https://www.kainos.com/contact-us
+      - generic [ref=e204]:
+        - paragraph [ref=e206]: © 2025 Kainos Group Limited. All rights reserved.
+        - generic [ref=e207]:
+          - link "Privacy Notice" [ref=e208] [cursor=pointer]:
+            - /url: https://www.kainos.com/information/privacy-notice
+          - link "Corporate Information" [ref=e209] [cursor=pointer]:
+            - /url: https://www.kainos.com/information/corporate-information
+          - link "Modern Slavery Statement" [ref=e210] [cursor=pointer]:
+            - /url: https://www.kainos.com/information/modern-slavery-statement
+```

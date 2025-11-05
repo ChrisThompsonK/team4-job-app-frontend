@@ -17,6 +17,8 @@
     "test:coverage": "vitest run --coverage",
     "test:a11y": "tsx accessibility-tests.ts",
     "test:a11y:ci": "pa11y-ci",
+    "test:pw": "playwright test",
+    "test:pw:ui": "playwright test --ui",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
@@ -29,6 +31,7 @@
   "license": "ISC",
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
+    "@playwright/test": "^1.48.2",
     "@tailwindcss/cli": "^4.1.0",
     "@types/express": "^5.0.3",
     "@types/express-session": "^1.18.2",

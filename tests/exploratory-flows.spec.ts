@@ -117,7 +117,7 @@ test.describe("User Login Flow", () => {
     await loginPage.verifySuccessfulLogout(BASE_URL);
   });
 
-  test("should display error message for incorrect credientials", async ({ page }) => {
+  test("should display error message for incorrect credentials", async ({ page }) => {
     const loginPage = new LoginPage(page);
 
     await loginPage.open();

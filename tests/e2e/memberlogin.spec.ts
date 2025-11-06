@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { LoginPage } from "./pages/LoginPage";
 
 test.describe("Member Login Flow", () => {

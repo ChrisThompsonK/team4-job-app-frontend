@@ -1,5 +1,5 @@
-import { Given, When, Then, Before, After, setDefaultTimeout } from "@cucumber/cucumber";
-import { Browser, BrowserContext, Page, chromium, expect } from "@playwright/test";
+import { After, Before, Given, setDefaultTimeout, Then, When } from "@cucumber/cucumber";
+import { type Browser, type BrowserContext, chromium, expect, type Page } from "@playwright/test";
 
 setDefaultTimeout(30 * 1000);
 
@@ -11,13 +11,13 @@ interface TestContext {
 
 const world: TestContext = {};
 
-Before(async function () {
+Before(async () => {
   world.browser = await chromium.launch();
   world.context = await world.browser.newContext();
   world.page = await world.context.newPage();
 });
 
-After(async function () {
+After(async () => {
   if (world.context) {
     await world.context.close();
   }
@@ -27,7 +27,7 @@ After(async function () {
 });
 
 // Login Page Steps
-Given("I am on the login page", async function () {
+Given("I am on the login page", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -35,21 +35,21 @@ Given("I am on the login page", async function () {
   await world.page.waitForLoadState("networkidle");
 });
 
-When("I enter {string} as email", async function (email: string) {
+When("I enter {string} as email", async (email: string) => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
   await world.page.fill('input[name="email"]', email);
 });
 
-When("I enter {string} as password", async function (password: string) {
+When("I enter {string} as password", async (password: string) => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
   await world.page.fill('input[name="password"]', password);
 });
 
-When("I click the login button", async function () {
+When("I click the login button", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -57,7 +57,7 @@ When("I click the login button", async function () {
   await world.page.waitForLoadState("networkidle");
 });
 
-Then("I should be logged in successfully", async function () {
+Then("I should be logged in successfully", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -66,7 +66,7 @@ Then("I should be logged in successfully", async function () {
   expect(isStillOnLogin).toBe(false);
 });
 
-Then("I should see an error message", async function () {
+Then("I should see an error message", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -75,7 +75,7 @@ Then("I should see an error message", async function () {
 });
 
 // Job Pages Steps
-Given("I am on the home page", async function () {
+Given("I am on the home page", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -83,7 +83,7 @@ Given("I am on the home page", async function () {
   await world.page.waitForLoadState("networkidle");
 });
 
-Given("I am on the jobs page", async function () {
+Given("I am on the jobs page", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -91,14 +91,14 @@ Given("I am on the jobs page", async function () {
   await world.page.waitForLoadState("networkidle");
 });
 
-When("I click on {string}", async function (text: string) {
+When("I click on {string}", async (text: string) => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
   await world.page.click(`button:has-text("${text}"), a:has-text("${text}")`);
 });
 
-When("I click on the first job", async function () {
+When("I click on the first job", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -107,7 +107,7 @@ When("I click on the first job", async function () {
   await world.page.waitForLoadState("networkidle");
 });
 
-Then("I should see a list of jobs", async function () {
+Then("I should see a list of jobs", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -117,7 +117,7 @@ Then("I should see a list of jobs", async function () {
   await expect(jobsContainer).toBeVisible();
 });
 
-Then("I should see the job details", async function () {
+Then("I should see the job details", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -128,7 +128,7 @@ Then("I should see the job details", async function () {
 });
 
 // Create Job Steps
-Given("I am on the create job page", async function () {
+Given("I am on the create job page", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -136,7 +136,7 @@ Given("I am on the create job page", async function () {
   await world.page.waitForLoadState("networkidle");
 });
 
-When("I navigate to create job page", async function () {
+When("I navigate to create job page", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -144,7 +144,7 @@ When("I navigate to create job page", async function () {
   await world.page.waitForLoadState("networkidle");
 });
 
-When("I fill in the job form with valid data", async function () {
+When("I fill in the job form with valid data", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -158,7 +158,7 @@ When("I fill in the job form with valid data", async function () {
   await world.page.fill('input[name="numberOfOpenPositions"]', "2");
 });
 
-When("I submit the job form", async function () {
+When("I submit the job form", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -166,7 +166,7 @@ When("I submit the job form", async function () {
   await world.page.waitForLoadState("networkidle");
 });
 
-When("I submit the job form without filling required fields", async function () {
+When("I submit the job form without filling required fields", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -174,7 +174,7 @@ When("I submit the job form without filling required fields", async function () 
   await world.page.waitForLoadState("networkidle");
 });
 
-Then("I should see job creation success message", async function () {
+Then("I should see job creation success message", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -182,7 +182,7 @@ Then("I should see job creation success message", async function () {
   await expect(successMessage).toBeVisible({ timeout: 5000 });
 });
 
-Then("I should see validation error messages", async function () {
+Then("I should see validation error messages", async () => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }
@@ -191,7 +191,7 @@ Then("I should see validation error messages", async function () {
 });
 
 // Data-Driven Authentication Steps
-Then("the login result should be {string}", async function (expected: string) {
+Then("the login result should be {string}", async (expected: string) => {
   if (!world.page) {
     throw new Error("Page not initialized");
   }

@@ -2,8 +2,8 @@
 // This server provides mock API endpoints to allow frontend/tests to run
 // Run this to start: npm run mock:backend
 
-import express from "express";
 import cors from "cors";
+import express from "express";
 
 const app = express();
 const PORT = 3001;
@@ -64,16 +64,16 @@ const mockUsers = [
 ];
 
 // Jobs endpoints
-app.get("/jobs", (req, res) => {
+app.get("/jobs", (_req, res) => {
   res.json(mockJobs);
 });
 
-app.get("/api/jobs", (req, res) => {
+app.get("/api/jobs", (_req, res) => {
   res.json(mockJobs);
 });
 
 app.get("/jobs/:id", (req, res) => {
-  const job = mockJobs.find((j) => j.id === parseInt(req.params.id));
+  const job = mockJobs.find((j) => j.id === parseInt(req.params.id, 10));
   if (!job) {
     return res.status(404).json({ error: "Job not found" });
   }
@@ -81,7 +81,7 @@ app.get("/jobs/:id", (req, res) => {
 });
 
 app.get("/api/jobs/:id", (req, res) => {
-  const job = mockJobs.find((j) => j.id === parseInt(req.params.id));
+  const job = mockJobs.find((j) => j.id === parseInt(req.params.id, 10));
   if (!job) {
     return res.status(404).json({ error: "Job not found", job: null });
   }
@@ -109,7 +109,7 @@ app.post("/api/jobs", (req, res) => {
 });
 
 app.put("/jobs/:id", (req, res) => {
-  const job = mockJobs.find((j) => j.id === parseInt(req.params.id));
+  const job = mockJobs.find((j) => j.id === parseInt(req.params.id, 10));
   if (!job) {
     return res.status(404).json({ error: "Job not found" });
   }
@@ -118,7 +118,7 @@ app.put("/jobs/:id", (req, res) => {
 });
 
 app.put("/api/jobs/:id", (req, res) => {
-  const job = mockJobs.find((j) => j.id === parseInt(req.params.id));
+  const job = mockJobs.find((j) => j.id === parseInt(req.params.id, 10));
   if (!job) {
     return res.status(404).json({ error: "Job not found" });
   }
@@ -127,7 +127,7 @@ app.put("/api/jobs/:id", (req, res) => {
 });
 
 app.delete("/jobs/:id", (req, res) => {
-  const index = mockJobs.findIndex((j) => j.id === parseInt(req.params.id));
+  const index = mockJobs.findIndex((j) => j.id === parseInt(req.params.id, 10));
   if (index === -1) {
     return res.status(404).json({ error: "Job not found" });
   }
@@ -136,7 +136,7 @@ app.delete("/jobs/:id", (req, res) => {
 });
 
 app.delete("/api/jobs/:id", (req, res) => {
-  const index = mockJobs.findIndex((j) => j.id === parseInt(req.params.id));
+  const index = mockJobs.findIndex((j) => j.id === parseInt(req.params.id, 10));
   if (index === -1) {
     return res.status(404).json({ error: "Job not found" });
   }
@@ -192,12 +192,12 @@ app.post("/auth/register", (req, res) => {
   });
 });
 
-app.post("/auth/logout", (req, res) => {
+app.post("/auth/logout", (_req, res) => {
   res.json({ success: true });
 });
 
 // Applications endpoints
-app.get("/applications", (req, res) => {
+app.get("/applications", (_req, res) => {
   res.json([]);
 });
 
@@ -211,7 +211,7 @@ app.post("/applications", (req, res) => {
 });
 
 // Health check
-app.get("/health", (req, res) => {
+app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 

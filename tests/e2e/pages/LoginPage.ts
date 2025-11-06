@@ -1,4 +1,4 @@
-import { Page, Locator } from "@playwright/test";
+import type { Locator, Page } from "@playwright/test";
 
 /**
  * Page Object Model for the Login page

@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator } from "@playwright/test";
 
 /**
  * Page Object Model for the Login page
@@ -34,14 +34,14 @@ export class LoginPage {
    * Navigate to the login page
    */
   async goto() {
-    await this.page.goto('/login');
+    await this.page.goto("/login");
   }
 
   /**
    * Verify that the login page is loaded
    */
   async isLoaded() {
-    await this.welcomeHeader.waitFor({ state: 'visible' });
+    await this.welcomeHeader.waitFor({ state: "visible" });
   }
 
   /**
@@ -60,7 +60,7 @@ export class LoginPage {
    */
   async getErrorMessage(): Promise<string | null> {
     try {
-      await this.errorMessage.waitFor({ state: 'visible', timeout: 5000 });
+      await this.errorMessage.waitFor({ state: "visible", timeout: 5000 });
       return await this.errorMessage.textContent();
     } catch {
       return null;
@@ -72,7 +72,7 @@ export class LoginPage {
    */
   async getSuccessMessage(): Promise<string | null> {
     try {
-      await this.successMessage.waitFor({ state: 'visible', timeout: 5000 });
+      await this.successMessage.waitFor({ state: "visible", timeout: 5000 });
       return await this.successMessage.textContent();
     } catch {
       return null;
@@ -83,7 +83,7 @@ export class LoginPage {
    * Check if the login page is displayed (useful for verifying failed redirects)
    */
   async isOnLoginPage(): Promise<boolean> {
-    return this.page.url().includes('/login');
+    return this.page.url().includes("/login");
   }
 
   /**
@@ -91,6 +91,6 @@ export class LoginPage {
    */
   async goToSignUp() {
     await this.signUpLink.click();
-    await this.page.waitForURL('/register');
+    await this.page.waitForURL("/register");
   }
 }

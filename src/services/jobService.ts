@@ -11,6 +11,7 @@ export class JobService implements JobRoleService {
   constructor(baseURL = process.env.API_BASE_URL || "http://localhost:8080") {
     this.axiosInstance = axios.create({
       baseURL,
+      timeout: 5000, // 5 second timeout
     });
   }
 
@@ -44,7 +45,9 @@ export class JobService implements JobRoleService {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
         throw new Error("Jobs endpoint not found");
       }
-      throw error;
+      console.error("Error fetching jobs in getAllJobs:", error);
+      // Return empty array on timeout/error so page still loads
+      return [];
     }
   }
 

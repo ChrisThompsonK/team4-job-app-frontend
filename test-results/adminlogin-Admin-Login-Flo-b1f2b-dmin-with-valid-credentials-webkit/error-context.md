@@ -1,0 +1,84 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e4]:
+      - img "Kainos Logo" [ref=e6]
+      - navigation [ref=e7]:
+        - link "Home" [ref=e8]:
+          - /url: /
+        - link "Jobs" [ref=e9]:
+          - /url: /jobs
+        - link "About" [ref=e10]:
+          - /url: https://www.kainos.com/about-us
+        - link "Contact" [ref=e11]:
+          - /url: https://www.kainos.com/contact-us
+      - link "Login" [ref=e13]:
+        - /url: /login
+  - generic [ref=e15]:
+    - generic [ref=e16]:
+      - generic [ref=e17]:
+        - img "Kainos Logo" [ref=e20]
+        - heading "Welcome Back" [level=1] [ref=e21]
+        - paragraph [ref=e22]: Login to your account to continue
+      - generic [ref=e24]:
+        - img [ref=e25]
+        - text: Invalid email or password. Please try again.
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]: Email *
+          - textbox "Email *" [ref=e30]:
+            - /placeholder: Enter your email address
+        - generic [ref=e31]:
+          - generic [ref=e32]: Password *
+          - textbox "Password *" [ref=e33]:
+            - /placeholder: Enter your password
+        - button "Login" [ref=e35] [cursor=pointer]:
+          - img [ref=e36]
+          - text: Login
+    - paragraph [ref=e40]:
+      - text: Don't have an account?
+      - link "Sign up" [ref=e41]:
+        - /url: /register
+  - contentinfo [ref=e42]:
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - img "Kainos Logo" [ref=e47]
+          - paragraph [ref=e48]: Leading software and digital services company based in Belfast, Northern Ireland. Empowering careers through innovative technology solutions.
+          - generic [ref=e49]:
+            - img [ref=e50]
+            - generic [ref=e53]: Belfast, Northern Ireland
+        - generic [ref=e54]:
+          - heading "Services" [level=6] [ref=e55]
+          - navigation [ref=e56]:
+            - link "Digital Services" [ref=e57]:
+              - /url: https://www.kainos.com/digital-services
+            - link "Workday" [ref=e58]:
+              - /url: https://www.kainos.com/workday
+            - link "Cloud & Engineering" [ref=e59]:
+              - /url: https://www.kainos.com/digital-services/services/cloud-and-engineering
+            - link "Data & AI" [ref=e60]:
+              - /url: https://www.kainos.com/digital-services/services/ai-and-data
+        - generic [ref=e61]:
+          - heading "Company" [level=6] [ref=e62]
+          - navigation [ref=e63]:
+            - link "About Kainos" [ref=e64]:
+              - /url: https://www.kainos.com/about-us
+            - link "Our Culture" [ref=e65]:
+              - /url: https://careers.kainos.com/gb/en/life-at-kainos
+            - link "Careers at Kainos" [ref=e66]:
+              - /url: https://careers.kainos.com/gb/en
+            - link "Contact Us" [ref=e67]:
+              - /url: https://www.kainos.com/contact-us
+      - generic [ref=e69]:
+        - paragraph [ref=e71]: © 2025 Kainos Group Limited. All rights reserved.
+        - generic [ref=e72]:
+          - link "Privacy Notice" [ref=e73]:
+            - /url: https://www.kainos.com/information/privacy-notice
+          - link "Corporate Information" [ref=e74]:
+            - /url: https://www.kainos.com/information/corporate-information
+          - link "Modern Slavery Statement" [ref=e75]:
+            - /url: https://www.kainos.com/information/modern-slavery-statement
+```

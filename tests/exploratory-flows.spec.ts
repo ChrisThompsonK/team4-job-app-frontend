@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { HomePage, JobsPage, JobDetailPage, RegistrationPage, LoginPage} from "./pages";
+import { HomePage, JobDetailPage, JobsPage, LoginPage, RegistrationPage } from "./pages";
 
 /**
  * Exploratory Testing - Homepage Exploration
@@ -13,7 +13,7 @@ const BASE_URL = "http://localhost:3000";
 test.describe("Homepage Exploration", () => {
   test("should display homepage with latest job postings", async ({ page }) => {
     const homePage = new HomePage(page);
-    
+
     await homePage.open();
     await homePage.verifyPageTitle();
     await homePage.verifyLogoIsVisible();
@@ -26,7 +26,7 @@ test.describe("Homepage Exploration", () => {
   test("should navigate to jobs page from homepage", async ({ page }) => {
     const homePage = new HomePage(page);
     const jobsPage = new JobsPage(page);
-    
+
     await homePage.open();
     await homePage.clickExploreJobs();
     await jobsPage.verifyUrl();
@@ -36,12 +36,12 @@ test.describe("Homepage Exploration", () => {
   test("should navigate to job details from homepage job cards", async ({ page }) => {
     const homePage = new HomePage(page);
     const jobDetailPage = new JobDetailPage(page);
-    
+
     await homePage.open();
     await homePage.waitForJobCards();
-    
+
     const jobLinks = await homePage.getJobDetailLinks();
-    
+
     if (jobLinks.length > 0) {
       await homePage.clickFirstJobDetailLink(jobLinks);
       await jobDetailPage.verifyUrl();
@@ -56,7 +56,7 @@ test.describe("User Registration Flow", () => {
   test("should display registration form with all required fields", async ({ page }) => {
     const homePage = new HomePage(page);
     const registrationPage = new RegistrationPage(page);
-    
+
     await homePage.open();
     await homePage.clickRegister();
     await registrationPage.verifyUrl();
@@ -67,7 +67,7 @@ test.describe("User Registration Flow", () => {
 
   test("should show validation errors for empty form submission", async ({ page }) => {
     const registrationPage = new RegistrationPage(page);
-    
+
     await registrationPage.open();
     await registrationPage.submitEmptyForm();
     await registrationPage.verifyUrl();
@@ -75,12 +75,12 @@ test.describe("User Registration Flow", () => {
 
   test("should successfully register a new user with valid data", async ({ page }) => {
     const registrationPage = new RegistrationPage(page);
-    
+
     await registrationPage.open();
-    
+
     const testEmail = registrationPage.generateUniqueEmail();
     const testPassword = "SecurePassword123!";
-    
+
     await registrationPage.fillRegistrationForm("Test", "User", testEmail, testPassword);
     await registrationPage.submitForm();
     await registrationPage.waitForNavigation();
@@ -90,7 +90,7 @@ test.describe("User Registration Flow", () => {
   test("should navigate to login page from registration page", async ({ page }) => {
     const registrationPage = new RegistrationPage(page);
     const loginPage = new LoginPage(page);
-    
+
     await registrationPage.open();
     await registrationPage.clickSignInLink();
     await loginPage.verifyUrl();

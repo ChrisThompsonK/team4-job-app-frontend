@@ -3,7 +3,7 @@
  */
 export { BasePage } from "./BasePage";
 export { HomePage } from "./HomePage";
-export { JobsPage } from "./JobsPage";
 export { JobDetailPage } from "./JobDetailPage";
-export { RegistrationPage } from "./RegistrationPage";
+export { JobsPage } from "./JobsPage";
 export { LoginPage } from "./LoginPage";
+export { RegistrationPage } from "./RegistrationPage";

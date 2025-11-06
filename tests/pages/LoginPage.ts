@@ -14,8 +14,8 @@ export class LoginPage extends BasePage {
   constructor(page: Page) {
     super(page);
     this.welcomeBackHeading = page.getByRole("heading", { name: "Welcome Back" });
-    this.emailField = page.locator('#email');
-    this.passwordField = page.locator('#password');
+    this.emailField = page.locator("#email");
+    this.passwordField = page.locator("#password");
     this.submitButton = page.getByRole("button", { name: /Login/i });
     this.logoutButton = page.getByRole("button", { name: /Logout/i });
   }
@@ -53,17 +53,15 @@ export class LoginPage extends BasePage {
 
   async verifyUnsuccessfulRegistration(baseUrl: string) {
     const currentUrl = await this.getCurrentUrl();
-    const isNotsuccess = 
-      currentUrl.includes("error=invalid-credentials");
-    
+    const isNotsuccess = currentUrl.includes("error=invalid-credentials");
+
     expect(isNotsuccess).toBeTruthy();
   }
 
   async verifySuccessfulRegistration(baseUrl: string) {
     const currentUrl = await this.getCurrentUrl();
-    const isSuccess = 
-      currentUrl.includes("success=login");
-    
+    const isSuccess = currentUrl.includes("success=login");
+
     expect(isSuccess).toBeTruthy();
   }
 
@@ -72,14 +70,13 @@ export class LoginPage extends BasePage {
   }
 
   async logout() {
-       await this.logoutButton.click();
+    await this.logoutButton.click();
   }
 
   async verifySuccessfulLogout(baseURL: string) {
-        const currentUrl = await this.getCurrentUrl();
-    const isSuccess = 
-      currentUrl.includes("login?success=logout");
-    
+    const currentUrl = await this.getCurrentUrl();
+    const isSuccess = currentUrl.includes("login?success=logout");
+
     expect(isSuccess).toBeTruthy();
   }
 }

@@ -18,14 +18,14 @@ export class HomePage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    
+
     // Navigation
     this.kainosLogo = page.locator('img[alt*="Kainos"]').first();
     this.homeLink = page.getByRole("link", { name: "Home" });
     this.jobsLink = page.getByRole("link", { name: "Jobs", exact: true }).first();
     this.loginLink = page.getByRole("link", { name: "Login", exact: true }).first();
     this.registerLink = page.getByRole("link", { name: /Register|Sign Up/i });
-    
+
     // Content
     this.heroSection = page.getByText(/Find Your Next Career Opportunity/i);
     this.latestJobsHeading = page.getByRole("heading", { name: /Latest Job Opportunities/i });

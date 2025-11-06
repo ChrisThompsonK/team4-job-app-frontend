@@ -17,15 +17,19 @@ export class RegistrationPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    
-    this.pageHeading = page.getByRole("heading", { name: /Join Kainos|Register|Sign Up|Create Account/i });
-    this.firstNameField = page.locator('#firstName');
-    this.lastNameField = page.locator('#lastName');
-    this.emailField = page.locator('#email');
-    this.passwordField = page.locator('#password');
-    this.confirmPasswordField = page.locator('#confirmPassword');
+
+    this.pageHeading = page.getByRole("heading", {
+      name: /Join Kainos|Register|Sign Up|Create Account/i,
+    });
+    this.firstNameField = page.locator("#firstName");
+    this.lastNameField = page.locator("#lastName");
+    this.emailField = page.locator("#email");
+    this.passwordField = page.locator("#password");
+    this.confirmPasswordField = page.locator("#confirmPassword");
     this.signInLink = page.getByRole("link", { name: /Sign in/i });
-    this.submitButton = page.getByRole("button", { name: /Register|Sign Up|Create Account|Submit/i });
+    this.submitButton = page.getByRole("button", {
+      name: /Register|Sign Up|Create Account|Submit/i,
+    });
   }
 
   async open() {
@@ -68,7 +72,7 @@ export class RegistrationPage extends BasePage {
     await this.signInLink.click();
   }
 
-async submitForm() {
+  async submitForm() {
     await this.submitButton.click();
   }
 
@@ -78,12 +82,12 @@ async submitForm() {
 
   async verifySuccessfulRegistration(baseUrl: string) {
     const currentUrl = await this.getCurrentUrl();
-    const isSuccess = 
-      currentUrl.includes("success=registration") || 
-      currentUrl === `${baseUrl}/` || 
+    const isSuccess =
+      currentUrl.includes("success=registration") ||
+      currentUrl === `${baseUrl}/` ||
       currentUrl === baseUrl ||
       !currentUrl.includes("/register");
-    
+
     expect(isSuccess).toBeTruthy();
   }
 

@@ -64,7 +64,7 @@ export class RegistrationPage extends BasePage {
   }
 
   async submitEmptyForm() {
-    await this.page.getByRole("button", { name: "Create Account" }).click();
+    await this.submitButton.click();
     await this.page.waitForTimeout(500);
   }
 

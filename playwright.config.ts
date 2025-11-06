@@ -25,5 +25,12 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
+    {
+      name: "edge",
+      use: {
+        channel: "msedge",            // run the installed Microsoft Edge
+        ...devices["Desktop Chrome"], // reuse Desktop Chrome viewport / UA
+      },
+    },
   ],
 });

@@ -32,6 +32,10 @@ coverage/
 # Pa11y accessibility test screenshots
 pa11y-screenshots/
 
+# Test results
+test-results/
+playwright-report/
+
 # Dependency directories
 .pnp
 .pnp.js

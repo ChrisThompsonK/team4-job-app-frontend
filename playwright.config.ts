@@ -28,7 +28,7 @@ export default defineConfig({
     {
       name: "edge",
       use: {
-        channel: "msedge", // run the installed Microsoft Edge
+        channel: "msedge", // runs the installed Microsoft Edge
         ...devices["Desktop Chrome"], // reuse Desktop Chrome viewport / UA
       },
     },

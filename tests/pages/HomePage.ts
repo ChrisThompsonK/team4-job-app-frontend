@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import { TEST_TIMEOUTS } from "../constants";
 import { BasePage } from "./BasePage";
 
 /**
@@ -67,21 +68,28 @@ export class HomePage extends BasePage {
     await this.exploreJobsButton.click();
   }
 
-  async clickRegister() {
-    const count = await this.registerLink.count();
-    if (count > 0) {
-      await this.registerLink.first().click();
-    } else {
-      await this.goto("/register");
-    }
+  async navigateToRegister() {
+    // Click Login link from homepage
+    await this.loginLink.click();
+
+    // Wait for navigation to login page
+    await this.page.waitForURL("**/login");
+
+    // Click Sign Up link on login page
+    const signUpLink = this.page.getByRole("link", { name: /Sign Up|Register/i });
+    await signUpLink.click();
+
+    // Verify we're on the register page
+    await this.page.waitForURL("**/register");
+    await expect(this.page).toHaveURL(/\/register/);
   }
 
   async waitForJobCards() {
-    await this.page.waitForSelector("h3", { timeout: 5000 });
+    await this.page.waitForSelector("h3", { timeout: TEST_TIMEOUTS.DEFAULT });
   }
 
   async getJobDetailLinks(): Promise<string[]> {
-    return await this.page.locator("a").evaluateAll((links) =>
+    return await this.page.locator('a[href^="/jobs/"]').evaluateAll((links) =>
       links
         .filter((link) => {
           const href = link.getAttribute("href");

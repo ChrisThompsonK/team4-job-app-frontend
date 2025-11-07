@@ -1,4 +1,6 @@
 import { test } from "@playwright/test";
+import { BASE_URL } from "./constants";
+import { generateUniqueEmail } from "./helpers";
 import { HomePage, JobDetailPage, JobsPage, LoginPage, RegistrationPage } from "./pages";
 
 /**
@@ -6,9 +8,6 @@ import { HomePage, JobDetailPage, JobsPage, LoginPage, RegistrationPage } from "
  *
  * This test suite covers the homepage exploration flow for the Kainos Job Portal
  */
-
-// Test configuration
-const BASE_URL = "http://localhost:3000";
 
 test.describe("Homepage Exploration", () => {
   test("should display homepage with latest job postings", async ({ page }) => {
@@ -58,7 +57,7 @@ test.describe("User Registration Flow", () => {
     const registrationPage = new RegistrationPage(page);
 
     await homePage.open();
-    await homePage.clickRegister();
+    await homePage.navigateToRegister();
     await registrationPage.verifyUrl();
     await registrationPage.verifyHeading();
     await registrationPage.verifyFormFields();
@@ -78,7 +77,7 @@ test.describe("User Registration Flow", () => {
 
     await registrationPage.open();
 
-    const testEmail = registrationPage.generateUniqueEmail();
+    const testEmail = generateUniqueEmail();
     const testPassword = "SecurePassword123!";
 
     await registrationPage.fillRegistrationForm("Test", "User", testEmail, testPassword);
@@ -111,10 +110,10 @@ test.describe("User Login Flow", () => {
     await loginPage.fillLoginForm(testEmail, testPassword);
     await loginPage.submitForm();
     await loginPage.waitForNavigation();
-    await loginPage.verifySuccessfulRegistration(BASE_URL);
+    await loginPage.verifySuccessfulRegistration();
 
     await loginPage.logout();
-    await loginPage.verifySuccessfulLogout(BASE_URL);
+    await loginPage.verifySuccessfulLogout();
   });
 
   test("should display error message for incorrect credentials", async ({ page }) => {
@@ -122,12 +121,12 @@ test.describe("User Login Flow", () => {
 
     await loginPage.open();
 
-    const testEmail = loginPage.generateUniqueEmail();
+    const testEmail = generateUniqueEmail();
     const testPassword = "SecurePassword123!";
 
     await loginPage.fillLoginForm(testEmail, testPassword);
     await loginPage.submitForm();
     await loginPage.waitForNavigation();
-    await loginPage.verifyUnsuccessfulRegistration(BASE_URL);
+    await loginPage.verifyUnsuccessfulRegistration();
   });
 });

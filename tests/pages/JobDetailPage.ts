@@ -9,7 +9,7 @@ export class JobDetailPage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.heading = page.locator("h1, h2").first();
+    this.heading = page.locator("h1");
   }
 
   async verifyUrl() {

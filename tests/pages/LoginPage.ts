@@ -21,7 +21,15 @@ export class LoginPage extends BasePage {
   }
 
   async open() {
-    await this.goto("/login");
+    // Navigate to homepage first
+    await this.goto("/");
+
+    // Click the login link from the navigation menu
+    const loginLink = this.page.getByRole("link", { name: "Login", exact: true }).first();
+    await loginLink.click();
+
+    // Wait for navigation to login page
+    await this.page.waitForURL("**/login");
   }
 
   async verifyUrl() {
@@ -37,11 +45,6 @@ export class LoginPage extends BasePage {
     await expect(this.page.getByLabel(/Password/i).first()).toBeVisible();
   }
 
-  generateUniqueEmail(): string {
-    const timestamp = Date.now();
-    return `testuser${timestamp}@example.com`;
-  }
-
   async fillLoginForm(email: string, password: string) {
     await this.emailField.fill(email);
     await this.passwordField.fill(password);
@@ -51,14 +54,14 @@ export class LoginPage extends BasePage {
     await this.submitButton.click();
   }
 
-  async verifyUnsuccessfulRegistration(baseUrl: string) {
+  async verifyUnsuccessfulRegistration() {
     const currentUrl = await this.getCurrentUrl();
-    const isNotsuccess = currentUrl.includes("error=invalid-credentials");
+    const isNotSuccess = currentUrl.includes("error=invalid-credentials");
 
-    expect(isNotsuccess).toBeTruthy();
+    expect(isNotSuccess).toBeTruthy();
   }
 
-  async verifySuccessfulRegistration(baseUrl: string) {
+  async verifySuccessfulRegistration() {
     const currentUrl = await this.getCurrentUrl();
     const isSuccess = currentUrl.includes("success=login");
 
@@ -73,7 +76,7 @@ export class LoginPage extends BasePage {
     await this.logoutButton.click();
   }
 
-  async verifySuccessfulLogout(baseURL: string) {
+  async verifySuccessfulLogout() {
     const currentUrl = await this.getCurrentUrl();
     const isSuccess = currentUrl.includes("login?success=logout");
 

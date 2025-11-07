@@ -65,7 +65,12 @@ export class RegistrationPage extends BasePage {
 
   async submitEmptyForm() {
     await this.submitButton.click();
-    await this.page.waitForTimeout(500);
+    // Verify HTML5 validation is triggered by checking if the first required field is invalid
+    await expect(this.firstNameField).toHaveAttribute("required", "");
+    const validationMessage = await this.firstNameField.evaluate(
+      (el: HTMLInputElement) => el.validationMessage
+    );
+    expect(validationMessage).toBeTruthy();
   }
 
   async clickSignInLink() {
@@ -89,10 +94,5 @@ export class RegistrationPage extends BasePage {
       !currentUrl.includes("/register");
 
     expect(isSuccess).toBeTruthy();
-  }
-
-  generateUniqueEmail(): string {
-    const timestamp = Date.now();
-    return `testuser${timestamp}@example.com`;
   }
 }

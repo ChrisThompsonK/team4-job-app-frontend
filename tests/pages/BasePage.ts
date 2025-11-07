@@ -1,4 +1,4 @@
-import type { Locator, Page } from "@playwright/test";
+import type { Page } from "@playwright/test";
 
 /**
  * Base Page Object - Contains common functionality for all pages
@@ -7,7 +7,7 @@ export class BasePage {
   constructor(protected page: Page) {}
 
   async goto(path: string = "/") {
-    await this.page.goto(`http://localhost:3000${path}`);
+    await this.page.goto(path);
   }
 
   async getPageTitle() {

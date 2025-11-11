@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: team4-job-app-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - API_BASE_URL=http://backend:8080
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - team4-network
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 40s
+
+  backend:
+    image: team4-job-app-backend:latest
+    container_name: team4-job-app-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - team4-network
+
+networks:
+  team4-network:
+    driver: bridge

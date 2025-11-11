@@ -1,0 +1,13 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+dist
+coverage
+playwright-report
+test-results
+pa11y-screenshots
+*.md
+.env
+.env.local
+.DS_Store

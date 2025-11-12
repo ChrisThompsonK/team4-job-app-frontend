@@ -91,8 +91,11 @@ jobs:
 
       - name: Test Docker image
         run: |
-          # Start container
-          docker run -d --name test-container -p 3000:3000 team4-job-app-frontend:ci-test
+          # Start container (CI environment auto-detected via GitHub Actions)
+          docker run -d --name test-container -p 3000:3000 \
+            -e CI=true \
+            -e NODE_ENV=test \
+            team4-job-app-frontend:ci-test
 
           # Wait for container to be ready
           sleep 10

@@ -53,9 +53,11 @@ app.set("view engine", "njk");
 app.engine("njk", env.render.bind(env));
 
 // Serve static files (CSS, JS, images, etc.)
-app.use(express.static(path.join(process.cwd(), "dist")));
-app.use(express.static(path.join(process.cwd(), "public")));
-app.use("/js", express.static(path.join(process.cwd(), "js")));
+// Use path resolution that works in both dev and production
+const rootDir = process.cwd();
+app.use(express.static(path.join(rootDir, "dist")));
+app.use(express.static(path.join(rootDir, "public")));
+app.use("/js", express.static(path.join(rootDir, "js")));
 
 // Middleware to parse JSON and URL-encoded form data
 app.use(express.json());

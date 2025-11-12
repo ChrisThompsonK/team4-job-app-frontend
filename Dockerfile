@@ -38,11 +38,11 @@ COPY --from=builder /app/public ./public
 # Change ownership of app directory to non-root user
 RUN chown -R nodejs:nodejs /app
 
-# Switch to non-root user
-USER nodejs
-
 # Set default port (can be overridden)
 ENV PORT=3000
+
+# Switch to non-root user
+USER nodejs
 
 # Expose port
 EXPOSE $PORT

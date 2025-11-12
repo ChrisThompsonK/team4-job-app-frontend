@@ -93,27 +93,44 @@ app.use(
 // Add user information to all templates
 app.use(addUserToLocals);
 
+// Health check endpoint - doesn't depend on backend
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
 // Hello World endpoint - now renders a view
 app.get("/", async (req, res) => {
-  // Get the 3 most recent jobs for the homepage
-  const allJobs = await jobRoleService.getAllJobs();
-  console.log(allJobs);
-  const latestJobs = allJobs
-    .sort((a, b) => b.closingDate.getTime() - a.closingDate.getTime())
-    .slice(0, 3)
-    .map((job: JobRole) => ({
-      ...job,
-      closingDate: job.closingDate.toLocaleDateString("en-GB"),
-    }));
+  try {
+    // Get the 3 most recent jobs for the homepage
+    const allJobs = await jobRoleService.getAllJobs();
+    console.log(allJobs);
+    const latestJobs = allJobs
+      .sort((a, b) => b.closingDate.getTime() - a.closingDate.getTime())
+      .slice(0, 3)
+      .map((job: JobRole) => ({
+        ...job,
+        closingDate: job.closingDate.toLocaleDateString("en-GB"),
+      }));
 
-  // Handle success messages from login redirects
-  const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+    // Handle success messages from login redirects
+    const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
 
-  res.render("index", {
-    message: "Find Your Next Career Opportunity",
-    latestJobs: latestJobs,
-    successDisplay: successDisplay,
-  });
+    res.render("index", {
+      message: "Find Your Next Career Opportunity",
+      latestJobs: latestJobs,
+      successDisplay: successDisplay,
+    });
+  } catch (error) {
+    console.error("Error loading homepage:", error);
+    // If backend is unavailable, show homepage without jobs
+    const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+    res.render("index", {
+      message: "Find Your Next Career Opportunity",
+      latestJobs: [],
+      successDisplay: successDisplay,
+      errorDisplay: { show: true, message: "Unable to load latest jobs. Please try again later." },
+    });
+  }
 });
 
 // Jobs listing endpoint

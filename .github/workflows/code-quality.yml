@@ -106,8 +106,8 @@ jobs:
           # Check container logs for any errors
           docker logs test-container
 
-          # Test if the application responds
-          curl -f http://localhost:3000 || exit 1
+          # Test if the application responds (using health endpoint)
+          curl -f http://localhost:3000/health || exit 1
 
           # Stop and remove container
           docker stop test-container

@@ -86,4 +86,4 @@ jobs:
         with:
           name: build-output
           path: dist/
-          retention-days: 1
+          retention-days: 14

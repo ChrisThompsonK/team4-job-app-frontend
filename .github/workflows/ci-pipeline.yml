@@ -97,7 +97,6 @@ jobs:
         run: |
           # Generate a secure random session secret for CI testing
           SESSION_SECRET=$(openssl rand -base64 32)
-          echo "SESSION_SECRET=$SESSION_SECRET" >> $GITHUB_ENV
           echo "✅ Generated secure session secret for CI testing"
 
       - name: Checkout code

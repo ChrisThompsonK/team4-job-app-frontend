@@ -71,16 +71,15 @@ jobs:
   docker-build:
     name: 🐳 Docker Build & Test
     runs-on: ubuntu-latest
-    env:
-      SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
 
     steps:
-      - name: Fail if SESSION_SECRET is not set
+      - name: Generate CI Session Secret
+        id: generate-secret
         run: |
-          if [ -z "${{ secrets.SESSION_SECRET }}" ]; then
-            echo "Error: SESSION_SECRET is not set. Please configure the SESSION_SECRET secret in your repository."
-            exit 1
-          fi
+          # Generate a secure random session secret for CI testing
+          SESSION_SECRET=$(openssl rand -base64 32)
+          echo "SESSION_SECRET=$SESSION_SECRET" >> $GITHUB_ENV
+          echo "✅ Generated secure session secret for CI testing"
 
       - name: Checkout code
         uses: actions/checkout@v4

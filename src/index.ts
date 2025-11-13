@@ -37,7 +37,18 @@ if (!process.env.SESSION_SECRET || !isTestOrCI) {
   );
 }
 
-const SESSION_SECRET = process.env.SESSION_SECRET!;
+const SESSION_SECRET = (() => {
+  const secret = process.env.SESSION_SECRET;
+
+  if (!secret) {
+    if (process.env.NODE_ENV === 'test' || process.env.CI) {
+      return 'test-secret';
+    }
+    throw new Error('SESSION_SECRET is required but missing');
+  }
+
+  return secret;
+})();
 
 // Initialize services and controllers
 const jobRoleService = new JobService(API_BASE_URL);

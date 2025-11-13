@@ -98,16 +98,29 @@ jobs:
             team4-job-app-frontend:ci-test
 
           # Wait for container to be ready by polling the health endpoint
-          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000
+          echo "Waiting for container to be ready..."
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000/health
 
           # Check if container is running
-          docker ps | grep test-container
+          if ! docker ps | grep test-container; then
+            echo "Container failed to start. Logs:"
+            docker logs test-container
+            exit 1
+          fi
 
-          # Check container logs for any errors
+          # Check container logs for any issues
+          echo "Container logs:"
           docker logs test-container
 
           # Test if the application responds (using health endpoint)
-          curl -f http://localhost:3000/health || exit 1
+          echo "Testing health endpoint..."
+          if ! curl -f http://localhost:3000/health; then
+            echo "Health check failed. Final logs:"
+            docker logs test-container
+            exit 1
+          fi
+
+          echo "Docker container test passed!"
 
           # Stop and remove container
           docker stop test-container

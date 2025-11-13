@@ -29,17 +29,18 @@ const PORT = process.env.PORT || 3000;
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
 // Validate required environment variables (except in CI/test environments)
+const isTestOrCI = process.env.NODE_ENV === "test" || process.env.CI === "true";
 const SESSION_SECRET =
   process.env.SESSION_SECRET ||
-  (process.env.NODE_ENV === "test" || process.env.CI === "true"
-    ? "unsafe-test-secret-do-not-use-in-production"
-    : "");
+  (isTestOrCI ? "unsafe-test-secret-do-not-use-in-production" : "");
 
+// Only enforce SESSION_SECRET in production
 if (!SESSION_SECRET && process.env.NODE_ENV === "production") {
   throw new Error("SESSION_SECRET environment variable is required in production");
 }
 
-if (!SESSION_SECRET) {
+// For non-test/CI environments, SESSION_SECRET must be set
+if (!SESSION_SECRET && !isTestOrCI) {
   throw new Error(
     "SESSION_SECRET environment variable is required. Set it in your .env file or use NODE_ENV=test for testing."
   );

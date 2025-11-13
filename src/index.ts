@@ -88,7 +88,7 @@ app.use(
 app.use(addUserToLocals);
 
 // Health check endpoint - doesn't depend on backend
-app.get("/health", (req, res) => {
+app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
 });
 

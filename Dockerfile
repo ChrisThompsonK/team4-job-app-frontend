@@ -41,6 +41,10 @@ RUN chown -R nodejs:nodejs /app
 # Set default port (can be overridden)
 ENV PORT=3000
 
+# Set session secret from build arg
+ARG SESSION_SECRET
+ENV SESSION_SECRET=${SESSION_SECRET}
+
 # Switch to non-root user
 USER nodejs
 

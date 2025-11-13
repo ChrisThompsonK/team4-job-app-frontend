@@ -31,8 +31,7 @@ const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 // Validate required environment variables (except in CI/test environments)
 const isTestOrCI = process.env.NODE_ENV === "test" || process.env.CI === "true";
 const SESSION_SECRET =
-  process.env.SESSION_SECRET ||
-  (isTestOrCI ? "unsafe-test-secret-do-not-use-in-production" : "");
+  process.env.SESSION_SECRET || (isTestOrCI ? "unsafe-test-secret-do-not-use-in-production" : "");
 
 // Only enforce SESSION_SECRET in production
 if (!SESSION_SECRET && process.env.NODE_ENV === "production") {

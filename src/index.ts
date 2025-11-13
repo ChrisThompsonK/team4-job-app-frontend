@@ -28,16 +28,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
-// Validate required environment variables (except in CI/test environments)
-const isTestOrCI = process.env.NODE_ENV === "test" || process.env.CI === "true";
-
-if (!process.env.SESSION_SECRET || !isTestOrCI) {
-  throw new Error(
-    "SESSION_SECRET environment variable is required. Set it in your .env file or use NODE_ENV=test for testing."
-  );
+// Validate required environment variables
+if (!process.env.SESSION_SECRET) {
+  throw new Error("SESSION_SECRET environment variable is required. Set it in your .env file.");
 }
 
-const SESSION_SECRET = process.env.SESSION_SECRET!;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 // Initialize services and controllers
 const jobRoleService = new JobService(API_BASE_URL);

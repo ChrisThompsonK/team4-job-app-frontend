@@ -110,7 +110,7 @@ jobs:
 
       - name: Test Docker image
         env:
-          SESSION_SECRET: ${{ secrets.SESSION_SECRET || 'ci-test-secret-fallback' }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
         run: |
           # Start container (CI environment auto-detected via GitHub Actions)
           CONTAINER_ID=$(docker run -d --name test-container -p 3000:3000 \

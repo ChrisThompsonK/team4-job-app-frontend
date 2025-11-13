@@ -3,6 +3,7 @@ npm-debug.log
 .git
 .gitignore
 coverage
+dist
 playwright-report
 test-results
 pa11y-screenshots

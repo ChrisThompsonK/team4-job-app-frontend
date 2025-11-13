@@ -28,11 +28,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
-// Validate required environment variables
-if (!process.env.SESSION_SECRET) {
-  throw new Error("SESSION_SECRET environment variable is required. Set it in your .env file.");
-}
-
+// Validate required environment variables (allow test/CI environments to use default)
 const SESSION_SECRET = (() => {
   const secret = process.env.SESSION_SECRET;
 
@@ -40,7 +36,7 @@ const SESSION_SECRET = (() => {
     if (process.env.NODE_ENV === "test" || process.env.CI) {
       return "test-secret";
     }
-    throw new Error("SESSION_SECRET is required but missing");
+    throw new Error("SESSION_SECRET environment variable is required. Set it in your .env file.");
   }
 
   return secret;
@@ -93,11 +89,6 @@ app.use(
 
 // Add user information to all templates
 app.use(addUserToLocals);
-
-// Health check endpoint - doesn't depend on backend
-app.get("/health", (_req, res) => {
-  res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
-});
 
 // Hello World endpoint - now renders a view
 app.get("/", async (req, res) => {

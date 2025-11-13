@@ -109,39 +109,63 @@ jobs:
           load: true
 
       - name: Test Docker image
+        env:
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET || 'ci-test-secret-fallback' }}
         run: |
           # Start container (CI environment auto-detected via GitHub Actions)
-          docker run -d --name test-container -p 3000:3000 \
+          CONTAINER_ID=$(docker run -d --name test-container -p 3000:3000 \
             -e CI=true \
             -e NODE_ENV=test \
-            -e SESSION_SECRET="${{ secrets.SESSION_SECRET }}" \
-            team4-job-app-frontend:ci-test
+            -e SESSION_SECRET="${SESSION_SECRET}" \
+            -e API_BASE_URL=http://localhost:3001 \
+            team4-job-app-frontend:ci-test)
+          
+          echo "Container started with ID: $CONTAINER_ID"
 
-          # Wait for container to be ready by polling the health endpoint
-          echo "Waiting for container to be ready..."
-          sleep 3
-          curl --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors http://localhost:3000/health
+          # Give the container a moment to initialize
+          echo "Waiting for container to initialize..."
+          sleep 5
 
-          # Check if container is running
+          # Check if container is still running
           if ! docker ps | grep test-container; then
-            echo "Container failed to start. Logs:"
+            echo "❌ Container failed to start or exited immediately. Logs:"
             docker logs test-container
             exit 1
           fi
 
-          # Check container logs for any issues
-          echo "Container logs:"
+          # Show initial logs
+          echo "📋 Container logs (initial):"
           docker logs test-container
 
-          # Test if the application responds (using health endpoint)
-          echo "Testing health endpoint..."
-          if ! curl -f http://localhost:3000/health; then
-            echo "Health check failed. Final logs:"
-            docker logs test-container
-            exit 1
-          fi
+          # Wait for container to be ready by polling the homepage
+          echo "🔍 Waiting for application to respond..."
+          MAX_RETRIES=30
+          RETRY_DELAY=2
+          for i in $(seq 1 $MAX_RETRIES); do
+            if curl -f -s http://localhost:3000/ > /dev/null 2>&1; then
+              echo "✅ Application is responding on attempt $i"
+              break
+            fi
+            
+            if [ $i -eq $MAX_RETRIES ]; then
+              echo "❌ Application failed to respond after $MAX_RETRIES attempts"
+              echo "📋 Final container logs:"
+              docker logs test-container
+              docker stop test-container
+              docker rm test-container
+              exit 1
+            fi
+            
+            echo "⏳ Attempt $i/$MAX_RETRIES failed, retrying in ${RETRY_DELAY}s..."
+            sleep $RETRY_DELAY
+          done
 
-          echo "Docker container test passed!"
+          # Final verification
+          echo "🧪 Final application check..."
+          HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/)
+          echo "Application HTTP status: $HTTP_STATUS"
+
+          echo "✅ Docker container test passed!"
 
           # Stop and remove container
           docker stop test-container

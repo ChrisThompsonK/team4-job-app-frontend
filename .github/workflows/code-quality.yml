@@ -95,11 +95,13 @@ jobs:
           docker run -d --name test-container -p 3000:3000 \
             -e CI=true \
             -e NODE_ENV=test \
+            -e SESSION_SECRET=unsafe-test-secret-for-ci-only \
             team4-job-app-frontend:ci-test
 
           # Wait for container to be ready by polling the health endpoint
           echo "Waiting for container to be ready..."
-          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000/health
+          sleep 3
+          curl --retry 15 --retry-delay 2 --retry-connrefused --retry-all-errors http://localhost:3000/health
 
           # Check if container is running
           if ! docker ps | grep test-container; then

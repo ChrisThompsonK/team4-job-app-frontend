@@ -92,13 +92,6 @@ jobs:
     needs: [build-application]
 
     steps:
-      - name: Generate CI Session Secret
-        id: generate-secret
-        run: |
-          # Generate a secure random session secret for CI testing
-          SESSION_SECRET=$(openssl rand -base64 32)
-          echo "✅ Generated secure session secret for CI testing"
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -121,7 +114,7 @@ jobs:
           docker run -d --name test-container -p 3000:3000 \
             -e CI=true \
             -e NODE_ENV=test \
-            -e SESSION_SECRET="${SESSION_SECRET}" \
+            -e SESSION_SECRET="${{ secrets.SESSION_SECRET }}" \
             team4-job-app-frontend:ci-test
 
           # Wait for container to be ready by polling the health endpoint

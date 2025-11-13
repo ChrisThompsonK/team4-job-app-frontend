@@ -97,8 +97,8 @@ jobs:
             -e NODE_ENV=test \
             team4-job-app-frontend:ci-test
 
-          # Wait for container to be ready
-          sleep 10
+          # Wait for container to be ready by polling the health endpoint
+          curl --retry 10 --retry-delay 1 --retry-connrefused http://localhost:3000
 
           # Check if container is running
           docker ps | grep test-container

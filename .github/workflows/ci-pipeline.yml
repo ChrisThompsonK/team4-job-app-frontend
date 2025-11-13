@@ -55,11 +55,6 @@ jobs:
       - name: Run unit tests
         run: npm run test:run
 
-      - name: Generate test coverage
-        if: always()
-        run: npm run test:coverage
-        continue-on-error: true
-
   # ========================================
   # STAGE 2: Build
   # Only runs if all tests pass

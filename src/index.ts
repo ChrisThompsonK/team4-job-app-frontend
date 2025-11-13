@@ -28,10 +28,16 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
 
-// Validate required environment variables
-if (!process.env.SESSION_SECRET) {
-  throw new Error("SESSION_SECRET environment variable is required");
-}
+// Validate required environment variables (allow test/CI environments to use default)
+const SESSION_SECRET = (() => {
+  const secret = process.env.SESSION_SECRET;
+
+  if (!secret) {
+    throw new Error("SESSION_SECRET environment variable is required. Set it in your .env file.");
+  }
+
+  return secret;
+})();
 
 // Initialize services and controllers
 const jobRoleService = new JobService(API_BASE_URL);
@@ -66,7 +72,7 @@ app.use(express.urlencoded({ extended: true }));
 // Session configuration
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -83,25 +89,37 @@ app.use(addUserToLocals);
 
 // Hello World endpoint - now renders a view
 app.get("/", async (req, res) => {
-  // Get the 3 most recent jobs for the homepage
-  const allJobs = await jobRoleService.getAllJobs();
-  console.log(allJobs);
-  const latestJobs = allJobs
-    .sort((a, b) => b.closingDate.getTime() - a.closingDate.getTime())
-    .slice(0, 3)
-    .map((job: JobRole) => ({
-      ...job,
-      closingDate: job.closingDate.toLocaleDateString("en-GB"),
-    }));
+  try {
+    // Get the 3 most recent jobs for the homepage
+    const allJobs = await jobRoleService.getAllJobs();
+    console.log(allJobs);
+    const latestJobs = allJobs
+      .sort((a, b) => b.closingDate.getTime() - a.closingDate.getTime())
+      .slice(0, 3)
+      .map((job: JobRole) => ({
+        ...job,
+        closingDate: job.closingDate.toLocaleDateString("en-GB"),
+      }));
 
-  // Handle success messages from login redirects
-  const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+    // Handle success messages from login redirects
+    const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
 
-  res.render("index", {
-    message: "Find Your Next Career Opportunity",
-    latestJobs: latestJobs,
-    successDisplay: successDisplay,
-  });
+    res.render("index", {
+      message: "Find Your Next Career Opportunity",
+      latestJobs: latestJobs,
+      successDisplay: successDisplay,
+    });
+  } catch (error) {
+    console.error("Error loading homepage:", error);
+    // If backend is unavailable, show homepage without jobs
+    const successDisplay = FormController.getSuccessDisplay(req.query.success as string);
+    res.render("index", {
+      message: "Find Your Next Career Opportunity",
+      latestJobs: [],
+      successDisplay: successDisplay,
+      errorDisplay: { show: true, message: "Unable to load latest jobs. Please try again later." },
+    });
+  }
 });
 
 // Jobs listing endpoint

@@ -25,7 +25,7 @@ function decodeHTML(html) {
  * @param {string} config.currentFilters.capability - Current capability filter
  * @param {string} config.currentFilters.band - Current band filter
  */
-function initializeJobFilters(config) {
+function _initializeJobFilters(config) {
   const { uniqueLocations, uniqueCapabilities, uniqueBands, currentFilters } = config;
 
   // Get current filter values (decode HTML entities)
@@ -139,7 +139,7 @@ function clearJobFilters() {
 /**
  * Set up event listeners for filter controls
  */
-function setupJobFilterListeners() {
+function _setupJobFilterListeners() {
   const locationFilter = document.getElementById("location-filter");
   const capabilityFilter = document.getElementById("capability-filter");
   const bandFilter = document.getElementById("band-filter");

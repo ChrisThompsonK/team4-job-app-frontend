@@ -68,9 +68,41 @@ jobs:
           path: coverage/
           retention-days: 7
 
+  # ========================================
+  # STAGE 2: Build
+  # Only runs if all tests pass
+  # ========================================
+
+  build-application:
+    name: 🏗️ Build Application
+    runs-on: ubuntu-latest
+    needs: [code-quality, unit-tests]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+  # ========================================
+  # STAGE 3: Docker Build & Test
+  # Only runs if build succeeds
+  # ========================================
+
   docker-build:
     name: 🐳 Docker Build & Test
     runs-on: ubuntu-latest
+    needs: [build-application]
 
     steps:
       - name: Generate CI Session Secret
@@ -135,29 +167,3 @@ jobs:
           # Stop and remove container
           docker stop test-container
           docker rm test-container
-
-  # ========================================
-  # STAGE 2: Build
-  # Only runs if all tests pass
-  # ========================================
-
-  build-application:
-    name: 🏗️ Build Application
-    runs-on: ubuntu-latest
-    needs: [code-quality, unit-tests, docker-build]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build project
-        run: npm run build

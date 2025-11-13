@@ -71,6 +71,8 @@ jobs:
   docker-build:
     name: 🐳 Docker Build & Test
     runs-on: ubuntu-latest
+    env:
+      SESSION_SECRET: ${{ secrets.SESSION_SECRET || 'fallback-test-secret-replace-in-prod' }}
 
     steps:
       - name: Checkout code
@@ -95,7 +97,7 @@ jobs:
           docker run -d --name test-container -p 3000:3000 \
             -e CI=true \
             -e NODE_ENV=test \
-            -e SESSION_SECRET=unsafe-test-secret-for-ci-only \
+            -e SESSION_SECRET="${SESSION_SECRET}" \
             team4-job-app-frontend:ci-test
 
           # Wait for container to be ready by polling the health endpoint

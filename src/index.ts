@@ -37,7 +37,7 @@ if (!process.env.SESSION_SECRET && !isTestOrCI) {
   );
 }
 
-const SESSION_SECRET = process.env.SESSION_SECRET || "unsafe-test-secret-do-not-use-in-production";
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 // Initialize services and controllers
 const jobRoleService = new JobService(API_BASE_URL);

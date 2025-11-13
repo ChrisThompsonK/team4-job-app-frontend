@@ -1,0 +1,147 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, "feature/*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ========================================
+  # STAGE 1: Test & Quality Checks
+  # Jobs in this stage run in parallel
+  # ========================================
+
+  code-quality:
+    name: 🔍 Code Quality (Biome)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Biome check
+        run: npm run check
+
+      - name: Run Biome format check
+        run: npm run format:check
+
+  unit-tests:
+    name: 🧪 Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:run
+
+      - name: Generate test coverage
+        if: always()
+        run: npm run test:coverage
+        continue-on-error: true
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+  docker-build:
+    name: 🐳 Docker Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: team4-job-app-frontend:ci-test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          load: true
+
+      - name: Test Docker image
+        run: |
+          # Start container (CI environment auto-detected via GitHub Actions)
+          docker run -d --name test-container -p 3000:3000 \
+            -e CI=true \
+            -e NODE_ENV=test \
+            team4-job-app-frontend:ci-test
+
+          # Wait for container to be ready
+          sleep 10
+
+          # Check if container is running
+          docker ps | grep test-container
+
+          # Check container logs for any errors
+          docker logs test-container
+
+          # Test if the application responds (using health endpoint)
+          curl -f http://localhost:3000/health || exit 1
+
+          # Stop and remove container
+          docker stop test-container
+          docker rm test-container
+
+  # ========================================
+  # STAGE 2: Build
+  # Only runs if all tests pass
+  # ========================================
+
+  build-application:
+    name: 🏗️ Build Application
+    runs-on: ubuntu-latest
+    needs: [code-quality, unit-tests, docker-build]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: dist/
+          retention-days: 14

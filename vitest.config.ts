@@ -16,9 +16,6 @@ export default defineConfig({
     testTimeout: 10000,
     hookTimeout: 10000,
 
-    // Reporter configuration
-    reporters: process.env.CI ? ["default", "github-actions"] : ["default"],
-
     // Coverage configuration (when using --coverage)
     coverage: {
       provider: "v8",

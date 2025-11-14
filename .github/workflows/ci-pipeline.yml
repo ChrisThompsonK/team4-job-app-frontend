@@ -108,17 +108,29 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: az acr login --name ${{ vars.ACR_NAME }}
 
-      - name: Build Docker image
+      - name: Build Docker image (PR)
+        if: github.ref != 'refs/heads/main' || github.event_name != 'push'
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
-          tags: |
-            team4-job-app-frontend:ci-test
-            ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && format('{0}.azurecr.io/team4-job-app-frontend:latest', vars.ACR_NAME) || '' }}
+          push: false
+          tags: team4-job-app-frontend:ci-test
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          load: ${{ !(github.ref == 'refs/heads/main' && github.event_name == 'push') }}
+          load: true
+
+      - name: Build and push Docker image (main)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            team4-job-app-frontend:ci-test
+            ${{ vars.ACR_NAME }}.azurecr.io/team4-job-app-frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          load: true
 
       - name: Test Docker image
         env:

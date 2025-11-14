@@ -98,20 +98,22 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Azure Login
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Login to Azure Container Registry
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ secrets.ACR_LOGIN_SERVER }}
-          username: ${{ secrets.AZURE_CLIENT_ID }}
-          password: ${{ secrets.AZURE_CLIENT_SECRET }}
+        run: az acr login --name ${{ vars.ACR_NAME }}
 
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
-          tags: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && format('{0}/team4-job-app-frontend:latest', secrets.ACR_LOGIN_SERVER) || 'team4-job-app-frontend:ci-test' }}
+          tags: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && format('{0}.azurecr.io/team4-job-app-frontend:latest', vars.ACR_NAME) || 'team4-job-app-frontend:ci-test' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           load: true
@@ -183,3 +185,4 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           echo "✅ Docker image successfully pushed to ACR"
+          echo "📦 Image: ${{ vars.ACR_NAME }}.azurecr.io/team4-job-app-frontend:latest"

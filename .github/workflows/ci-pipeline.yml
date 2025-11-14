@@ -188,7 +188,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: false
+          push: true
           tags: team4-job-app-frontend:ci-test
           cache-from: type=gha
           cache-to: type=gha,mode=max

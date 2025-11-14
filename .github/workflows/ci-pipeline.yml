@@ -82,12 +82,12 @@ jobs:
         run: npm run build
 
   # ========================================
-  # STAGE 3: Docker Build & Test
+  # STAGE 3: Build and push Docker image
   # Only runs if build succeeds
   # ========================================
 
   docker-build:
-    name: 🐳 Docker Build & Test
+    name: 🐳 Build and push Docker image
     runs-on: ubuntu-latest
     needs: [build-application]
 
@@ -98,15 +98,23 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Login to Azure Container Registry
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.AZURE_CLIENT_ID }}
+          password: ${{ secrets.AZURE_CLIENT_SECRET }}
+
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: false
-          tags: team4-job-app-frontend:ci-test
+          push: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+          tags: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && format('{0}/team4-job-app-frontend:latest', secrets.ACR_LOGIN_SERVER) || 'team4-job-app-frontend:ci-test' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          load: true
+          load: ${{ github.ref != 'refs/heads/main' || github.event_name != 'push' }}
 
       - name: Test Docker image
         env:
@@ -170,3 +178,9 @@ jobs:
           # Stop and remove container
           docker stop test-container
           docker rm test-container
+
+      - name: Verify ACR Push
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          echo "✅ Docker image successfully pushed to ACR"
+          echo "📦 Image: ${{ secrets.ACR_LOGIN_SERVER }}/team4-job-app-frontend:latest"

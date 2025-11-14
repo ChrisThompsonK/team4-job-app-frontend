@@ -114,7 +114,7 @@ jobs:
           tags: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && format('{0}/team4-job-app-frontend:latest', secrets.ACR_LOGIN_SERVER) || 'team4-job-app-frontend:ci-test' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          load: ${{ github.ref != 'refs/heads/main' || github.event_name != 'push' }}
+          load: true
 
       - name: Test Docker image
         env:

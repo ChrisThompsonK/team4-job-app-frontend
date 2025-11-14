@@ -118,19 +118,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           load: true
-
-      - name: Build and push Docker image (main)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: false
-          tags: |
-            team4-job-app-frontend:ci-test
-            ${{ vars.ACR_NAME }}.azurecr.io/team4-job-app-frontend:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          load: true
+        
 
       - name: Test Docker image
         env:
@@ -195,8 +183,13 @@ jobs:
           docker stop test-container
           docker rm test-container
 
-      - name: Verify ACR Push
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: |
-          echo "✅ Docker image successfully pushed to ACR"
-          echo "📦 Image: ${{ vars.ACR_NAME }}.azurecr.io/team4-job-app-frontend:latest"
+      - name: Push to Azure Container Registry
+        if: github.ref != 'refs/heads/main' || github.event_name != 'push'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: team4-job-app-frontend:ci-test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          load: true

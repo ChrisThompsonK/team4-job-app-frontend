@@ -184,12 +184,10 @@ jobs:
           docker rm test-container
 
       - name: Push to Azure Container Registry
-        if: github.ref != 'refs/heads/main' || github.event_name != 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: team4-job-app-frontend:ci-test
+          tags: ${{ vars.ACR_NAME }}.azurecr.io/team4-job-app-frontend:latest
           cache-from: type=gha
-          cache-to: type=gha,mode=max
-          load: true

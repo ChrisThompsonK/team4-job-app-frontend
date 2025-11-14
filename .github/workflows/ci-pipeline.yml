@@ -118,7 +118,7 @@ jobs:
             ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && format('{0}.azurecr.io/team4-job-app-frontend:latest', vars.ACR_NAME) || '' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          load: true
+          load: ${{ !(github.ref == 'refs/heads/main' && github.event_name == 'push') }}
 
       - name: Test Docker image
         env:

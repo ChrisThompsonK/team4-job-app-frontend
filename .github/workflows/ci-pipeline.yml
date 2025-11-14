@@ -183,4 +183,3 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           echo "✅ Docker image successfully pushed to ACR"
-          echo "📦 Image: ${{ secrets.ACR_LOGIN_SERVER }}/team4-job-app-frontend:latest"

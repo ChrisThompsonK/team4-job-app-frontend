@@ -189,6 +189,9 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Azure Login
         uses: azure/login@v2
         with: 
@@ -196,9 +199,6 @@ jobs:
 
       - name: Login to ACR
         run: az acr login --name ${{ env.REGISTRY_NAME }}
-
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3

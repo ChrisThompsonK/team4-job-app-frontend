@@ -171,19 +171,15 @@ jobs:
           docker stop test-container
           docker rm test-container
       
-      - name: Azure Login
+      - name: Azure Login, ACR login and push
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Login to Azure Container Registry
-        run: az acr login --name ${{ vars.ACR_NAME }}
-      
-      - name: Push to Azure Container Registry
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ vars.ACR_NAME }}.azurecr.io/team4-job-app-frontend:latest
-          cache-from: type=gha
+      - name: Login to Azure Container Registry and push image
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          az acr login --name ${{ vars.ACR_NAME }}
+          docker build -t ${{ vars.ACR_NAME }}.azurecr.io/team4-job-app-frontend:latest .
+          docker push ${{ vars.ACR_NAME }}.azurecr.io/team4-job-app-frontend:latest

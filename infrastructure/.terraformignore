@@ -1,0 +1,13 @@
+# Ignore common files
+.git/
+.github/
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars.json
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.DS_Store

@@ -27,3 +27,8 @@ variable "tags" {
     managed_by = "terraform"
   }
 }
+
+resource "azurerm_resource_group" "main" {
+  name     = "${var.app_name}-${var.environment}-rg"
+  location = var.location
+}

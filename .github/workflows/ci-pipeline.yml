@@ -174,7 +174,7 @@ jobs:
       - name: Azure and ACR login
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          az login --service-principal -u ${{ fromJson(secrets.AZURE_CREDENTIALS).clientId }} -p ${{ fromJson(secrets.AZURE_CREDENTIALS).clientSecret }} --tenant ${{ fromJson(secrets.AZURE_CREDENTIALS).tenantId }}
+          az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
           az acr login --name ${{ vars.ACR_NAME }}
 
       - name: Push to Azure Container Registry

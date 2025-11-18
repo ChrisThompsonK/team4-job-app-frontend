@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  REGISTRY: aiacademy25-bbaue6bgenhkd0dj.azurecr.io
+  REGISTRY_NAME: aiacademy25
+  IMAGE_NAME: team4-job-app-frontend
+
 jobs:
   # ========================================
   # STAGE 1: Test & Quality Checks
@@ -82,12 +87,12 @@ jobs:
         run: npm run build
 
   # ========================================
-  # STAGE 3: Docker Build & Test
+  # STAGE 3: Build and push Docker image
   # Only runs if build succeeds
   # ========================================
 
   docker-build:
-    name: 🐳 Docker Build & Test
+    name: 🐳 Build Docker image
     runs-on: ubuntu-latest
     needs: [build-application]
 
@@ -98,7 +103,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
+      - name: Build Docker image (PR)
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -170,3 +175,75 @@ jobs:
           # Stop and remove container
           docker stop test-container
           docker rm test-container
+
+  # ========================================
+  # STAGE 4: Terraform
+  # Only runs if Docker build succeeds
+  # ========================================
+
+  terraform:
+    name: 🏛️ Terraform
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./infrastructure
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        working-directory: ./infrastructure
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        working-directory: ./infrastructure
+
+  # ========================================
+  # STAGE 5: ACR login and Push
+  # Only runs if merged to main
+  # ========================================
+      
+  ACR-push:
+    name: Push to ACR
+    runs-on: ubuntu-latest
+    needs: [docker-build, terraform]
+    
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Azure Login
+        uses: azure/login@v2
+        with: 
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Login to ACR
+        run: az acr login --name ${{ env.REGISTRY_NAME }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Push to ACR
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

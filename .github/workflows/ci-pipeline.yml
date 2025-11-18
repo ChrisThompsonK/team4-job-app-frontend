@@ -198,17 +198,18 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: latest
+          terraform_version: '~> 1.9'
 
       - name: Terraform Init
         run: terraform init
         working-directory: ./infrastructure
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -var-file="dev/terraform.tfvars" -out=tfplan
         working-directory: ./infrastructure
 
       - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve tfplan
         working-directory: ./infrastructure
 

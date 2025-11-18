@@ -177,14 +177,58 @@ jobs:
           docker rm test-container
 
   # ========================================
-  # STAGE 4: ACR login and Push
+  # STAGE 4: Terraform
+  # Only runs if Docker build succeeds
+  # ========================================
+
+  terraform:
+    name: 🏛️ Terraform
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '~> 1.9'
+
+      - name: Set Azure credentials as environment variables
+        run: |
+          echo "Setting ARM_* env vars for Terraform..."
+          echo "::add-mask::$(jq -r .clientId <<< '${{ secrets.AZURE_CREDENTIALS }}')"
+          echo "ARM_CLIENT_ID=$(jq -r .clientId <<< '${{ secrets.AZURE_CREDENTIALS }}')" >> $GITHUB_ENV
+          echo "::add-mask::$(jq -r .clientSecret <<< '${{ secrets.AZURE_CREDENTIALS }}')"
+          echo "ARM_CLIENT_SECRET=$(jq -r .clientSecret <<< '${{ secrets.AZURE_CREDENTIALS }}')" >> $GITHUB_ENV
+          echo "::add-mask::$(jq -r .subscriptionId <<< '${{ secrets.AZURE_CREDENTIALS }}')"
+          echo "ARM_SUBSCRIPTION_ID=$(jq -r .subscriptionId <<< '${{ secrets.AZURE_CREDENTIALS }}')" >> $GITHUB_ENV
+          echo "::add-mask::$(jq -r .tenantId <<< '${{ secrets.AZURE_CREDENTIALS }}')"
+          echo "ARM_TENANT_ID=$(jq -r .tenantId <<< '${{ secrets.AZURE_CREDENTIALS }}')" >> $GITHUB_ENV
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./infrastructure
+
+      - name: Terraform Plan
+        run: terraform plan -var-file="dev/terraform.tfvars" -out=tfplan
+        working-directory: ./infrastructure
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve tfplan
+        working-directory: ./infrastructure
+
+  # ========================================
+  # STAGE 5: ACR login and Push
   # Only runs if merged to main
   # ========================================
       
   ACR-push:
     name: Push to ACR
     runs-on: ubuntu-latest
-    needs: [docker-build]
+    needs: [docker-build, terraform]
     
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 

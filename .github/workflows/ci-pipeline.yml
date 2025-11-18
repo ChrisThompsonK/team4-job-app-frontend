@@ -109,7 +109,6 @@ jobs:
         run: az acr login --name ${{ vars.ACR_NAME }}
 
       - name: Build Docker image (PR)
-        if: github.ref != 'refs/heads/main' || github.event_name != 'push'
         uses: docker/build-push-action@v5
         with:
           context: .

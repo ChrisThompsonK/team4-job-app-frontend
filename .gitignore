@@ -102,3 +102,8 @@ logs
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Terraform
+infrastructure/.terraform/
+infrastructure/.terraform.lock.hcl
+infrastructure/**/*.tfstate

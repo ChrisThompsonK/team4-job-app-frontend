@@ -209,7 +209,7 @@ jobs:
         working-directory: ./infrastructure
 
       - name: Terraform Plan
-        run: terraform plan -lock=false -var-file="dev/terraform.tfvars" -out=tfplan
+        run: terraform plan -var-file="dev/terraform.tfvars" -out=tfplan
         working-directory: ./infrastructure
 
       - name: Terraform Apply

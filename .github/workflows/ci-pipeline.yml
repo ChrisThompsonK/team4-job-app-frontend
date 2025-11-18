@@ -195,10 +195,6 @@ jobs:
         with:
           terraform_version: '~> 1.9'
 
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Set Azure credentials as environment variables
         run: |

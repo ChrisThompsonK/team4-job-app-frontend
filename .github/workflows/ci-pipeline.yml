@@ -178,11 +178,9 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Login to Azure Container Registry
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: az acr login --name ${{ vars.ACR_NAME }}
       
       - name: Push to Azure Container Registry
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         uses: docker/build-push-action@v5
         with:
           context: .

@@ -107,4 +107,3 @@ Thumbs.db
 infrastructure/.terraform/
 infrastructure/.terraform.lock.hcl
 infrastructure/**/*.tfstate
-infrastructure/**/*.tfvars

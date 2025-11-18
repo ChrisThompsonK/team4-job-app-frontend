@@ -198,4 +198,3 @@ jobs:
           tags: ${{ vars.ACR_NAME }}.azurecr.io/team4-job-app-frontend:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          load: true

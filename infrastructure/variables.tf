@@ -28,6 +28,26 @@ variable "tags" {
   }
 }
 
+variable "keyvault_name" {
+  description = "Name of the Key Vault"
+  type        = string
+}
+
+variable "keyvault_resource_group_name" {
+  description = "Resource group name of the Key Vault"
+  type        = string
+}
+
+variable "acr_name" {
+  description = "Name of the Azure Container Registry"
+  type        = string
+}
+
+variable "acr_resource_group_name" {
+  description = "Resource group name of the Azure Container Registry"
+  type        = string
+}
+
 resource "azurerm_resource_group" "main" {
   name     = "${var.app_name}-${var.environment}-rg"
   location = var.location

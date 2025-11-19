@@ -31,14 +31,14 @@ resource "azurerm_user_assigned_identity" "frontend_identity" {
 
 # Data source for Key Vault
 data "azurerm_key_vault" "kv" {
-  name                = "team4-job-app-key-vault"
-  resource_group_name = azurerm_resource_group.main.name
+  name                = var.keyvault_name
+  resource_group_name = var.keyvault_resource_group_name
 }
 
 # Data source for Container Registry
 data "azurerm_container_registry" "acr" {
-  name                = "aiacademy25"
-  resource_group_name = azurerm_resource_group.main.name
+  name                = var.acr_name
+  resource_group_name = var.acr_resource_group_name
 }
 
 # Role assignment for ACR pull access

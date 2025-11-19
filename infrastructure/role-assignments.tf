@@ -15,21 +15,8 @@ resource "azurerm_role_assignment" "managed_identity_kv_secrets_user" {
   principal_id       = azurerm_user_assigned_identity.job_app_frontend.principal_id
 }
 
-# Assign "Key Vault Reader" role to the managed identity
-# This allows the managed identity to read metadata about secrets and keys
-resource "azurerm_role_assignment" "managed_identity_kv_reader" {
-  scope              = data.azurerm_key_vault.job_app_kv.id
-  role_definition_name = "Key Vault Reader"
-  principal_id       = azurerm_user_assigned_identity.job_app_frontend.principal_id
-}
-
 # Output the role assignments for reference
 output "kv_secrets_user_role_assignment_id" {
   value       = azurerm_role_assignment.managed_identity_kv_secrets_user.id
   description = "Role assignment ID for Key Vault Secrets User"
-}
-
-output "kv_reader_role_assignment_id" {
-  value       = azurerm_role_assignment.managed_identity_kv_reader.id
-  description = "Role assignment ID for Key Vault Reader"
 }

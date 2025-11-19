@@ -28,7 +28,26 @@ variable "tags" {
   }
 }
 
-resource "azurerm_resource_group" "main" {
-  name     = "${var.app_name}-${var.environment}-rg"
-  location = var.location
+variable "acr_login_server" {
+  description = "Azure Container Registry login server"
+  type        = string
+  default     = "aiacademy25-bbaue6bgenhkd0dj.azurecr.io"
+}
+
+variable "acr_name" {
+  description = "Azure Container Registry name"
+  type        = string
+  default     = "aiacademy25"
+}
+
+variable "acr_resource_group" {
+  description = "Resource group containing the ACR"
+  type        = string
+  default     = "aiacademy25-rg"
+}
+
+variable "session_secret" {
+  description = "Secret for Express session encryption"
+  type        = string
+  sensitive   = true
 }

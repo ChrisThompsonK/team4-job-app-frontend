@@ -7,6 +7,12 @@ data "azurerm_key_vault" "job_app_kv" {
   resource_group_name = var.key_vault_resource_group_name
 }
 
+# Data source to reference the existing Container Registry
+data "azurerm_container_registry" "acr" {
+  name                = var.container_registry_name
+  resource_group_name = var.container_registry_resource_group_name
+}
+
 # Assign "Key Vault Secrets User" role to the managed identity
 # This allows the managed identity to read secrets from the Key Vault
 resource "azurerm_role_assignment" "managed_identity_kv_secrets_user" {

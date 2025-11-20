@@ -1,6 +1,6 @@
 # Data source to reference the backend Container App from backend infrastructure
 data "azurerm_container_app" "backend" {
-  name                = "ca-team4-backend-${var.environment}"
+  name                = "terraform-tfstate-ai"
   resource_group_name = var.backend_resource_group_name
 }
 

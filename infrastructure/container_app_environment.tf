@@ -1,7 +1,7 @@
 # Data source to reference the backend Container App from backend infrastructure
 data "azurerm_container_app" "backend" {
-  name                = "ca-team4-backend-dev"
-  resource_group_name = "team4-backend"
+  name                = "team4-aca-env"
+  resource_group_name = "team4-rg"
 }
 
 resource "azurerm_container_app_environment" "frontend" {

@@ -3,7 +3,7 @@
 # without storing credentials in configuration files
 
 resource "azurerm_user_assigned_identity" "job_app_frontend" {
-  name                = "job-app-frontend-identity"
+  name                = "team4-job-app-frontend-identity"
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
 }

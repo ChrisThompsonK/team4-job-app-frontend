@@ -1,20 +1,20 @@
 # Data source to reference the backend Container App from backend infrastructure
 data "azurerm_container_app" "backend" {
-  name                = "terraform-tfstate-ai"
-  resource_group_name = var.backend_resource_group_name
+  name                = "ca-team4-backend-dev"
+  resource_group_name = "team4-backend"
 }
 
 resource "azurerm_container_app_environment" "frontend" {
   name                       = "cae-${var.app_name}-${var.environment}"
   location                   = azurerm_resource_group.main.location
-  resource_group_name        = azurerm_resource_group.main.name
+  resource_group_name        = "team4-frontend"
   log_analytics_workspace_id = azurerm_log_analytics_workspace.frontend.id
 }
 
 resource "azurerm_log_analytics_workspace" "frontend" {
   name                = "law-${var.app_name}-${var.environment}"
   location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  resource_group_name = "team4-frontend"
   sku                 = "PerGB2018"
   retention_in_days   = 30
 }
@@ -22,7 +22,7 @@ resource "azurerm_log_analytics_workspace" "frontend" {
 resource "azurerm_container_app" "frontend" {
   name                         = "ca-${var.app_name}-${var.environment}"
   container_app_environment_id = azurerm_container_app_environment.frontend.id
-  resource_group_name          = azurerm_resource_group.main.name
+  resource_group_name          = "team4-frontend"
   revision_mode                = "Single"
 
   depends_on = [

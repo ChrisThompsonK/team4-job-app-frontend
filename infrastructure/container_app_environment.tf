@@ -4,17 +4,15 @@ data "azurerm_container_app" "backend" {
   resource_group_name = "team4-rg"
 }
 
-resource "azurerm_container_app_environment" "frontend" {
-  name                = "cae-${var.app_name}-${var.environment}"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = "team4-frontend"
-
-  tags = var.tags
+# Data source to reference the existing shared Container App Environment
+data "azurerm_container_app_environment" "frontend" {
+  name                = "team4-aca-env"
+  resource_group_name = "team4-rg"
 }
 
 resource "azurerm_container_app" "frontend" {
   name                         = "ca-${var.app_name}-${var.environment}"
-  container_app_environment_id = azurerm_container_app_environment.frontend.id
+  container_app_environment_id = data.azurerm_container_app_environment.frontend.id
   resource_group_name          = "team4-frontend"
   revision_mode                = "Single"
 

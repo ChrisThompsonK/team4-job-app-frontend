@@ -8,3 +8,6 @@ tags = {
   project    = "team4-frontend"
   team       = "team4"
 }
+
+container_registry_name              = "aiacademy25"
+container_registry_resource_group_name = "container-registry"

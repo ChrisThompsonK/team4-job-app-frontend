@@ -15,8 +15,22 @@ resource "azurerm_role_assignment" "managed_identity_kv_secrets_user" {
   principal_id       = azurerm_user_assigned_identity.job_app_frontend.principal_id
 }
 
+# Assign "AcrPull" role to the managed identity
+# This allows the managed identity to pull images from Azure Container Registry
+resource "azurerm_role_assignment" "managed_identity_acr_pull" {
+  scope              = data.azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id       = azurerm_user_assigned_identity.job_app_frontend.principal_id
+}
+
 # Output the role assignments for reference
 output "kv_secrets_user_role_assignment_id" {
   value       = azurerm_role_assignment.managed_identity_kv_secrets_user.id
   description = "Role assignment ID for Key Vault Secrets User"
 }
+
+output "acr_pull_role_assignment_id" {
+  value       = azurerm_role_assignment.managed_identity_acr_pull.id
+  description = "Role assignment ID for ACR Pull"
+}
+

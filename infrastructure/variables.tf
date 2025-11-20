@@ -50,6 +50,11 @@ variable "container_registry_resource_group_name" {
   type        = string
 }
 
+variable "backend_resource_group_name" {
+  description = "Resource group name where the backend Container App is located"
+  type        = string
+}
+
 resource "azurerm_resource_group" "main" {
   name     = "${var.app_name}-${var.environment}-rg"
   location = var.location

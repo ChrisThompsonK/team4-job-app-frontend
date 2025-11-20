@@ -11,3 +11,4 @@ tags = {
 
 container_registry_name              = "aiacademy25"
 container_registry_resource_group_name = "container-registry"
+backend_resource_group_name          = "rg-team4-jobapp-backend-dev"

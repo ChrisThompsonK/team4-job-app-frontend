@@ -1,3 +1,9 @@
+# Data source to reference the backend Container App from backend infrastructure
+data "azurerm_container_app" "backend" {
+  name                = "ca-team4-backend-${var.environment}"
+  resource_group_name = var.backend_resource_group_name
+}
+
 resource "azurerm_container_app_environment" "frontend" {
   name                       = "cae-${var.app_name}-${var.environment}"
   location                   = azurerm_resource_group.main.location
@@ -19,6 +25,10 @@ resource "azurerm_container_app" "frontend" {
   resource_group_name          = azurerm_resource_group.main.name
   revision_mode                = "Single"
 
+  depends_on = [
+    data.azurerm_container_app.backend
+  ]
+
   identity {
     type         = "UserAssigned"
     identity_ids = [azurerm_user_assigned_identity.job_app_frontend.id]
@@ -38,7 +48,7 @@ resource "azurerm_container_app" "frontend" {
 
       env {
         name  = "API_BASE_URL"
-        value = "https://${azurerm_container_app.backend[0].ingress[0].fqdn}"
+        value = "https://${data.azurerm_container_app.backend.latest_revision_fqdn}"
       }
     }
   }

@@ -28,6 +28,18 @@ variable "tags" {
   }
 }
 
+variable "key_vault_name" {
+  description = "Name of the existing Key Vault for secrets management"
+  type        = string
+  default     = "team4-job-app-key-vault"
+}
+
+variable "key_vault_resource_group_name" {
+  description = "Resource group name where the Key Vault is located"
+  type        = string
+  default     = "team4-rg"
+}
+
 resource "azurerm_resource_group" "main" {
   name     = "${var.app_name}-${var.environment}-rg"
   location = var.location

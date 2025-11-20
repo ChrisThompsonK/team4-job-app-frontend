@@ -7,6 +7,12 @@ data "azurerm_key_vault" "job_app_kv" {
   resource_group_name = var.key_vault_resource_group_name
 }
 
+# Data source to reference the existing Container Registry
+data "azurerm_container_registry" "acr" {
+  name                = var.container_registry_name
+  resource_group_name = var.container_registry_resource_group_name
+}
+
 # Assign "Key Vault Secrets User" role to the managed identity
 # This allows the managed identity to read secrets from the Key Vault
 resource "azurerm_role_assignment" "managed_identity_kv_secrets_user" {
@@ -15,8 +21,22 @@ resource "azurerm_role_assignment" "managed_identity_kv_secrets_user" {
   principal_id       = azurerm_user_assigned_identity.job_app_frontend.principal_id
 }
 
+# Assign "AcrPull" role to the managed identity
+# This allows the managed identity to pull images from Azure Container Registry
+resource "azurerm_role_assignment" "managed_identity_acr_pull" {
+  scope              = data.azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id       = azurerm_user_assigned_identity.job_app_frontend.principal_id
+}
+
 # Output the role assignments for reference
 output "kv_secrets_user_role_assignment_id" {
   value       = azurerm_role_assignment.managed_identity_kv_secrets_user.id
   description = "Role assignment ID for Key Vault Secrets User"
 }
+
+output "acr_pull_role_assignment_id" {
+  value       = azurerm_role_assignment.managed_identity_acr_pull.id
+  description = "Role assignment ID for ACR Pull"
+}
+

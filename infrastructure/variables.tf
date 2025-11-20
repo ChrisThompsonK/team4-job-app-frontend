@@ -40,6 +40,16 @@ variable "key_vault_resource_group_name" {
   default     = "team4-rg"
 }
 
+variable "container_registry_name" {
+  description = "Name of the existing Azure Container Registry"
+  type        = string
+}
+
+variable "container_registry_resource_group_name" {
+  description = "Resource group name where the Container Registry is located"
+  type        = string
+}
+
 resource "azurerm_resource_group" "main" {
   name     = "${var.app_name}-${var.environment}-rg"
   location = var.location

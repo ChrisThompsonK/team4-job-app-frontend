@@ -30,6 +30,12 @@ resource "azurerm_container_app" "frontend" {
     identity = azurerm_user_assigned_identity.job_app_frontend.id
   }
 
+  secret {
+    name                = "session-secret-ref"
+    key_vault_secret_id = "${data.azurerm_key_vault.job_app_kv.vault_uri}secrets/SESSIONSECRET/"
+    identity            = azurerm_user_assigned_identity.job_app_frontend.id
+  }
+
   template {
     container {
       name   = "frontend"
@@ -40,6 +46,12 @@ resource "azurerm_container_app" "frontend" {
       env {
         name  = "API_BASE_URL"
         value = "https://${data.azurerm_container_app.backend.latest_revision_fqdn}"
+      }
+
+      # Key Vault reference syntax for session secret env var
+      env {
+        name        = "SESSION_SECRET"
+        secret_name = "session-secret-ref"
       }
     }
   }

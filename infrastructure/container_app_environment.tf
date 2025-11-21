@@ -16,12 +16,6 @@ data "azurerm_key_vault" "job_app_vault" {
   resource_group_name = "team4-rg"
 }
 
-# Data source to reference the SESSIONSECRET from Key Vault
-data "azurerm_key_vault_secret" "session_secret" {
-  name         = "SESSIONSECRET"
-  key_vault_id = data.azurerm_key_vault.job_app_vault.id
-}
-
 resource "azurerm_container_app" "frontend" {
   name                         = "ca-${var.app_name}-${var.environment}"
   container_app_environment_id = data.azurerm_container_app_environment.frontend.id

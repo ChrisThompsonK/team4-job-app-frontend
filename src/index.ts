@@ -26,7 +26,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:8080";
+const API_BASE_URL = (process.env.API_BASE_URL || "http://localhost:8080").trim();
 
 // Validate required environment variables (allow test/CI environments to use default)
 const SESSION_SECRET = (() => {

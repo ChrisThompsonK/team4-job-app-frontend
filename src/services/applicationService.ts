@@ -24,7 +24,7 @@ export class ApplicationService {
   private apiBaseUrl: string;
 
   constructor(apiBaseUrl?: string) {
-    this.apiBaseUrl = (apiBaseUrl || process.env.API_BASE_URL || "http://localhost:8080").trim();
+    this.apiBaseUrl = apiBaseUrl || process.env.API_BASE_URL || "http://localhost:8080";
   }
 
   async getAllApplications(): Promise<Application[]> {

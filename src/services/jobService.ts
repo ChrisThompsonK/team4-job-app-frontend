@@ -10,7 +10,7 @@ export class JobService implements JobRoleService {
 
   constructor(baseURL = process.env.API_BASE_URL || "http://localhost:8080") {
     this.axiosInstance = axios.create({
-      baseURL: baseURL.trim(),
+      baseURL,
     });
   }
 

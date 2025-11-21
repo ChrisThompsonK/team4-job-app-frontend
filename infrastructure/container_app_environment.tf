@@ -10,18 +10,6 @@ data "azurerm_container_app_environment" "frontend" {
   resource_group_name = "team4-rg"
 }
 
-# Data source to reference the Azure Key Vault
-data "azurerm_key_vault" "job_app_vault" {
-  name                = "team4-job-app-key-vault"
-  resource_group_name = "team4-rg"
-}
-
-# Data source to reference the SESSIONSECRET from Key Vault
-data "azurerm_key_vault_secret" "session_secret" {
-  name         = "SESSIONSECRET"
-  key_vault_id = data.azurerm_key_vault.job_app_vault.id
-}
-
 resource "azurerm_container_app" "frontend" {
   name                         = "ca-${var.app_name}-${var.environment}"
   container_app_environment_id = data.azurerm_container_app_environment.frontend.id
@@ -43,8 +31,8 @@ resource "azurerm_container_app" "frontend" {
   }
 
   secret {
-    name                = "sessionsecret"
-    key_vault_secret_id = data.azurerm_key_vault_secret.session_secret.id
+    name                = "session-secret-ref"
+    key_vault_secret_id = "${data.azurerm_key_vault.job_app_kv.vault_uri}secrets/SessionSecret"
     identity            = azurerm_user_assigned_identity.job_app_frontend.id
   }
 
@@ -60,9 +48,10 @@ resource "azurerm_container_app" "frontend" {
         value = "https://${data.azurerm_container_app.backend.latest_revision_fqdn}"
       }
 
+      # Key Vault reference syntax for session secret env var
       env {
-        name        = "SESSIONSECRET"
-        secret_name = "sessionsecret"
+        name        = "SESSION_SECRET"
+        secret_name = "session-secret-ref"
       }
     }
   }

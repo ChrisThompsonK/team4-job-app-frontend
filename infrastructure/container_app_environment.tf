@@ -49,11 +49,6 @@ resource "azurerm_container_app" "frontend" {
       cpu    = "0.5"
       memory = "1Gi"
 
-      env {
-        name  = "API_BASE_URL"
-        value = var.backend_api_url
-      }
-
       # Key Vault reference syntax for session secret env var
       env {
         name        = "SESSION_SECRET"

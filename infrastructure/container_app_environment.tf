@@ -32,7 +32,7 @@ resource "azurerm_container_app" "frontend" {
 
   secret {
     name                = "session-secret-ref"
-    key_vault_secret_id = "${data.azurerm_key_vault.job_app_kv.vault_uri}secrets/SESSIONSECRET/"
+    key_vault_secret_id = "${data.azurerm_key_vault.job_app_kv.vault_uri}secrets/SESSIONSECRET"
     identity            = azurerm_user_assigned_identity.job_app_frontend.id
   }
 

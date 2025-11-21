@@ -12,7 +12,7 @@ data "azurerm_container_app_environment" "frontend" {
 
 # Data source to reference the Azure Key Vault
 data "azurerm_key_vault" "job_app_vault" {
-  name                = "team4-job-app-kv"
+  name                = "team4-job-app-key-vault"
   resource_group_name = "team4-rg"
 }
 
